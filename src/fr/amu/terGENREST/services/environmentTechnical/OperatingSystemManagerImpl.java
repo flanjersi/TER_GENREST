@@ -1,8 +1,11 @@
 package fr.amu.terGENREST.services.environmentTechnical;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import fr.amu.terGENREST.entities.environmentTechnical.OperatingSystem;
 
@@ -14,26 +17,30 @@ public class OperatingSystemManagerImpl implements OperatingSystemManager{
 	
 	@Override
 	public void addOperatingSystem(OperatingSystem operatingSystem) {
-		// TODO Auto-generated method stub
-		
+		em.persist(operatingSystem);
 	}
 
 	@Override
 	public OperatingSystem updateOperatingSystem(OperatingSystem operatingSystem) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.merge(operatingSystem);
 	}
 
 	@Override
 	public void removeOperatingSystem(OperatingSystem operatingSystem) {
-		// TODO Auto-generated method stub
+		em.remove(em.contains(operatingSystem) ? operatingSystem : em.merge(operatingSystem));
 		
 	}
 
 	@Override
-	public void findAllOperatingSystem() {
-		// TODO Auto-generated method stub
+	public OperatingSystem findById(long id) {
+		return em.find(OperatingSystem.class, id);
+	}
+
+	@Override
+	public List<OperatingSystem> findAllOperatingSystem() {
+		TypedQuery<OperatingSystem> q = em.createNamedQuery("findAllOperatingSystems", OperatingSystem.class);
 		
+		return q.getResultList();
 	}
 
 }

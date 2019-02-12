@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.services.environmentTechnical;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import fr.amu.terGENREST.entities.environmentTechnical.OperatingSystem;
@@ -18,5 +20,8 @@ public interface OperatingSystemManager {
 
 	public void removeOperatingSystem(OperatingSystem operatingSystem);
 
-	public void findAllOperatingSystem();
+	
+	public OperatingSystem findById(long id);
+	
+	public List<OperatingSystem> findAllOperatingSystem();
 }
