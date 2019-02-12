@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.services.environmentTechnical;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import fr.amu.terGENREST.entities.environmentTechnical.Language;
@@ -18,5 +20,7 @@ public interface LanguagesManager {
 	
 	public void removeLanguage(Language language);
 	
-	public void findAllLanguages();
+	public Language findById(long id);
+	
+	public List<Language> findAllLanguages();
 }

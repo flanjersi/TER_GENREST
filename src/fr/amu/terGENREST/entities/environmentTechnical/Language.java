@@ -11,12 +11,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table
+@Table(name = "Language")
+@NamedQueries ({
+	@NamedQuery(name = "findAllLanguages", query = "FROM Language")
+})
 public class Language {
 
 	@Id()
@@ -27,8 +32,12 @@ public class Language {
 	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
 	private List<Configuration> configurationsAvailable = new ArrayList<Configuration>();
+	
+	public Language() {
+		
+	}
 	
 	public Language(String name) {
 		this.name = name;

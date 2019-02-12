@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -18,7 +19,7 @@ public class Configuration {
 	private long id;
 	
 	@Basic(optional = false) @Size(min = 1, max = 50)
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 50, unique = true)
 	private String name;
 	
 	@Basic(optional = false) @Size(min = 1, max = 2000)
@@ -26,11 +27,15 @@ public class Configuration {
 	private String description;
 	
 	/**
-	 * Path folder where all of templates are storage
+	 * Path folder where all of templates are store
 	 */
 	@Basic(optional = false) @Size(min = 1, max = 200)
-	@Column(nullable = false, length = 200)
+	@Column(nullable = false, length = 200, unique = true)
 	private String pathFolder;
+	
+	public Configuration() {
+		
+	}
 	
 	public Configuration(String name, String description, String pathFolder) {
 		this.pathFolder = pathFolder;

@@ -1,10 +1,14 @@
 package fr.amu.terGENREST.services.environmentTechnical;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import fr.amu.terGENREST.entities.environmentTechnical.Language;
+import io.codearte.jfairy.producer.person.Person;
 
 @Stateless
 public class LanguagesManagerImpl implements LanguagesManager{
@@ -14,26 +18,29 @@ public class LanguagesManagerImpl implements LanguagesManager{
 	
 	@Override
 	public void addLanguage(Language language) {
-		// TODO Auto-generated method stub
-		
+		em.persist(language);
 	}
 
 	@Override
 	public Language updateLanguage(Language language) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.merge(language);
 	}
 
 	@Override
 	public void removeLanguage(Language language) {
-		// TODO Auto-generated method stub
-		
+		em.remove(em.contains(language) ? language : em.merge(language));
 	}
 
 	@Override
-	public void findAllLanguages() {
-		// TODO Auto-generated method stub
-		
+	public List<Language> findAllLanguages() {
+		TypedQuery<Language> q = em.createNamedQuery("findAllLanguages", Language.class);
+	
+		return q.getResultList();
+	}
+
+	@Override
+	public Language findById(long id) {
+		return em.find(Language.class, id);
 	}
 
 }

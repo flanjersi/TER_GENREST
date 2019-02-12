@@ -3,7 +3,7 @@ build/
 bin/
 target/
 libs/
-tmp/
+GENREST_DB/
 node_modules/
 jaxws/jaxws-client/src/main/
 jaxws/jaxws-endpoint/src/main/webapp/WEB-INF/wsdl/

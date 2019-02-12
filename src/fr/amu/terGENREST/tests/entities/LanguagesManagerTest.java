@@ -1,14 +1,24 @@
 package fr.amu.terGENREST.tests.entities;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.terGENREST.entities.environmentTechnical.Configuration;
 import fr.amu.terGENREST.entities.environmentTechnical.Language;
+import fr.amu.terGENREST.services.environmentTechnical.LanguagesManager;
 
 public class LanguagesManagerTest {
+	
+	@EJB
+	private LanguagesManager languageManager;
 	
 	@Before
     public void setUp() throws Exception {
@@ -25,31 +35,62 @@ public class LanguagesManagerTest {
     	
     	Language language = new Language("JavaScript");
     	
-    	/*
-    	Person person = new Person("Jeremy", "Gros", new Date(System.currentTimeMillis()), "1234", "example@example.com");	
+    	languageManager.addLanguage(language);
     	
-    	personManager.addPerson(person);
+    	Language languageFinded = languageManager.findById(language.getId());
+    	
+    	assertTrue(language.getName().equals(languageFinded.getName()));
     
-    	Person personAdded = personManager.findPerson(person.getId());
+    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
     	
-    	Assert.assertTrue(personAdded.equals(person));;
-     
-    	personAdded.setFirstName("Simon");
+    	languageFinded.addConfiguration(configuration);
     	
-    	personManager.updatePerson(personAdded);
+    	languageManager.updateLanguage(languageFinded);
     	
-    	Person personUpdate = personManager.findPerson(personAdded.getId());
+    	languageFinded = languageManager.findById(languageFinded.getId());
     	
-    	Assert.assertTrue(personUpdate.equals(personAdded));
+    	assertTrue(languageFinded.getConfigurationsAvailable().size() == 1);
+
+    	long id = languageFinded.getId();
     	
-    	long idRemoved = personUpdate.getId();
+    	languageManager.removeLanguage(languageFinded);
     	
-    	personManager.removePerson(personUpdate);
+    	Language languageRemoved = languageManager.findById(id);
     	
-    	Person personDeleted = personManager.findPerson(idRemoved);
-    	
-    	Assert.assertNull(personDeleted);
-    	*/
+    	assertNull(languageRemoved);
     }
     
+    @Test(expected = EJBException.class)
+    public void testUniqueNameConfigurationConstraint() {
+    	Language language = new Language("JavaScript");
+    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
+    	language.addConfiguration(configuration);
+    	
+    	languageManager.addLanguage(language);
+    	
+    	Language languageError = new Language("JavaScript");
+    	Configuration configurationError = new Configuration("nodejs-express", "A description", "/templates/Java/javaee-jaxrs/");
+    	languageError.addConfiguration(configurationError);
+    	
+    	languageManager.addLanguage(languageError);
+    	
+    	languageManager.removeLanguage(language);
+    }
+    
+    @Test(expected = EJBException.class)
+    public void testUniquePathConfigurationConstraint() {
+    	Language language = new Language("JavaScript");
+    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
+    	language.addConfiguration(configuration);
+    	
+    	languageManager.addLanguage(language);
+    	
+    	Language languageError = new Language("JavaScript");
+    	Configuration configurationError = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express-http/");
+    	languageError.addConfiguration(configurationError);
+    	
+    	languageManager.addLanguage(languageError);
+    	
+    	languageManager.removeLanguage(language);
+    }
 }
