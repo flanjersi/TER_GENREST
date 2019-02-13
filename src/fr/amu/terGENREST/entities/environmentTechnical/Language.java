@@ -1,5 +1,6 @@
 package fr.amu.terGENREST.entities.environmentTechnical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +21,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "Language")
 @NamedQueries ({
-	@NamedQuery(name = "findAllLanguages", query = "FROM Language")
+	@NamedQuery(name = "Language.findAllLanguages", query = "FROM Language")
 })
-public class Language {
+public class Language implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1437856201827260331L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)

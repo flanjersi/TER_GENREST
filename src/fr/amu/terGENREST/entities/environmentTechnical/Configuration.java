@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.entities.environmentTechnical;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +14,12 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table
-public class Configuration {
+public class Configuration implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6321329799125743622L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
