@@ -15,11 +15,11 @@ import fr.amu.terGENREST.entities.user.User;
 @Local
 public interface UserManager {
 
-	public void saveUser(User user);
+	public Long saveUser(User user);
 	
-	public void updateUser(User user);
+	public Long updateUser(User user);
 	
-	public void removeUser(User user);
+	public Long removeUser(User user);
 	
 	public List<User> findAllUser();
 	
