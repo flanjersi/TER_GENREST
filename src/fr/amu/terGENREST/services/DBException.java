@@ -1,4 +1,4 @@
-package fr.amu.terGENREST.services.user;
+package fr.amu.terGENREST.services;
 
 public class DBException  extends RuntimeException{
 

@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.DBException;
 
 @Stateless
 public class UserManagerImpl implements UserManager{
