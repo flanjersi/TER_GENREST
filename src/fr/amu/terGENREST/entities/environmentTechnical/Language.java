@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "Language")
 @NamedQueries ({
-	@NamedQuery(name = "findAllLanguages", query = "FROM Language")
+	@NamedQuery(name = "findAllLanguages", query = "SELECT l FROM Language l")
 })
 public class Language {
 
