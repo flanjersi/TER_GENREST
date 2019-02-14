@@ -60,7 +60,7 @@ public class User implements Serializable{
 	@Size(min=1, max = 200)
 	private String password;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
+	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
 	private List<Project> projects;
 	
 	public User() {	}

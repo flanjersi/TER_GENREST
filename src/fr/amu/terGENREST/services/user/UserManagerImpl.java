@@ -44,7 +44,8 @@ public class UserManagerImpl implements UserManager{
 	@Override
 	public Long removeUser(User user) {
 		try {
-			 em.remove(user);
+			em.remove(em.contains(user) ? user : em.merge(user));	
+			// em.remove(user);
 			 return user.getId();
 		} catch (Exception e) {
 			throw new DBException(e);

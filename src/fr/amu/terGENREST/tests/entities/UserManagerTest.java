@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
 
@@ -24,6 +25,7 @@ import fr.amu.terGENREST.services.user.UserManager;
 
 @Transactional
 public class UserManagerTest {
+	
 	/**
 	 * DAO test to
 	 * @author Mohamed
@@ -34,14 +36,17 @@ public class UserManagerTest {
 	private static User user1;
 	private static User user2;
 	
+	@EJB
+	UserManager userManager;
+	
 	@BeforeClass
 	 public static void setUpClass() throws Exception {
 		 //Create mock object of UserManager
 		mockedUserManager = Mockito.mock(UserManager.class);
 		
 	    //Create few instances of User class.
-		user1 = new User(new Long(1), "Jean","Marc","j@gmail.fr","password1");
-		user2 = new User(new Long(2), "Med","Moud","m@gmail.fr","password2");
+		user1 = new User("Jean","Marc","j@gmail.fr","password1");
+		user2 = new User("Med","Moud","m@gmail.fr","password2");
 		mockedUserManager.saveUser(user1);
 		mockedUserManager.saveUser(user2);
 	}
@@ -87,7 +92,7 @@ public class UserManagerTest {
 	public void testRemoveUser() {
 		when(mockedUserManager.removeUser(user1)).thenReturn(user1.getId());
 		Long id = mockedUserManager.removeUser(user1);
-		assertNotNull(id);
+		assertNotNull(id);		
 	}
 
 	@Test
