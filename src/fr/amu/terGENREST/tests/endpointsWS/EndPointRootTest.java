@@ -11,6 +11,9 @@ import java.net.URL;
 
 import org.junit.Test;
 
+import fr.amu.terGENREST.tests.utils.Utils;
+
+
 public class EndPointRootTest {
 
 	@Test 
@@ -20,24 +23,10 @@ public class EndPointRootTest {
 
 		int code= http.getResponseCode();
 
-		
 		assertTrue(code == 200);
 	
-		String content = readContentOfStream(http.getInputStream());
+		String content = Utils.readContentOfStream(http.getInputStream());
 		
 		assertTrue(content.equals("Root"));
-	}
-
-	private String readContentOfStream(InputStream inputStream) throws IOException {
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-		StringBuilder strBuilder = new StringBuilder();
-
-		String output;
-		while ((output = br.readLine()) != null) {
-			strBuilder.append(output);
-		}
-		
-		return strBuilder.toString();
 	}
 }

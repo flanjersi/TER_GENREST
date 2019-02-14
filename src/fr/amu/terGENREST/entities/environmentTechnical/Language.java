@@ -1,5 +1,6 @@
 package fr.amu.terGENREST.entities.environmentTechnical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,24 +16,34 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size; 
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.johnzon.mapper.JohnzonIgnore; 
 
 @Entity
 @Table(name = "Language")
 @NamedQueries ({
-	@NamedQuery(name = "findAllLanguages", query = "FROM Language")
+	@NamedQuery(name = "Language.findAllLanguages", query = "FROM Language"),
+	@NamedQuery(name = "Language.findByName", query = "FROM Language WHERE name = :name")
 })
-public class Language {
+public class Language implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1437856201827260331L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@Basic(optional = false) @Size(min = 1, max = 50)
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 50, unique = true)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Configuration> configurationsAvailable = new ArrayList<Configuration>();
 	
 	public Language() {
@@ -73,6 +84,30 @@ public class Language {
 	
 	public void removeConfiguration(Configuration configuration) {
 		configurationsAvailable.remove(configuration);
+	}
+
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Language other = (Language) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 	@Override

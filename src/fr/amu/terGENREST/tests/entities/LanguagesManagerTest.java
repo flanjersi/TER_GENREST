@@ -1,5 +1,6 @@
 package fr.amu.terGENREST.tests.entities;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -8,6 +9,7 @@ import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,7 @@ public class LanguagesManagerTest {
 	
 	@EJB
 	private LanguagesManager languageManager;
+	
 	
 	@Before
     public void setUp() throws Exception {
@@ -32,7 +35,6 @@ public class LanguagesManagerTest {
     
     @Test
     public void testCRUD() {
-    	
     	Language language = new Language("JavaScript");
     	
     	languageManager.addLanguage(language);
@@ -41,15 +43,13 @@ public class LanguagesManagerTest {
     	
     	assertTrue(language.getName().equals(languageFinded.getName()));
     
-    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
-    	
-    	languageFinded.addConfiguration(configuration);
+    	languageFinded.setName("JavaScript-update");
     	
     	languageManager.updateLanguage(languageFinded);
     	
     	languageFinded = languageManager.findById(languageFinded.getId());
     	
-    	assertTrue(languageFinded.getConfigurationsAvailable().size() == 1);
+    	assertTrue(languageFinded.getName().equals("JavaScript-update"));
 
     	long id = languageFinded.getId();
     	
@@ -60,37 +60,38 @@ public class LanguagesManagerTest {
     	assertNull(languageRemoved);
     }
     
-    @Test(expected = EJBException.class)
-    public void testUniqueNameConfigurationConstraint() {
+    @Test
+    public void testUniqueNameConstraint() {
     	Language language = new Language("JavaScript");
-    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
-    	language.addConfiguration(configuration);
-    	
-    	languageManager.addLanguage(language);
-    	
-    	Language languageError = new Language("JavaScript");
-    	Configuration configurationError = new Configuration("nodejs-express", "A description", "/templates/Java/javaee-jaxrs/");
-    	languageError.addConfiguration(configurationError);
-    	
-    	languageManager.addLanguage(languageError);
-    	
-    	languageManager.removeLanguage(language);
+
+		languageManager.addLanguage(language);
+
+		Language languageError = new Language("JavaScript");
+		
+		try {
+			languageManager.addLanguage(languageError);
+			
+			Assert.fail("Should have throw EJBException");
+		}
+		catch (EJBException e) {
+			assertTrue(true);
+		}
+		
+		languageManager.removeLanguage(language);
     }
     
-    @Test(expected = EJBException.class)
-    public void testUniquePathConfigurationConstraint() {
+    @Test
+    public void testFindByName() {
     	Language language = new Language("JavaScript");
-    	Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
-    	language.addConfiguration(configuration);
-    	
-    	languageManager.addLanguage(language);
-    	
-    	Language languageError = new Language("JavaScript");
-    	Configuration configurationError = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express-http/");
-    	languageError.addConfiguration(configurationError);
-    	
-    	languageManager.addLanguage(languageError);
-    	
-    	languageManager.removeLanguage(language);
+
+		languageManager.addLanguage(language);
+
+		assertNotNull(languageManager.findByName("JavaScript"));
+		
+		languageManager.removeLanguage(language);
+		
+		assertNull(languageManager.findByName("JavaScript"));
     }
+    
+
 }

@@ -20,8 +20,10 @@ public interface OperatingSystemManager {
 
 	public void removeOperatingSystem(OperatingSystem operatingSystem);
 
-	
 	public OperatingSystem findById(long id);
 	
 	public List<OperatingSystem> findAllOperatingSystem();
+	
+	public OperatingSystem findByName(String name);
+	
 }

@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.entities.environmentTechnical;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +14,12 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table
-public class Configuration {
+public class Configuration implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6321329799125743622L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,6 +80,29 @@ public class Configuration {
 
 	public void setPathFolder(String pathFolder) {
 		this.pathFolder = pathFolder;
+	}
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Configuration other = (Configuration) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 	@Override

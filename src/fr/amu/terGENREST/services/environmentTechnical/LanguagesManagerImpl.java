@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -33,7 +34,7 @@ public class LanguagesManagerImpl implements LanguagesManager{
 
 	@Override
 	public List<Language> findAllLanguages() {
-		TypedQuery<Language> q = em.createNamedQuery("findAllLanguages", Language.class);
+		TypedQuery<Language> q = em.createNamedQuery("Language.findAllLanguages", Language.class);
 	
 		return q.getResultList();
 	}
@@ -41,6 +42,18 @@ public class LanguagesManagerImpl implements LanguagesManager{
 	@Override
 	public Language findById(long id) {
 		return em.find(Language.class, id);
+	}
+
+	@Override
+	public Language findByName(String name) {
+		TypedQuery<Language> q = em.createNamedQuery("Language.findByName", Language.class)
+				.setParameter("name", name);
+		
+		try {
+			return q.getSingleResult();	
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }
