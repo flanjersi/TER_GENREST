@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.apache.bval.constraints.Email;
-
+import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.project.Project;
 
 
@@ -27,8 +27,8 @@ import fr.amu.terGENREST.entities.project.Project;
         name="User.findAll",
         query="select u from User u"),
     @NamedQuery(
-        name="User.Authentification",
-        query="SELECT u FROM User u WHERE u.email=:email AND u.password=:password"), 
+        name="User.Authentication",
+        query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
 })
 @Entity
 @Table(name = "Users")
@@ -60,9 +60,10 @@ public class User implements Serializable{
 	@Size(min=1, max = 200)
 	private String password;
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
+
+	@OneToMany(fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
 	private List<Project> projects;
-	
+
 	public User() {	}
 	
 	public User(String firstName, String lastName, String email, String password) {
@@ -75,10 +76,6 @@ public class User implements Serializable{
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -113,7 +110,6 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	
 	public List<Project> getProjects() {
 		return projects;
 	}
@@ -134,7 +130,7 @@ public class User implements Serializable{
 	public void removeProject(Project project) {
 		this.projects.remove(project);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email

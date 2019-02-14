@@ -45,7 +45,7 @@ public class ProjectManagerImplTest {
 		
 		EJBContainer.createEJBContainer().close();
 	}
-	@Ignore
+	
 	@Test
 	public void testFindProject() {
 		Project project = new Project("firstProject");
@@ -53,7 +53,7 @@ public class ProjectManagerImplTest {
 		projectManager.addProject(project);
 		projectManager.addProject(project2);
 	}
-	@Ignore
+
 	@Test
 	public void testAddProject() {
 		User user = new User("firstName", "lastName", "email0@email.com", "password");
@@ -65,68 +65,12 @@ public class ProjectManagerImplTest {
 		userManager.removeUser(user);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	@Ignore
 	@Test
 	public void testRemoveProject() {
-		User user = new User("firstName", "lastName", "email@email.com", "password");
-		Project project = new Project("firstProject");		
-		
-		user.addProject(project);
-		
-		userManager.saveUser(user);
-		
-//		User p = userManager.findUser(user.getId());
-//		
-//		p.removeProject(project);
-		
-		user.removeProject(project);
-		userManager.updateUser(user);
-		
-		//userManager.findUser(user.getId()).removeProject(project);
-		
-		//Hibernate.initialize(p.getProjects());
-		
-		Assert.assertEquals(0,userManager.findUser(user.getId()).getProjects().size());
-		
-		userManager.removeUser(user);
-		
+
 	}
-
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Ignore
 	@Test
 	public void testUpdateProject() {	
 		User user = new User("firstName", "lastName", "email1@email.com", "password");
@@ -139,8 +83,6 @@ public class ProjectManagerImplTest {
 		userManager.removeUser(user);
 	}
 	
-	
-	@Ignore
 	@Test
 	public void testFindAllProject() {
 		User user = new User("firstName", "lastName", "email2@email.com", "password");
@@ -157,11 +99,5 @@ public class ProjectManagerImplTest {
 		userManager.removeUser(user);
 		userManager.removeUser(user2);
 	}
-
-	
-
-
-
-	
 
 }
