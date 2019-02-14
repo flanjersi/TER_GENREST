@@ -35,7 +35,6 @@ public class Language implements Serializable{
 	 */
 	private static final long serialVersionUID = 1437856201827260331L;
 
-	@JohnzonIgnore
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
