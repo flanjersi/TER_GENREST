@@ -1,5 +1,6 @@
 package fr.amu.terGENREST.tests.entities;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -77,6 +78,19 @@ public class LanguagesManagerTest {
 		}
 		
 		languageManager.removeLanguage(language);
+    }
+    
+    @Test
+    public void testFindByName() {
+    	Language language = new Language("JavaScript");
+
+		languageManager.addLanguage(language);
+
+		assertNotNull(languageManager.findByName("JavaScript"));
+		
+		languageManager.removeLanguage(language);
+		
+		assertNull(languageManager.findByName("JavaScript"));
     }
     
 

@@ -23,4 +23,6 @@ public interface LanguagesManager {
 	public Language findById(long id);
 	
 	public List<Language> findAllLanguages();
+	
+	public Language findByName(String name);
 }
