@@ -1,12 +1,15 @@
 package fr.amu.terGENREST.entities.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -16,14 +19,16 @@ import javax.validation.constraints.Size;
 
 import org.apache.bval.constraints.Email;
 
+//import fr.amu.terGENREST.entities.project.Project;
+
 
 @NamedQueries({
     @NamedQuery(
         name="User.findAll",
         query="select u from User u"),
     @NamedQuery(
-        name="User.Authentification",
-        query="SELECT u FROM User u WHERE u.email=:email AND u.password=:password"), 
+        name="User.Authentication",
+        query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
 })
 @Entity
 @Table(name = "Users")
@@ -35,7 +40,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "first_Name", nullable = false)
@@ -46,7 +51,7 @@ public class User implements Serializable{
 	@Size(min = 1, max = 200)
 	private String lastName;
 	
-	@Column(name = "email",  nullable = false)
+	@Column(name = "email",  nullable = false, unique = true)
 	@Email(message = "email is not valid")
 	@Size(min=1, max = 200)
 	private String email;
@@ -55,8 +60,8 @@ public class User implements Serializable{
 	@Size(min=1, max = 200)
 	private String password;
 	
-//	@OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE}, orphanRemoval=true)
-//	private Project project;
+//	@OneToMany(fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
+//	private List<Project> projects;
 	
 	public User() {	}
 	
@@ -67,22 +72,9 @@ public class User implements Serializable{
 		this.email = email;
 		this.password = password;
 	}
-	
-	public User(Long id, String firstName, String lastName, String email, String password) {
-		super();
-		this.id =  id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -116,20 +108,34 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	
-//	public Project getProject() {
-//		return project;
+//	public List<Project> getProjects() {
+//		return projects;
 //	}
 //
-//	public void setProject(Project project) {
-//		this.project = project;
+//	public void setProjects(List<Project> projects) {
+//		this.projects = projects;
+//	}
+//
+//	public void addProject(Project project) {
+//		if(this.projects == null) {
+//			this.projects = new ArrayList<>();
+//		}
+//		
+//		this.projects.add(project);
+//	}
+//	
+//	
+//	public void removeProject(Project project) {
+//		this.projects.remove(project);
 //	}
 	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=" + password + "]";
-	}
-	 
+	}	
+	
 	
 }
