@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.environmentTechnical.Language;
 import fr.amu.terGENREST.services.environmentTechnical.LanguagesManager;
 
@@ -47,7 +48,7 @@ public class LanguagesManagerControllerREST {
 		if(language == null) {
 			return Response
 					.status(404)
-					.entity(makeErrorMessage(404, "No language to id : " + id))
+					.entity(Utils.makeErrorMessage(404, "No language to id : " + id))
 					.build();
 		}
 		
@@ -60,7 +61,7 @@ public class LanguagesManagerControllerREST {
 		if(languagesManager.findByName(language.getName()) != null) {
 			return Response
 					.status(403)
-					.entity(makeErrorMessage(403, "Language '" + language.getName() + "' already use"))
+					.entity(Utils.makeErrorMessage(403, "Language '" + language.getName() + "' already use"))
 					.build();
 		}
 		
@@ -80,7 +81,7 @@ public class LanguagesManagerControllerREST {
 		if(languagesManager.findById(id) == null) {
 			return Response
 					.status(403)
-					.entity(makeErrorMessage(403, "Language with id '" + id + "' no exist"))
+					.entity(Utils.makeErrorMessage(403, "Language with id '" + id + "' no exist"))
 					.build();
 		}
 		
@@ -99,17 +100,13 @@ public class LanguagesManagerControllerREST {
 		if(languagesManager.findById(id) == null) {
 			return Response
 					.status(403)
-					.entity(makeErrorMessage(403, "Language with id '" + id + "' no exist"))
+					.entity(Utils.makeErrorMessage(403, "Language with id '" + id + "' no exist"))
 					.build();
 		}
 		
 		languagesManager.removeLanguage(languagesManager.findById(id));
 		
 		return Response.ok().build();
-	}
-	
-	private String makeErrorMessage(int code, String message) {
-		return "{ error: " + message + ", code : " + code + "}";
 	}
 	
 }

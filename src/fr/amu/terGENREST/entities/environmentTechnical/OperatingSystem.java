@@ -16,7 +16,8 @@ import javax.validation.constraints.Size;
 @Table(name = "OperatingSystem")
 @Entity
 @NamedQueries ({
-	@NamedQuery(name="OperatingSystem.findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op")
+	@NamedQuery(name = "OperatingSystem.findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op"),
+	@NamedQuery(name = "OperatingSystem.findByName", query = "SELECT op FROM OperatingSystem op WHERE name = :name" )
 })
 public class OperatingSystem implements Serializable {
 
@@ -30,14 +31,14 @@ public class OperatingSystem implements Serializable {
 	private long id;
 	
 	@Basic(optional = false) @Size(min = 1, max = 50)
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 50, unique = true)
 	private String name;
 	
 	/**
 	 * Name folder where scripts are store
 	 */
 	@Basic(optional = false) @Size(min = 1, max = 200)
-	@Column(nullable = false, length = 200)
+	@Column(nullable = false, length = 200, unique = true)
 	private String nameFolder;
 	
 	public OperatingSystem() {
