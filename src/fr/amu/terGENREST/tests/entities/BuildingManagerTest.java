@@ -38,7 +38,6 @@ public class BuildingManagerTest {
 		
 		Building building = new Building(43, "Luminy", "Marseille", 13009, "France");
 		
-		Floor floor = new Floor(5);
 		
 		//testAddBuilding
 		buildingManager.addBuilding(building);
@@ -64,40 +63,5 @@ public class BuildingManagerTest {
 		Building buildingRemove = buildingManager.findById(id);
 
 		assertNull(buildingRemove);
-		
-		//AddFloorTest
-		building.addFloor(floor);
-		
-		buildingManager.addBuilding(building);
-		
-		Building myBuilding = buildingManager.findById(building.getId());
-		
-		assertTrue(myBuilding.getBuildingFloor().size() == 1);
-		
-		//UpdateFloorTest
-		floor.setFloorNumber(9);
-		
-		floorManager.updateFloor(floor);
-		
-		myBuilding = buildingManager.findById(building.getId());
-		
-		Floor floorUpdate = myBuilding.getBuildingFloor().get(0);
-		
-		assertEquals(floorUpdate.getFloorNumber(), floor.getFloorNumber());
-		
-		//RemoveFloorTest
-		long id1 = floorUpdate.getId();
-
-		myBuilding.removeFloor(floorUpdate);
-		
-		buildingManager.updateBuilding(myBuilding);
-		
-		myBuilding = buildingManager.findById(building.getId());
-		
-		assertTrue(myBuilding.getBuildingFloor().size() == 0);
-		assertTrue(floorManager.findById(id1) == null);
-
-		buildingManager.removeBuilding(myBuilding);			
-
 	}
 }

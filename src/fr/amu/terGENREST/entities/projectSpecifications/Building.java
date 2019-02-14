@@ -53,7 +53,6 @@ public class Building implements Serializable{
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
-	private List<Apartment> floorApartment = new ArrayList<Apartment>();
 	
 	public Building() {
 		
@@ -131,13 +130,13 @@ public class Building implements Serializable{
 		buildingFloor.remove(floor);
 	}
 	
-	public void addAppartment(Apartment apartment) {
-		floorApartment.add(apartment);
-	}
-	
-	public void removeAppartment(Apartment apartment) {
-		floorApartment.remove(apartment);
-	}
+//	public void addAppartment(Apartment apartment) {
+//		floorApartment.add(apartment);
+//	}
+//	
+//	public void removeAppartment(Apartment apartment) {
+//		floorApartment.remove(apartment);
+//	}
 	
 	@Override
 	public String toString() {
