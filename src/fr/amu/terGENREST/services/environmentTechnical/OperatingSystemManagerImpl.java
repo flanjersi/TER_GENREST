@@ -38,7 +38,7 @@ public class OperatingSystemManagerImpl implements OperatingSystemManager{
 
 	@Override
 	public List<OperatingSystem> findAllOperatingSystem() {
-		TypedQuery<OperatingSystem> q = em.createNamedQuery("findAllOperatingSystems", OperatingSystem.class);
+		TypedQuery<OperatingSystem> q = em.createNamedQuery("OperatingSystem.findAllOperatingSystems", OperatingSystem.class);
 		
 		return q.getResultList();
 	}

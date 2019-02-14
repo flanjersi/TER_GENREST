@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.entities.environmentTechnical;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +16,14 @@ import javax.validation.constraints.Size;
 @Table(name = "OperatingSystem")
 @Entity
 @NamedQueries ({
-	@NamedQuery(name="findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op")
+	@NamedQuery(name="OperatingSystem.findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op")
 })
-public class OperatingSystem {
+public class OperatingSystem implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2636092421781516359L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)

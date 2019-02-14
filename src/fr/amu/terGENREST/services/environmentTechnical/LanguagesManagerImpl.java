@@ -33,7 +33,7 @@ public class LanguagesManagerImpl implements LanguagesManager{
 
 	@Override
 	public List<Language> findAllLanguages() {
-		TypedQuery<Language> q = em.createNamedQuery("findAllLanguages", Language.class);
+		TypedQuery<Language> q = em.createNamedQuery("Language.findAllLanguages", Language.class);
 	
 		return q.getResultList();
 	}

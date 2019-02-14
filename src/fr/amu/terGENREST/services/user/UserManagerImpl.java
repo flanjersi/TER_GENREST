@@ -8,36 +8,44 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.DBException;
 
 @Stateless
 public class UserManagerImpl implements UserManager{
+	/**
+	 * DAO Implements to manipulate ORM User data
+	 * @author Mohamed
+	 *
+	 */
 	
 	@PersistenceContext(unitName = "database")
     private EntityManager em;
 
 	@Override
-	public void saveUser(User user) {
+	public Long saveUser(User user) {
 		try {
 			em.persist(user);
+			return user.getId();
 		} catch (Exception e) {
 			throw new DBException(e); 
 		}		
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public Long updateUser(User user) {
 		try {
 	        em.merge(user);
+	        return user.getId();
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
 	}
 
 	@Override
-	public void removeUser(User user) {
+	public Long removeUser(User user) {
 		try {
-			User personne = em.find(User.class, user.getId());
-			em.remove(personne);
+			 em.remove(user);
+			 return user.getId();
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
