@@ -21,7 +21,6 @@ public class FloorManagerImpl implements FloorManager{
 		return em.merge(floor);
 	}
 
-
 	@Override
 	public Floor findById(Long id) {
 		return em.find(Floor.class, id);
@@ -29,7 +28,7 @@ public class FloorManagerImpl implements FloorManager{
 	
 	@Override
 	public List<Floor> findAllFloor() {
-		TypedQuery<Floor> q = em.createNamedQuery("findAllFloor", Floor.class);
+		TypedQuery<Floor> q = em.createNamedQuery("floor.findAllFloor", Floor.class);
 		return q.getResultList();
 	}
 }

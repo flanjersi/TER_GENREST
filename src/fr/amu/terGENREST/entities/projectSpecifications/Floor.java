@@ -15,13 +15,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 
 @Table(name = "Floor")
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "findAllFloor", query = "SELECT fl FROM Floor fl"),
+	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"),
 })
 
 public class Floor {
@@ -29,22 +28,19 @@ public class Floor {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Basic(optional = false) @Size(min = 1, max = 20)
+	@Basic(optional = false)
 	@Column(nullable = false)
 	private int floorNumber;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Apartment> buildingFloor = new ArrayList<Apartment>();
 	
-	
-
 	public Floor() {
 	}
 
-	public Floor(int floorNumber, List<Apartment> buildingFloor) {
+	public Floor(int floorNumber) {
 		super();
 		this.floorNumber = floorNumber;
-		this.buildingFloor = buildingFloor;
 	}
 
 	public long getId() {

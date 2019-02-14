@@ -25,7 +25,6 @@ import org.apache.johnzon.mapper.JohnzonIgnore;
 @Entity
 @Table(name = "Language")
 @NamedQueries ({
-	@NamedQuery(name = "findAllLanguages", query = "FROM Language "),
 
 	@NamedQuery(name = "Language.findAllLanguages", query = "FROM Language"),
 	@NamedQuery(name = "Language.findByName", query = "FROM Language WHERE name = :name")

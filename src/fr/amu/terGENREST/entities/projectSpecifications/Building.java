@@ -51,21 +51,20 @@ public class Building implements Serializable{
 	@Column(nullable = false, length = 50)
 	private String country;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
+	private List<Apartment> floorApartment = new ArrayList<Apartment>();
 	
 	public Building() {
 		
 	}
 
-	public Building(int number, String street, String city, int zipCode, String country,
-			List<Floor> buildingFloor) {
+	public Building(int number, String street, String city, int zipCode, String country) {
 		this.number = number;
 		this.street = street;
 		this.city = city;
 		this.zipCode = zipCode;
 		this.country = country;
-		this.buildingFloor = buildingFloor;
 	}
 
 	public long getId() {
@@ -133,15 +132,13 @@ public class Building implements Serializable{
 	}
 	
 	public void addAppartment(Apartment apartment) {
-		
+		floorApartment.add(apartment);
 	}
 	
-	public void removeAppartment() {
-		
+	public void removeAppartment(Apartment apartment) {
+		floorApartment.remove(apartment);
 	}
 	
-	
-
 	@Override
 	public String toString() {
 		return "Building [id=" + id + ", number=" + number + ", street=" + street + ", city=" + city + ", zipCode="
