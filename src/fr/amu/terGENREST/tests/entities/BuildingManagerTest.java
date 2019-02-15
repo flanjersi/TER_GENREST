@@ -16,6 +16,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
+import fr.amu.terGENREST.services.project.ProjectManager;
 
 public class BuildingManagerTest {
 
@@ -24,6 +25,9 @@ public class BuildingManagerTest {
 	
 	@EJB
 	private FloorManager floorManager;
+	
+	@EJB
+	private ProjectManager projectManager;
 
 	@Before
 	public void setUp() throws Exception {
@@ -67,16 +71,15 @@ public class BuildingManagerTest {
 		
 	}
 	
-	
-	@Test
-	public void testAddProject() {
-		
-		Project project = new Project("firstProject");
-		Building building = new Building(43, "Luminy", "Marseille", 13009, "France");
-		user.addProject(project);
-		userManager.saveUser(user);
-		Project projcetAdded = projectManager.findProject(project.getId()); 
-		Assert.assertEquals(projcetAdded, project);	
-		userManager.removeUser(user);
-	}
+//	@Test
+//	public void testAddProject() {
+//		
+//		Project project = new Project("firstProject");
+//		Building building = new Building(43, "Luminy", "Marseille", 13009, "France");
+//		project.addBuilding(building);
+//		projectManager.addProject(project);
+//		Building buildingAdded = buildingManager.findById(building.getId()); 
+//		Assert.assertEquals(buildingAdded, building);	
+//		projectManager.removeProject(project);
+//	}
 }
