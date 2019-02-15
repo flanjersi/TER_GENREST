@@ -51,7 +51,7 @@ public class Building implements Serializable{
 	@Column(nullable = false, length = 50)
 	private String country;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
 	
 	public Building() {

@@ -1,8 +1,10 @@
 package fr.amu.terGENREST.entities.project; 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,8 +25,9 @@ public class Project implements Serializable{
 
 
 	private static final long serialVersionUID = 1L; 
-
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
+ 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id; 
 
 	@Basic(optional = false) 
@@ -32,8 +35,8 @@ public class Project implements Serializable{
 	@Size(min = 1, max = 200) 
 	private String projectName; 
 
-	//@OneToMany(mappedBy="projectSpecifications", fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE}, orphanRemoval=true)
-	//private List<ProjectSpecifications> projectSpecifications = new ArrayList<>();
+	//@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+	//private List<Building> buildings = new ArrayList<>();
 
  
 	public Project() {
@@ -65,16 +68,27 @@ public class Project implements Serializable{
 	}
 
 
-//	public List<ProjectSpecifications> getProjectSpecifications() {
-//		return projectSpecifications;
+//	public List<Building>  getBuilding() {
+//		return buildings;
 //	}
 //
 //
-//	public void setProjectSpecifications(List<ProjectSpecifications> projectSpecifications) {
-//		this.projectSpecifications = projectSpecifications;
+//	public void setBuilding(List<Building> buildings) {
+//		this.buildings = buildings;
 //	}
 
-
+//	public void addBuilding(Building building) {
+//		if(this.buildings == null) {
+//			this.buildings = new ArrayList<>();
+//		}
+//		
+//		this.buildings.add(building);
+//	}
+//	
+//	
+//	public void removeBuildings(Building building) {
+//		this.buildings.remove(building);
+//	}
 
 	@Override
 	public String toString() {
