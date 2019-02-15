@@ -38,7 +38,9 @@ public class Project implements Serializable{
 	//@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
 	//private List<Building> buildings = new ArrayList<>();
 
- 
+	//@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+	//private List<House> houses = new ArrayList<>();
+
 	public Project() {
 		
 	}
@@ -67,7 +69,8 @@ public class Project implements Serializable{
 		this.projectName = projectName;
 	}
 
-
+//--------------------------------------- Building ------------------------------------ // 
+	
 //	public List<Building>  getBuilding() {
 //		return buildings;
 //	}
@@ -89,6 +92,30 @@ public class Project implements Serializable{
 //	public void removeBuildings(Building building) {
 //		this.buildings.remove(building);
 //	}
+	
+//--------------------------------------- HOUSE ------------------------------------ // 	
+
+//	public List<House>  getHouses() {
+//	return houses;
+//}
+//
+//
+//public void setHouse(List<House> houses) {
+//	this.houses = houses;
+//}
+
+//public void addHouse(House house) {
+//	if(this.houses == null) {
+//		this.houses = new ArrayList<>();
+//	}
+//	
+//	this.houses.add(house);
+//}
+//
+//
+//public void removeHouse(House house) {
+//	this.houses.remove(house);
+//}
 
 	@Override
 	public String toString() {

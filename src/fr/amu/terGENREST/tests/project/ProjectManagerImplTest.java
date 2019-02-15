@@ -66,12 +66,21 @@ public class ProjectManagerImplTest {
 		userManager.removeUser(user);
 	}
 
-	
-	
-@Ignore	
+
 	@Test
 	public void testRemoveProject() {
+	
+	User user = new User("firstName", "lastName", "email@email.com", "password");
+	Project project = new Project("firstProject");		
+	user.addProject(project);
+	userManager.saveUser(user);
+	user.removeProject(project);
+	userManager.updateUser(user);
+	
+	Assert.assertNull(userManager.findUser(user.getId()).getProjects());
 
+	userManager.removeUser(user);
+	
 	}
 	
 	
@@ -96,7 +105,6 @@ public class ProjectManagerImplTest {
 		Assert.assertEquals("secondProject", projectManager.findProject(project.getId()).getProjectName());
 		userManager.removeUser(user);
 	}
-	
 @Ignore
 	@Test
 	public void testFindAllProject() {
