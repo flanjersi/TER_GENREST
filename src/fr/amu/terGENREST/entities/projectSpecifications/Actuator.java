@@ -2,6 +2,7 @@ package fr.amu.terGENREST.entities.projectSpecifications;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -57,7 +58,7 @@ public class Actuator implements Serializable {
 	@Size(min = 1, max = 200)
 	private String reference;
 
-	@Column(name = "latitude", nullable = false)
+	@Column(name = "state", nullable = false)
 	@Size(min = 1, max = 200)
 	private String state;
 
@@ -67,7 +68,7 @@ public class Actuator implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
 	@Size(min = 1, max = 200)
-	List<Data> dataList;
+	List<Data> dataList = new ArrayList<Data>();
 
 	public Long getId() {
 		return id;

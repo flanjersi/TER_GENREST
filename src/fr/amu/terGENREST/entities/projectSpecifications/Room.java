@@ -2,6 +2,7 @@ package fr.amu.terGENREST.entities.projectSpecifications;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -46,12 +47,12 @@ public class Room implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	List<Sensor> sensors;
+	List<Sensor> sensors = new ArrayList<Sensor>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
 	@Size(min = 1, max = 200)
-	List<Actuator> actuaotors;
+	List<Actuator> actuaotors =new ArrayList<Actuator>();
 
 	public int getNumberRoom() {
 		return numberRoom;

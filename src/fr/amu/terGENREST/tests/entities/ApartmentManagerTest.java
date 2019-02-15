@@ -41,42 +41,42 @@ public class ApartmentManagerTest {
 	
 	@Test
 	public void testCRUD(){
-		
-	Building building = new Building(87, "Rue Paradis", "Marseille", 13005, "France");
-		
-	Apartment app = new Apartment(2);
-
-	//AddApptTest
-	building.addAppartment(app);
-	
-	buildingManager.addBuilding(building);	
-	
-	Building myBuilding2 = buildingManager.findById(building.getId());
-
-	assertTrue(myBuilding2.getFloorAprtment().size() == 1);
-	
-	//UpdateApartmentTest
-	
-//	app.setApartmentNumber(18);
+//		
+//	Building building = new Building(87, "Rue Paradis", "Marseille", 13005, "France");
+//		
+//	Apartment app = new Apartment(2);
+//
+//	//AddApptTest
+//	building.addAppartment(app);
 //	
-//	apartmentManager.updateApartment(app);
-	
-//	myBuilding2 = buildingManager.findById(building.getId());
-
+//	buildingManager.addBuilding(building);	
+//	
+//	Building myBuilding2 = buildingManager.findById(building.getId());
+//
+//	assertTrue(myBuilding2.getFloorAprtment().size() == 1);
+//	
+//	//UpdateApartmentTest
+//	
+////	app.setApartmentNumber(18);
+////	
+////	apartmentManager.updateApartment(app);
+//	
+////	myBuilding2 = buildingManager.findById(building.getId());
+//
+////	Apartment appUpdate = myBuilding2.getFloorAprtment().get(0);
+//	
+////	assertEquals(appUpdate.getApartmentNumber(), app.getApartmentNumber());
+//	
+//
+////	//deleteAppTest
+//	
 //	Apartment appUpdate = myBuilding2.getFloorAprtment().get(0);
-	
-//	assertEquals(appUpdate.getApartmentNumber(), app.getApartmentNumber());
-	
-
-//	//deleteAppTest
-	
-	Apartment appUpdate = myBuilding2.getFloorAprtment().get(0);
-	long id = appUpdate.getId();
-	myBuilding2.removeAppartment(appUpdate);
-	buildingManager.updateBuilding(myBuilding2);	
-	myBuilding2 = buildingManager.findById(building.getId());
-	assertTrue(myBuilding2.getBuildingFloor().size() == 0);
-	assertTrue(floorManager.findById(id) == null);
-	buildingManager.removeBuilding(myBuilding2);	
+//	long id = appUpdate.getId();
+//	myBuilding2.removeAppartment(appUpdate);
+//	buildingManager.updateBuilding(myBuilding2);	
+//	myBuilding2 = buildingManager.findById(building.getId());
+//	assertTrue(myBuilding2.getBuildingFloor().size() == 0);
+//	assertTrue(floorManager.findById(id) == null);
+//	buildingManager.removeBuilding(myBuilding2);	
 }
 }

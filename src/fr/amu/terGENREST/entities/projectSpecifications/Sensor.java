@@ -1,6 +1,5 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,9 +16,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+/**
+ * Sensor represented by: id,latitude (not null)longitude (not null),model (not
+ * null),brand (not null),reference (not null) state (not null)
+ * 
+ * @author tsila
+ *
+ */
+
 @NamedQueries({ @NamedQuery(name = "Sensor.findAll", query = "select s from Sensor s"), })
 @Entity
-@Table(name="Sensor")
+@Table(name = "Sensor")
 public class Sensor implements Serializable {
 
 	/**
@@ -51,13 +58,13 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String reference;
 
-	@Column(name = "latitude", nullable = false)
+	@Column(name = "state", nullable = false)
 	@Size(min = 1, max = 200)
 	private String state;
-	
+
 	@Basic
 	private String unitData;
-	
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
 	@Size(min = 1, max = 200)
@@ -89,15 +96,12 @@ public class Sensor implements Serializable {
 		this.state = state;
 	}
 
-	
-	
 	public Sensor(String reference, String state) {
 		super();
 		this.reference = reference;
 		this.state = state;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -154,5 +158,4 @@ public class Sensor implements Serializable {
 		this.state = state;
 	}
 
-	
 }
