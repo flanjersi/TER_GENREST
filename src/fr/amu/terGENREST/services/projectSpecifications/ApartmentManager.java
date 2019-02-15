@@ -5,7 +5,8 @@ import java.util.List;
 import fr.amu.terGENREST.entities.projectSpecifications.Apartment;
 
 public interface ApartmentManager {
-	public Apartment updateFloor(Apartment apartment);
+	
+	public Apartment updateApartment(Apartment apartment);
 	
 	public Apartment findById (Long id);
 

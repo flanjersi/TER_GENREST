@@ -11,8 +11,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.terGENREST.entities.projectSpecifications.Apartment;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
+import fr.amu.terGENREST.services.projectSpecifications.ApartmentManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 
@@ -23,6 +25,9 @@ public class FloorManagerTest {
 	
 	@EJB
 	private BuildingManager buildingManager;
+	
+	@EJB
+	private ApartmentManager apartmentManager;
 	
 	
 	@Before
@@ -42,16 +47,18 @@ public class FloorManagerTest {
 		
 		Floor floor = new Floor(5);
 		
-		//AddFloorTest
+		Apartment app = new Apartment(2);
+		
+				//addFloorTest
 		building.addFloor(floor);
-		
+				
 		buildingManager.addBuilding(building);
-		
+				
 		Building myBuilding = buildingManager.findById(building.getId());
-		
+			
 		assertTrue(myBuilding.getBuildingFloor().size() == 1);
 		
-		//UpdateFloorTest
+//		//UpdateFloorTest
 		floor.setFloorNumber(9);
 		
 		floorManager.updateFloor(floor);

@@ -14,7 +14,7 @@ public class ApartmentManagerImpl implements ApartmentManager {
     private EntityManager em;
 	
 	@Override
-	public Apartment updateFloor(Apartment apartment) {
+	public Apartment updateApartment(Apartment apartment) {
 		return em.merge(apartment);
 	}
 

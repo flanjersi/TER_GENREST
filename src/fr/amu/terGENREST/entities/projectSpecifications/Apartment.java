@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 @Table(name = "Apartment")
 @Entity
@@ -21,7 +20,7 @@ public class Apartment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Basic(optional = false) @Size(min = 1, max = 10)
+	@Basic(optional = false)
 	@Column(nullable = false)
 	private int apartmentNumber;
 	
@@ -55,5 +54,4 @@ public class Apartment {
 	public String toString() {
 		return "Apartment [id=" + id + ", apartmentNumber=" + apartmentNumber + "]";
 	}
-
 }
