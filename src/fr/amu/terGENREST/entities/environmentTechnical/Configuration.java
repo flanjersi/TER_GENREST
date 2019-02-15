@@ -8,12 +8,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table
+@NamedQueries({
+	@NamedQuery(name = "Configuration.findByName", query = "SELECT c FROM Configuration c WHERE name = :name"),
+	@NamedQuery(name = "Configuration.findByPathFolder", query = "SELECT c FROM Configuration c WHERE pathFolder = :pathFolder")
+})
 public class Configuration implements Serializable{
 
 	/**
