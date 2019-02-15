@@ -10,4 +10,9 @@ public interface ConfigurationManager {
 	public Configuration updateConfiguration(Configuration configuration);
 	
 	public Configuration findById(long id);
+	
+	public Configuration findByName(String name);
+	
+	public Configuration findByPathFolder(String pathFolder);
+	
 }
