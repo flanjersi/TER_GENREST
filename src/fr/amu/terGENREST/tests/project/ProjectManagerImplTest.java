@@ -68,53 +68,12 @@ public class ProjectManagerImplTest {
 
 	
 	
+@Ignore	
+	@Test
+	public void testRemoveProject() {
+
+	}
 	
-//	@Test
-//	public void testRemoveProject() {
-//		
-//		User user = new User("firstName", "lastName", "email@email.com", "password");
-//		
-//		userManager.saveUser(user);
-//		
-//		Project project = new Project("firstProject");		
-//		
-//		Project project2 = new Project("firstProject");	
-//		
-//		projectManager.addProject(project);
-//		projectManager.addProject(project2);
-//
-//		//User  u = userManager.findUser(user.getId());
-//		//Hibernate.initialize(user.getProjects());
-//		
-//		userManager.findUser(user.getId()).addProject(projectManager.findProject(project.getId()));
-//		userManager.findUser(user.getId()).addProject(projectManager.findProject(project2.getId()));
-//		//userManager.updateUser(user);
-//
-//		
-//		User user1 = userManager.findUser(user.getId());
-//		
-//		
-//		//Hibernate.initialize(userManager.findUser(user.getId()));
-//		
-//		Hibernate.initialize(user1.getProjects());
-//		List<Project> pp = user1.getProjects();
-//
-//		pp.remove(projectManager.findProject(project.getId()));
-//		
-//		//System.out.println("+++++++++++++++++++++++++++"+pp.get(0).getProjectName());
-//		//user.removeProject(project);
-//	//	userManager.updateUser(p);
-//		
-//		//userManager.findUser(user.getId()).removeProject(project);
-//		
-//		//Hibernate.initialize(p.getProjects());
-//		
-//	//	Assert.assertEquals(0,userManager.findUser(user.getId()).getProjects().size());
-//		
-//		userManager.removeUser(user);
-//		
-//	}
-//	
 	
 	
 	
