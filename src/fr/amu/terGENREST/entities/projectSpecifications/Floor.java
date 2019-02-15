@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 
 @Table(name = "Floor")
@@ -22,7 +23,6 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"),
 })
-
 public class Floor {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +32,7 @@ public class Floor {
 	@Column(nullable = false)
 	private int floorNumber;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
+	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
 	private List<Apartment> buildingFloor = new ArrayList<Apartment>();
 	
 	public Floor() {

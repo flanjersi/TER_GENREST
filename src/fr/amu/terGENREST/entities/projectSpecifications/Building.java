@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Size;
 
 @Table(name = "Building")
@@ -51,8 +52,13 @@ public class Building implements Serializable{
 	@Column(nullable = false, length = 50)
 	private String country;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  orphanRemoval = true)
+
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
+	
+	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
+	private List<Apartment> floorAprtment = new ArrayList<Apartment>();
 	
 	public Building() {
 		
@@ -122,6 +128,14 @@ public class Building implements Serializable{
 		this.buildingFloor = buildingFloor;
 	}
 	
+	public List<Apartment> getFloorAprtment() {
+		return floorAprtment;
+	}
+
+	public void setFloorAprtment(List<Apartment> floorAprtment) {
+		this.floorAprtment = floorAprtment;
+	}
+
 	public void addFloor(Floor floor) {
 		buildingFloor.add(floor);
 	}
@@ -130,13 +144,13 @@ public class Building implements Serializable{
 		buildingFloor.remove(floor);
 	}
 	
-//	public void addAppartment(Apartment apartment) {
-//		floorApartment.add(apartment);
-//	}
-//	
-//	public void removeAppartment(Apartment apartment) {
-//		floorApartment.remove(apartment);
-//	}
+	public void addAppartment(Apartment apartment) {
+		floorAprtment.add(apartment);
+	}
+	
+	public void removeAppartment(Apartment apartment) {
+		floorAprtment.remove(apartment);
+	}
 	
 	@Override
 	public String toString() {
