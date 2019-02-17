@@ -1,6 +1,5 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,6 @@ import javax.validation.constraints.Size;
 @Table(name = "Actuator")
 public class Actuator implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -69,6 +67,16 @@ public class Actuator implements Serializable {
 			CascadeType.REMOVE }, orphanRemoval = true)
 	@Size(min = 1, max = 200)
 	List<Data> dataList = new ArrayList<Data>();
+
+	public void addData(Data a) {
+
+		dataList.add(a);
+	}
+
+	public void removeData(Data a) {
+
+		dataList.remove(a);
+	}
 
 	public Long getId() {
 		return id;

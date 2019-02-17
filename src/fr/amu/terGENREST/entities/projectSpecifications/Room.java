@@ -1,6 +1,5 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,24 @@ public class Room implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
 	@Size(min = 1, max = 200)
-	List<Actuator> actuaotors =new ArrayList<Actuator>();
+	List<Actuator> actuators = new ArrayList<Actuator>();
+
+	public void addSensor(Sensor s) {
+		sensors.add(s);
+	}
+
+	public void removeSensor(Sensor s) {
+		sensors.remove(s);
+
+	}
+
+	public void addActuator(Actuator a) {
+		actuators.add(a);
+	}
+
+	public void removeActuator(Actuator a) {
+		actuators.remove(a);
+	}
 
 	public int getNumberRoom() {
 		return numberRoom;
@@ -79,11 +95,11 @@ public class Room implements Serializable {
 	}
 
 	public List<Actuator> getActuaotors() {
-		return actuaotors;
+		return actuators;
 	}
 
 	public void setActuaotors(List<Actuator> actuaotors) {
-		this.actuaotors = actuaotors;
+		this.actuators = actuaotors;
 	}
 
 	public Room(int numberRoom, String type, List<Sensor> sensors, List<Actuator> actuaotors) {
@@ -91,25 +107,25 @@ public class Room implements Serializable {
 		this.numberRoom = numberRoom;
 		this.type = type;
 		this.sensors = sensors;
-		this.actuaotors = actuaotors;
+		this.actuators = actuaotors;
 	}
 
 	public Room(String type, List<Sensor> sensors, List<Actuator> actuaotors) {
 		super();
 		this.type = type;
 		this.sensors = sensors;
-		this.actuaotors = actuaotors;
+		this.actuators = actuaotors;
 	}
 
 	public Room(List<Sensor> sensors, List<Actuator> actuaotors) {
 		super();
 		this.sensors = sensors;
-		this.actuaotors = actuaotors;
+		this.actuators = actuaotors;
 	}
 
 	public Room(List<Actuator> actuaotors) {
 		super();
-		this.actuaotors = actuaotors;
+		this.actuators = actuaotors;
 	}
 
 	public Room() {

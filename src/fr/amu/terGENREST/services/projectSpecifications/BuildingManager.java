@@ -2,6 +2,8 @@ package fr.amu.terGENREST.services.projectSpecifications;
 
 import java.util.List;
 
+import javax.ejb.Local;
+
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 
 /**
@@ -9,6 +11,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Building;
  * @author Hachemi
  *
  */
+@Local
 public interface BuildingManager {
 
 	public void addBuilding(Building building);

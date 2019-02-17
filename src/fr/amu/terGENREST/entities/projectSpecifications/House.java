@@ -4,20 +4,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /***
  * 
- * House have one or many rooms, and corridors. Identified by id and address.
+ * House have one or many FloorHouse. Identified by id and address.
  * 
- * House have one floor. Floors have one or many Apartment(List<Apartment>), and
- * Corridor (List<Corridor>) Apartment have one or many room (List<Room>).
- * Corridor and room have one or many sensor(List<Sensor>),Actuator(List<Actuator). 
- * House->Floors->Apartments and Corridors->Apartment->Room->Sensors and Actuators.
+ * FloorHouse have one or many room(List<Room>),and Corridor (List<Corridor>).
+ * Corridor and room have one or many
+ * sensor(List<Sensor>),Actuator(List<Actuator). House->FloorHouse->rooms and
+ * Corridors->Sensors and Actuators.
  *
  *
  * 
@@ -25,6 +30,7 @@ import javax.persistence.Table;
  *
  */
 
+@NamedQueries({ @NamedQuery(name = "House.findAll", query = "select h from House h"), })
 @Entity
 @Table(name = "House")
 public class House implements Serializable {
@@ -41,7 +47,19 @@ public class House implements Serializable {
 	@Embedded
 	private Address address;
 
-	List<Room> houseRoom = new ArrayList<Room>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true)
+	List<FloorHouse> houseFloor = new ArrayList<FloorHouse>();
+
+	public void addFloor(FloorHouse h) {
+		houseFloor.add(h);
+
+	}
+
+	public void removeFloor(FloorHouse h) {
+		houseFloor.remove(h);
+
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -69,15 +87,27 @@ public class House implements Serializable {
 
 	}
 
-	public House(Address address, List<Room> houseRoom) {
-		super();
-		this.address = address;
-		this.houseRoom = houseRoom;
+	public List<FloorHouse> getHouseFloor() {
+		return houseFloor;
 	}
 
-	public House(List<Room> houseRoom) {
+	public void setHouseFloor(List<FloorHouse> houseFloor) {
+		this.houseFloor = houseFloor;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public House(Address address, List<FloorHouse> houseFloor) {
 		super();
-		this.houseRoom = houseRoom;
+		this.address = address;
+		this.houseFloor = houseFloor;
+	}
+
+	public House(List<FloorHouse> houseFloor) {
+		super();
+		this.houseFloor = houseFloor;
 	}
 
 }

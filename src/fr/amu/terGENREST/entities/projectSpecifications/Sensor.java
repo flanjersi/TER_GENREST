@@ -70,6 +70,16 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	List<Data> dataList;
 
+	public void addData(Data a) {
+
+		dataList.add(a);
+	}
+
+	public void removeData(Data a) {
+
+		dataList.remove(a);
+	}
+
 	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state) {
 		super();
 		this.latitude = latitude;
