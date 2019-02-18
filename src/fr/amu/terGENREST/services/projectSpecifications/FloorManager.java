@@ -2,6 +2,8 @@ package fr.amu.terGENREST.services.projectSpecifications;
 
 import java.util.List;
 
+import javax.ejb.Local;
+
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 
 /**
@@ -9,6 +11,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Floor;
  * @author Hachemi
  *
  */
+@Local
 public interface FloorManager {
 
 	public Floor updateFloor(Floor floor);

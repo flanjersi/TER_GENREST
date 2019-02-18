@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,60 +15,37 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.transaction.Transactional;
-import javax.validation.constraints.Size;
 
+/**
+ * Building have one or many floors. Floors have one or many
+ * Apartment(List<Apartment>), and Corridor (List<Corridor>) Apartment have one
+ * or many room (List<Room>). Corridor and room have one or many
+ * sensor(List<Sensor>),Actuator(List<Actuator).
+ * Building->Floors->Apartments and Corridor->Apartment->Room->Sensors and Actuators.
+ *
+ */
 @Table(name = "Building")
 @Entity
-@NamedQueries ({
-	@NamedQuery(name="Building.findAllBuilding", 
-				query = "SELECT Bld FROM Building Bld")
-})
-public class Building implements Serializable{
+@NamedQueries({ @NamedQuery(name = "Building.findAllBuilding", query = "SELECT Bld FROM Building Bld") })
+public class Building implements Serializable {
 	private static final long serialVersionUID = 10000L;
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private int number;
-	
-	@Basic(optional = false) @Size(min = 1, max = 50)
-	@Column(nullable = false, length = 50)
-	private String street;
-	
-	@Basic(optional = false) @Size(min = 1, max = 20)
-	@Column(nullable = false, length = 20)
-	private String city;
-	
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private int zipCode;
-	
-	@Basic(optional = false) @Size(min = 1, max = 20)
-	@Column(nullable = false, length = 50)
-	private String country;
-	
 
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
+	@Embedded
+	private Address address;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
-	
-	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
-	private List<Apartment> floorAprtment = new ArrayList<Apartment>();
-	
-	public Building() {
-		
-	}
 
-	public Building(int number, String street, String city, int zipCode, String country) {
-		this.number = number;
-		this.street = street;
-		this.city = city;
-		this.zipCode = zipCode;
-		this.country = country;
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
+			CascadeType.PERSIST }, orphanRemoval = true)
+	private List<Apartment> floorAprtment = new ArrayList<Apartment>();
+
+	public Building() {
+
 	}
 
 	public long getId() {
@@ -80,46 +56,6 @@ public class Building implements Serializable{
 		this.id = id;
 	}
 
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public int getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(int zipCode) {
-		this.zipCode = zipCode;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 	public List<Floor> getBuildingFloor() {
 		return buildingFloor;
 	}
@@ -127,7 +63,7 @@ public class Building implements Serializable{
 	public void setBuildingFloor(List<Floor> buildingFloor) {
 		this.buildingFloor = buildingFloor;
 	}
-	
+
 	public List<Apartment> getFloorAprtment() {
 		return floorAprtment;
 	}
@@ -136,6 +72,49 @@ public class Building implements Serializable{
 		this.floorAprtment = floorAprtment;
 	}
 
+	public void addFloor(Floor floor) {
+		buildingFloor.add(floor);
+	}
+
+	public void removeFloor(Floor floor) {
+		buildingFloor.remove(floor);
+	}
+
+	public void addAppartment(Apartment apartment) {
+		floorAprtment.add(apartment);
+	}
+
+	public void removeAppartment(Apartment apartment) {
+		floorAprtment.remove(apartment);
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Building(Address address, List<Floor> buildingFloor, List<Apartment> floorAprtment) {
+		super();
+		this.address = address;
+		this.buildingFloor = buildingFloor;
+		this.floorAprtment = floorAprtment;
+	}
+
+	public Building(List<Floor> buildingFloor, List<Apartment> floorAprtment) {
+		super();
+		this.buildingFloor = buildingFloor;
+		this.floorAprtment = floorAprtment;
+	}
+
+	public Building(List<Apartment> floorAprtment) {
+		super();
+		this.floorAprtment = floorAprtment;
+	}
+
+<<<<<<< HEAD
 	public void addFloor(Floor floor) {
 		buildingFloor.add(floor);
 	}
@@ -208,4 +187,6 @@ public class Building implements Serializable{
 	
 	
 	
+=======
+>>>>>>> 9304ca4c82fa6df1ba771df1b1009d89475e32de
 }
