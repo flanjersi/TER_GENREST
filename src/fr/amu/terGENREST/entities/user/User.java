@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
 
 import org.apache.bval.constraints.Email;
 import fr.amu.terGENREST.entities.project.Project;
-import fr.amu.terGENREST.entities.project.Project;
 
 
 @NamedQueries({
@@ -28,7 +27,10 @@ import fr.amu.terGENREST.entities.project.Project;
         query="select u from User u"),
     @NamedQuery(
         name="User.Authentication",
-        query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
+        query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
+    @NamedQuery(
+            name="User.findUserByEmail",
+            query="SELECT u FROM User u WHERE u.email = :email")
 })
 @Entity
 @Table(name = "Users")
@@ -61,7 +63,7 @@ public class User implements Serializable{
 	private String password;
 	
 
-	@OneToMany(fetch=FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
+	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Project> projects;
 
 	public User() {	}
@@ -78,6 +80,10 @@ public class User implements Serializable{
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id=id;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
