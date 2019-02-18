@@ -68,6 +68,22 @@ public class Sensor implements Serializable {
 			CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Data> dataList;
 
+	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
+			String unitData) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.model = model;
+		this.brand = brand;
+		this.reference = reference;
+		this.state = state;
+		this.unitData = unitData;
+	}
+
+	public Sensor() {
+		super();
+	}
+	
 	public void addData(Data a) {
 		dataList.add(a);
 	}
@@ -148,21 +164,78 @@ public class Sensor implements Serializable {
 		this.dataList = dataList;
 	}
 
-	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
-			String unitData) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-		this.unitData = unitData;
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
+				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + ", unitData=" + unitData
+				+ ", dataList=" + dataList + "]";
 	}
 
-	public Sensor() {
-		super();
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((unitData == null) ? 0 : unitData.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sensor other = (Sensor) obj;
+		if (brand == null) {
+			if (other.brand != null)
+				return false;
+		} else if (!brand.equals(other.brand))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
+			return false;
+		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
+			return false;
+		if (model == null) {
+			if (other.model != null)
+				return false;
+		} else if (!model.equals(other.model))
+			return false;
+		if (reference == null) {
+			if (other.reference != null)
+				return false;
+		} else if (!reference.equals(other.reference))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		if (unitData == null) {
+			if (other.unitData != null)
+				return false;
+		} else if (!unitData.equals(other.unitData))
+			return false;
+		return true;
+	}
+
+	
 
 	
 }
