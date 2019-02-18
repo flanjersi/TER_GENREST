@@ -1,23 +1,18 @@
 package fr.amu.terGENREST.tests.entities;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.Transactional;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.amu.terGENREST.entities.project.Project;
-import fr.amu.terGENREST.entities.projectSpecifications.Building;
-import fr.amu.terGENREST.entities.projectSpecifications.Floor;
-import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
-import fr.amu.terGENREST.services.project.ProjectManager;
 
+@Transactional
 public class BuildingManagerTest {
 
 	@EJB

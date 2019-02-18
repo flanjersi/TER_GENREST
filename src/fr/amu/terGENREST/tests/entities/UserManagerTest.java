@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.amu.terGENREST.entities.user.User;
