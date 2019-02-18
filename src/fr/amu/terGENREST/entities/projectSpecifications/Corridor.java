@@ -47,6 +47,16 @@ public class Corridor implements Serializable {
 			CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Actuator> actuators = new ArrayList<Actuator>();
 
+
+	public Corridor() {
+		super();
+	}
+	
+	public Corridor(int numberCorridor) {
+		super();
+		this.numberCorridor = numberCorridor;
+	}
+	
 	public void addSensor(Sensor s) {
 		sensors.add(s);
 	}
@@ -73,36 +83,11 @@ public class Corridor implements Serializable {
 		this.sensors = sensors;
 	}
 
-	public List<Actuator> getActuaotors() {
-		return actuators;
-	}
-
-	public void setActuaotors(List<Actuator> actuaotors) {
-		this.actuators = actuaotors;
-	}
-
-	public Corridor(List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.sensors = sensors;
-		this.actuators = actuaotors;
-	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Corridor() {
-		super();
-	}
-
-	public Corridor(List<Sensor> sensors) {
-		super();
-		this.sensors = sensors;
-	}
 
 	public int getNumberCorridor() {
 		return numberCorridor;
@@ -120,10 +105,7 @@ public class Corridor implements Serializable {
 		this.actuators = actuators;
 	}
 
-	public Corridor(int numberCorridor) {
-		super();
-		this.numberCorridor = numberCorridor;
-	}
+
 
 	
 }
