@@ -41,6 +41,13 @@ public class Building implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
 
+	public Building() {
+	}
+
+	public Building(Address address) {
+		this.address = address;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -73,7 +80,8 @@ public class Building implements Serializable {
 		this.address = address;
 	}
 
-	public Building() {
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

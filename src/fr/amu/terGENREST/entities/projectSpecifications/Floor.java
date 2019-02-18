@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Floor {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -42,11 +42,11 @@ public class Floor {
 
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -79,4 +79,13 @@ public class Floor {
 		this.floorNumber = floorNumber;
 	}
 
+	public List<MotherRoom> getBuildingMotherRoom() {
+		return buildingMotherRoom;
+	}
+
+	public void setBuildingMotherRoom(List<MotherRoom> buildingMotherRoom) {
+		this.buildingMotherRoom = buildingMotherRoom;
+	}
+
+	
 }

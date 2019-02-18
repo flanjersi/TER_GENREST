@@ -23,6 +23,11 @@ public interface UserManager {
 		
 	public User findUser(Long id);
 	
+	public User findUserByEmail(String email);
+	
+	public List<User> findAllUser();
+	
 	public User authentification(String email, String password);
+	
 
 }

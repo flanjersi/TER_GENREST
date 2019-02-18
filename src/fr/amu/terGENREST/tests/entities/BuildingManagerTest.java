@@ -77,9 +77,10 @@ public class BuildingManagerTest {
 //		Project project = new Project("firstProject");
 //		Building building = new Building(43, "Luminy", "Marseille", 13009, "France");
 //		project.addBuilding(building);
-//		projectManager.addProject(project);
 //		Building buildingAdded = buildingManager.findById(building.getId()); 
 //		Assert.assertEquals(buildingAdded, building);	
 //		projectManager.removeProject(project);
 //	}
+	
+	
 }
