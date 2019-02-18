@@ -14,7 +14,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
 @Local
 public interface ActuatorManager {
 
-	public Actuator UpdateActuator(Actuator actuator);
+	public Actuator updateActuator(Actuator actuator);
 
 	public Actuator findActuator(Long id);
 
