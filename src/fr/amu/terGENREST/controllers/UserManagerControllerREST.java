@@ -55,12 +55,40 @@ public class UserManagerControllerREST {
 	@PUT
 	public Response createUser(User user) {
 	    
+		if( user.getEmail() == null ) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.build();
+		}
+		
+		if( user.getFirstName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.build();
+		}
+		if( user.getLastName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.build();
+		}
+		
+		if( user.getPassword() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.build();
+		}
+		
 		if( userManager.findUserByEmail(user.getEmail()) != null ) {
 			return Response
 					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already use"))
+					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
 					.build();
 		}
+		
 		
 		userManager.saveUser(user);
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", user.getId()).build();
@@ -70,6 +98,43 @@ public class UserManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateUser(@PathParam("id") Long id, User user) {
+	    
+		if( user.getEmail() == null ) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.build();
+		}
+		
+		if( user.getFirstName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.build();
+		}
+		if( user.getLastName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.build();
+		}
+		
+		if( user.getPassword() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.build();
+		}
+		// If he want to change the email, check if it is not used
+		if( !userManager.findUser(id).getEmail().equals(user.getEmail()) ) {
+			if( userManager.findUserByEmail(user.getEmail()) != null ) {
+				return Response
+						.status(403)
+						.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+						.build();
+			}
+		}
+		
 		if(userManager.findUser(id) == null) {
 			return Response
 					.status(403)
