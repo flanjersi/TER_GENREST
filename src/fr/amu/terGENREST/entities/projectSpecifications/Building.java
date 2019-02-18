@@ -16,19 +16,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 /**
  * Building have one or many floors. Floors have one or many
  * Apartment(List<Apartment>), and Corridor (List<Corridor>) Apartment have one
  * or many room (List<Room>). Corridor and room have one or many
- * sensor(List<Sensor>),Actuator(List<Actuator).
- * Building->Floors->Apartments and Corridor->Apartment->Room->Sensors and Actuators.
+ * sensor(List<Sensor>),Actuator(List<Actuator). Building->Floors->Apartments
+ * and Corridor->Apartment->Room->Sensors and Actuators.
  *
  */
 @Table(name = "Building")
 @Entity
 @NamedQueries({ @NamedQuery(name = "Building.findAllBuilding", query = "SELECT Bld FROM Building Bld") })
 public class Building implements Serializable {
+
 	private static final long serialVersionUID = 10000L;
 
 	@Id()
@@ -41,13 +41,7 @@ public class Building implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
 
-
 	public Building() {
-	}
-	
-	public Building(Address address, List<Floor> buildingFloor) {
-		this.address = address;
-		this.buildingFloor = buildingFloor;
 	}
 
 	public Building(Address address) {
@@ -85,20 +79,9 @@ public class Building implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	
-	
-	@Override
-	public String toString() {
-		return "Building [id=" + id + ", address=" + address + "]";
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		return result;
-	}
 }

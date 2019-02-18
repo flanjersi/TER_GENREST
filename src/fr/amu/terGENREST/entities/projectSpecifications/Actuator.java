@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,15 +33,13 @@ public class Actuator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "latitude", nullable = false)
-	@Size(min = 1, max = 200)
 	private double latitude;
 
 	@Column(name = "longitude", nullable = false)
-	@Size(min = 1, max = 200)
 	private double longitude;
 
 	@Column(name = "model", nullable = false)
@@ -60,21 +58,15 @@ public class Actuator implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
-	@Basic
-	private String unitData;
-
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Data> dataList = new ArrayList<Data>();
+	private List<Data> dataList = new ArrayList<Data>();
 
 	public void addData(Data a) {
-
 		dataList.add(a);
 	}
 
 	public void removeData(Data a) {
-
 		dataList.remove(a);
 	}
 
@@ -130,6 +122,20 @@ public class Actuator implements Serializable {
 		this.state = state;
 	}
 
+	
+
+	public List<Data> getDataList() {
+		return dataList;
+	}
+
+	public void setDataList(List<Data> dataList) {
+		this.dataList = dataList;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
 		super();
 		this.latitude = latitude;
@@ -140,35 +146,10 @@ public class Actuator implements Serializable {
 		this.state = state;
 	}
 
-	public Actuator(double latitude, double longitude, String model, String brand, String reference) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-	}
-
-	public Actuator(double latitude, double longitude, String model) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-	}
-
-	public Actuator(double latitude, double longitude) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-	}
-
-	public Actuator(double latitude) {
-		super();
-		this.latitude = latitude;
-	}
-
 	public Actuator() {
 		super();
 	}
 
+	
+	
 }

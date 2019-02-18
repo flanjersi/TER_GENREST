@@ -3,12 +3,12 @@ package fr.amu.terGENREST.entities.projectSpecifications;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,15 +35,13 @@ public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "latitude", nullable = false)
-	@Size(min = 1, max = 200)
 	private double latitude;
 
 	@Column(name = "longitude", nullable = false)
-	@Size(min = 1, max = 200)
 	private double longitude;
 
 	@Column(name = "model", nullable = false)
@@ -62,54 +60,20 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
-	@Basic
+	@Column(name = "unitData", nullable = false)
+	@Size(min = 1, max = 200)
 	private String unitData;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Data> dataList;
+	private List<Data> dataList;
 
 	public void addData(Data a) {
-
 		dataList.add(a);
 	}
 
 	public void removeData(Data a) {
-
 		dataList.remove(a);
-	}
-
-	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Sensor(double longitude, String model, String brand, String reference, String state) {
-		super();
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Sensor(String brand, String reference, String state) {
-		super();
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Sensor(String reference, String state) {
-		super();
-		this.reference = reference;
-		this.state = state;
 	}
 
 	public Long getId() {
@@ -168,4 +132,37 @@ public class Sensor implements Serializable {
 		this.state = state;
 	}
 
+	public String getUnitData() {
+		return unitData;
+	}
+
+	public void setUnitData(String unitData) {
+		this.unitData = unitData;
+	}
+
+	public List<Data> getDataList() {
+		return dataList;
+	}
+
+	public void setDataList(List<Data> dataList) {
+		this.dataList = dataList;
+	}
+
+	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
+			String unitData) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.model = model;
+		this.brand = brand;
+		this.reference = reference;
+		this.state = state;
+		this.unitData = unitData;
+	}
+
+	public Sensor() {
+		super();
+	}
+
+	
 }

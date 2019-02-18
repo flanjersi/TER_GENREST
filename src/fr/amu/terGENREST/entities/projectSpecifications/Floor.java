@@ -15,41 +15,38 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.transaction.Transactional;
-
 
 @Table(name = "Floor")
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"),
-})
+@NamedQueries({ @NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"), })
 public class Floor {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
+	private Long id;
+
 	@Basic(optional = false)
 	@Column(nullable = false)
 	private int floorNumber;
-	
-	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
-	private List<Apartment> buildingFloor = new ArrayList<Apartment>();
-	
-	
-	
-	public Floor() {
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
+			CascadeType.PERSIST }, orphanRemoval = true)
+	private List<MotherRoom> buildingMotherRoom = new ArrayList<MotherRoom>();
+
+	public void addMotherRoom(MotherRoom m) {
+		buildingMotherRoom.add(m);
+
 	}
 
-	public Floor(int floorNumber) {
-		super();
-		this.floorNumber = floorNumber;
+	public void removeMotherRoom(MotherRoom m) {
+		buildingMotherRoom.remove(m);
+
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -61,16 +58,34 @@ public class Floor {
 		this.floorNumber = floorNumber;
 	}
 
-	public List<Apartment> getBuildingFloor() {
-		return buildingFloor;
+	public List<MotherRoom> getBuildingFloor() {
+		return buildingMotherRoom;
 	}
 
-	public void setBuildingFloor(List<Apartment> buildingFloor) {
-		this.buildingFloor = buildingFloor;
+	public void setBuildingFloor(List<MotherRoom> buildingMotherRoom) {
+		this.buildingMotherRoom = buildingMotherRoom;
 	}
 
 	@Override
 	public String toString() {
-		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", buildingFloor=" + buildingFloor + "]";
+		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", buildingFloor=" + buildingMotherRoom + "]";
 	}
+
+	public Floor() {
+	}
+
+	public Floor(int floorNumber) {
+		super();
+		this.floorNumber = floorNumber;
+	}
+
+	public List<MotherRoom> getBuildingMotherRoom() {
+		return buildingMotherRoom;
+	}
+
+	public void setBuildingMotherRoom(List<MotherRoom> buildingMotherRoom) {
+		this.buildingMotherRoom = buildingMotherRoom;
+	}
+
+	
 }
