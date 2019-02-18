@@ -164,6 +164,7 @@ public class UserManagerControllerREST {
 		return Response.ok().build();
 	}
 	
+	
 	@GET
 	@Path("/{email}/{password}")
 	public Response getUserByEmailAndPassword(@PathParam("email") String email, @PathParam("password") String password) {	

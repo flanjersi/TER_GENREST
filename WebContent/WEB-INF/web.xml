@@ -4,7 +4,7 @@
  
 <web-app>
   <display-name>GENREST WS</display-name>
-  <servlet>
+<!--    <servlet>
   	<servlet-name>JAX-RS Servlet</servlet-name>
   	<description>JAX-RS Tools Generated - Do not modify</description>
   	<servlet-class></servlet-class>
@@ -14,4 +14,6 @@
   	<servlet-name>JAX-RS Servlet</servlet-name>
   	<url-pattern>/jaxrs/*</url-pattern>
   </servlet-mapping>
+  
+  -->
 </web-app>

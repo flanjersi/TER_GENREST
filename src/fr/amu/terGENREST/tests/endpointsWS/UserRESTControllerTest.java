@@ -36,7 +36,7 @@ public class UserRESTControllerTest {
 	public void testCRUDUserRest() throws IOException {
 
 		// add user
-		HttpPut request = new HttpPut("http://localhost:8080/terGENREST/api/users/");
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
 				.add("firstName", "Jean")
@@ -58,7 +58,7 @@ public class UserRESTControllerTest {
 		long id = responseObject.getJsonNumber("id").longValue();
 		
 		// update user
-		HttpPost requestUpdate = new HttpPost("http://localhost:8080/terGENREST/api/users/" + id);
+		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/" + id);
 
 		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
 				.add("firstName", "JeanUpdate")
@@ -85,7 +85,7 @@ public class UserRESTControllerTest {
 		
 		
 		// find user by id
-		HttpGet requestGetData = new HttpGet("http://localhost:8080/terGENREST/api/users/" + id);
+		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" + id);
 		
 		 response = HttpClientBuilder.create().build().execute( requestGetData );
 
@@ -104,7 +104,7 @@ public class UserRESTControllerTest {
 		
 		//Delete user
 
-		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8080/terGENREST/api/users/" + id);
+		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		
@@ -113,7 +113,7 @@ public class UserRESTControllerTest {
 	@Test
 	public void testFindAllUser() throws IOException{
 		//	save user 1 
-		HttpPut request = new HttpPut("http://localhost:8080/terGENREST/api/users/");
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "qddq@gmail.dez")
 				.add("firstName", "Jean")
@@ -156,7 +156,7 @@ public class UserRESTControllerTest {
 		
 		// assert 
 		
-		HttpGet requestGetData = new HttpGet("http://localhost:8080/terGENREST/api/users/" );
+		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" );
 		
 		 response =  HttpClientBuilder.create().build().execute( requestGetData );
 
@@ -168,11 +168,11 @@ public class UserRESTControllerTest {
 		
 		//Delete users
 
-		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8080/terGENREST/api/users/" + id1);
+		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id1);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		
-		requestDeleteData = new HttpDelete("http://localhost:8080/terGENREST/api/users/" + id2);
+		requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id2);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		
@@ -183,7 +183,7 @@ public class UserRESTControllerTest {
 		
 		// add user
 		
-		HttpPut request = new HttpPut("http://localhost:8080/terGENREST/api/users/");
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "oaiehf@gmail.dez")
 				.add("firstName", "Jean")
@@ -207,7 +207,7 @@ public class UserRESTControllerTest {
 		String email = "oaiehf@gmail.dez";
 		String password = "efoke";
 		
-		HttpGet requestGetData = new HttpGet("http://localhost:8080/terGENREST/api/users/" +email+"/"+ password);
+		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" +email+"/"+ password);
 		 response = HttpClientBuilder.create().build().execute( requestGetData );
 
 		 assertEquals(200, response.getStatusLine().getStatusCode());
@@ -224,7 +224,7 @@ public class UserRESTControllerTest {
 		
 		//Delete user
 
-		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8080/terGENREST/api/users/" + id);
+		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
