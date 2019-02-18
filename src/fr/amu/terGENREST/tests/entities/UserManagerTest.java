@@ -51,7 +51,7 @@ public class UserManagerTest {
 		userManager.saveUser(user);
 		User findedUser = userManager.findUser(user.getId());
 		assertEquals(user.getEmail(), findedUser.getEmail());
-		//userManager.removeUser(user);
+		userManager.removeUser(user);
 	}
 	
 	@Test
@@ -62,10 +62,10 @@ public class UserManagerTest {
 		userManager.updateUser(user);
 		User findedUser = userManager.findUser(user.getId());
 		assertEquals("marcde", findedUser.getFirstName());
-		//userManager.removeUser(user);
+		userManager.removeUser(user);
 	}
 	
-	@Ignore
+	
 	@Test
 	public void testRemoveUser() {
 
@@ -76,7 +76,7 @@ public class UserManagerTest {
 		assertNull(findedUser);
 		userManager.removeUser(user);
 	}
-	@Ignore
+	
 	@Test
 	public void testFindUser() {
 		User user = new User("Jack", "Marez", "ma@gmail.fr", "pass2");
@@ -85,7 +85,7 @@ public class UserManagerTest {
 		assertEquals(user.getEmail(), findedUser.getEmail());
 		userManager.removeUser(user);
 	}
-	@Ignore
+	
 	@Test
 	public void testAuthentification() {
 		User user1 = new User("Nicky", "larson", "nick@gmail.fr", "azerty");
@@ -93,7 +93,7 @@ public class UserManagerTest {
 		assertNotNull(userManager.authentification("nick@gmail.fr", "azerty"));
 		userManager.removeUser(user1);
 	}
-	@Ignore
+	
 	@Test
 	public void testFindUserByEmail() {
 		User user1 = new User("Mofe", "ieje", "eaijd@gmail.fr", "eid");
@@ -101,7 +101,7 @@ public class UserManagerTest {
 		assertNotNull(userManager.findUserByEmail("eaijd@gmail.fr"));
 		userManager.removeUser(user1);
 	}
-	@Ignore
+	
 	@Test
 	public void testFindAllUser() {
 		User user1 = new User("Nicky", "larson", "nick@gmail.fr", "azerty");

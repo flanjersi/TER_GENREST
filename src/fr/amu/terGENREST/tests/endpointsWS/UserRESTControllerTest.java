@@ -12,6 +12,7 @@ import javax.json.JsonObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -51,30 +52,30 @@ public class UserRESTControllerTest {
 		long id = responseObject.getJsonNumber("id").longValue();
 		
 		// update user
-//		HttpPost requestUpdate = new HttpPost("http://localhost:8080/terGENREST/api/users/" + id);
-//
-//		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
-//				.add("firstName", "JeanUpdate")
-//				.add("lastName", "Marc")
-//				.add("password", "zeoi")
-//				.build();
-//
-//		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-//		requestUpdate.setHeader("Content-Type", "application/json");
-//
-//		response = HttpClientBuilder.create().build().execute( requestUpdate );
-//
-//		assertEquals(200, response.getStatusLine().getStatusCode());
-//
-//		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-//
-//		assertTrue(responseObject.containsKey("id"));
-//		assertTrue(responseObject.containsKey("email"));
-//		assertTrue(responseObject.containsKey("password"));
-//		assertTrue(responseObject.containsKey("lastName"));
-//		assertTrue(responseObject.containsKey("firstName"));
-//
-//		assertEquals("JeanUpdate@gmail.dez", responseObject.getString("firstName"));
+		HttpPost requestUpdate = new HttpPost("http://localhost:8080/terGENREST/api/users/" + id);
+
+		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
+				.add("firstName", "JeanUpdate")
+				.add("lastName", "Marc")
+				.add("password", "zeoi")
+				.build();
+
+		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
+		requestUpdate.setHeader("Content-Type", "application/json");
+
+		response = HttpClientBuilder.create().build().execute( requestUpdate );
+
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+
+		assertTrue(responseObject.containsKey("id"));
+		assertTrue(responseObject.containsKey("email"));
+		assertTrue(responseObject.containsKey("password"));
+		assertTrue(responseObject.containsKey("lastName"));
+		assertTrue(responseObject.containsKey("firstName"));
+
+		assertEquals("JeanUpdate@gmail.dez", responseObject.getString("firstName"));
 		
 		
 		// find user by id
