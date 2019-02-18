@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,25 +34,23 @@ public class Room implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@Column(name = "numberRoom", nullable = false)
-	@Size(min = 1, max = 200)
-	int numberRoom;
+	private int numberRoom;
 
 	@Column(name = "type", nullable = false)
 	@Size(min = 1, max = 200)
-	String type;
+	private String type;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	List<Sensor> sensors = new ArrayList<Sensor>();
+	private List<Sensor> sensors = new ArrayList<Sensor>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Actuator> actuators = new ArrayList<Actuator>();
+	private List<Actuator> actuators = new ArrayList<Actuator>();
 
 	public void addSensor(Sensor s) {
 		sensors.add(s);
@@ -94,42 +93,29 @@ public class Room implements Serializable {
 		this.sensors = sensors;
 	}
 
-	public List<Actuator> getActuaotors() {
-		return actuators;
+	public Long getId() {
+		return id;
 	}
 
-	public void setActuaotors(List<Actuator> actuaotors) {
-		this.actuators = actuaotors;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Room(int numberRoom, String type, List<Sensor> sensors, List<Actuator> actuaotors) {
+	public Room(int numberRoom, String type) {
 		super();
 		this.numberRoom = numberRoom;
 		this.type = type;
-		this.sensors = sensors;
-		this.actuators = actuaotors;
 	}
 
-	public Room(String type, List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.type = type;
-		this.sensors = sensors;
-		this.actuators = actuaotors;
+	public List<Actuator> getActuators() {
+		return actuators;
 	}
 
-	public Room(List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.sensors = sensors;
-		this.actuators = actuaotors;
+	public void setActuators(List<Actuator> actuators) {
+		this.actuators = actuators;
 	}
 
-	public Room(List<Actuator> actuaotors) {
-		super();
-		this.actuators = actuaotors;
-	}
+	
 
-	public Room() {
-		super();
-	}
-
+	
 }

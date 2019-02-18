@@ -1,18 +1,19 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /***
  * Data: represented by id (auto généré)dateTime (not null)value (not null)
@@ -30,15 +31,16 @@ public class Data implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	@Basic()
+	@Column(name = "dateTime", nullable = false)
 	@Temporal(TemporalType.DATE)
-	Date dateTime;
+	private Date dateTime;
 
-	@Basic
-	String value;
+	@Column(name = "value", nullable = false)
+	@Size(min = 1, max = 200)
+	private String value;
 
 	public Date getDateTime() {
 		return dateTime;
@@ -62,18 +64,9 @@ public class Data implements Serializable {
 		this.value = value;
 	}
 
-	public Data(String value) {
-		super();
-		this.value = value;
-	}
-
-	public Data(Date dateTime) {
-		super();
-		this.dateTime = dateTime;
-	}
-
 	public Data() {
 		super();
 	}
 
+	
 }

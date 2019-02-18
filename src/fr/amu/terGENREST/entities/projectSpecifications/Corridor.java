@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  * 
@@ -32,17 +33,19 @@ public class Corridor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
+	
+	@Column(name = "numberCorridor", nullable = false)
+	private int numberCorridor;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	List<Sensor> sensors = new ArrayList<Sensor>();
+	private List<Sensor> sensors = new ArrayList<Sensor>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Actuator> actuators = new ArrayList<Actuator>();
+	private List<Actuator> actuators = new ArrayList<Actuator>();
 
 	public void addSensor(Sensor s) {
 		sensors.add(s);
@@ -101,4 +104,26 @@ public class Corridor implements Serializable {
 		this.sensors = sensors;
 	}
 
+	public int getNumberCorridor() {
+		return numberCorridor;
+	}
+
+	public void setNumberCorridor(int numberCorridor) {
+		this.numberCorridor = numberCorridor;
+	}
+
+	public List<Actuator> getActuators() {
+		return actuators;
+	}
+
+	public void setActuators(List<Actuator> actuators) {
+		this.actuators = actuators;
+	}
+
+	public Corridor(int numberCorridor) {
+		super();
+		this.numberCorridor = numberCorridor;
+	}
+
+	
 }
