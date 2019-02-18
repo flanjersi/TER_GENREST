@@ -52,10 +52,6 @@ public class Building implements Serializable {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public List<Floor> getBuildingFloor() {
 		return buildingFloor;
 	}
@@ -79,9 +75,4 @@ public class Building implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 }
