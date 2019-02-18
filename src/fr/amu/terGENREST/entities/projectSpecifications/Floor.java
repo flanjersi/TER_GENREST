@@ -32,6 +32,18 @@ public class Floor {
 			CascadeType.PERSIST }, orphanRemoval = true)
 	private List<MotherRoom> buildingMotherRoom = new ArrayList<MotherRoom>();
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
+			CascadeType.PERSIST }, orphanRemoval = true)
+	private List<Corridor> corridors = new ArrayList<Corridor>();
+
+	public Floor() {
+	}
+
+	public Floor(int floorNumber) {
+		super();
+		this.floorNumber = floorNumber;
+	}
+	
 	public void addMotherRoom(MotherRoom m) {
 		buildingMotherRoom.add(m);
 
@@ -46,9 +58,6 @@ public class Floor {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public int getFloorNumber() {
 		return floorNumber;
@@ -57,34 +66,27 @@ public class Floor {
 	public void setFloorNumber(int floorNumber) {
 		this.floorNumber = floorNumber;
 	}
-
-	public List<MotherRoom> getBuildingFloor() {
-		return buildingMotherRoom;
-	}
-
-	public void setBuildingFloor(List<MotherRoom> buildingMotherRoom) {
-		this.buildingMotherRoom = buildingMotherRoom;
-	}
-
-	@Override
-	public String toString() {
-		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", buildingFloor=" + buildingMotherRoom + "]";
-	}
-
-	public Floor() {
-	}
-
-	public Floor(int floorNumber) {
-		super();
-		this.floorNumber = floorNumber;
-	}
-
+	
 	public List<MotherRoom> getBuildingMotherRoom() {
 		return buildingMotherRoom;
 	}
 
 	public void setBuildingMotherRoom(List<MotherRoom> buildingMotherRoom) {
 		this.buildingMotherRoom = buildingMotherRoom;
+	}
+
+	public List<Corridor> getCorridors() {
+		return corridors;
+	}
+
+	public void setCorridors(List<Corridor> corridors) {
+		this.corridors = corridors;
+	}
+
+	@Override
+	public String toString() {
+		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", buildingMotherRoom=" + buildingMotherRoom
+				+ ", corridors=" + corridors + "]";
 	}
 
 	
