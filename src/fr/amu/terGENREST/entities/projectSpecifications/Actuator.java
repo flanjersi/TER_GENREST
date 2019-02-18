@@ -58,18 +58,18 @@ public class Actuator implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Data> dataList = new ArrayList<Data>();
-
-	public void addData(Data a) {
-		dataList.add(a);
+	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.model = model;
+		this.brand = brand;
+		this.reference = reference;
+		this.state = state;
 	}
 
-	public void removeData(Data a) {
-		dataList.remove(a);
-	}
+	public Actuator() {	}
 
+	
 	public Long getId() {
 		return id;
 	}
@@ -122,34 +122,71 @@ public class Actuator implements Serializable {
 		this.state = state;
 	}
 
+	@Override
+	public String toString() {
+		return "Actuator [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
+				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Actuator other = (Actuator) obj;
+		if (brand == null) {
+			if (other.brand != null)
+				return false;
+		} else if (!brand.equals(other.brand))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
+			return false;
+		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
+			return false;
+		if (model == null) {
+			if (other.model != null)
+				return false;
+		} else if (!model.equals(other.model))
+			return false;
+		if (reference == null) {
+			if (other.reference != null)
+				return false;
+		} else if (!reference.equals(other.reference))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		return true;
+	}	
 	
-
-	public List<Data> getDataList() {
-		return dataList;
-	}
-
-	public void setDataList(List<Data> dataList) {
-		this.dataList = dataList;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Actuator() {
-		super();
-	}
-
+	
 	
 	
 }

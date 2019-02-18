@@ -19,7 +19,7 @@ public class ActuatorManagerImpl implements ActuatorManager {
 	}
 
 	@Override
-	public Actuator UpdateActuator(Actuator actuator) {
+	public Actuator updateActuator(Actuator actuator) {
 		return em.merge(actuator);
 	}
 
