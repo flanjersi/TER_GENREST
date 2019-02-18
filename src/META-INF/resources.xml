@@ -4,15 +4,10 @@
 
 <Resource id="myDatabase" type="javax.sql.DataSource">
     JdbcDriver org.hsqldb.jdbcDriver
-<<<<<<< HEAD
+
        JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db
   	 <!--  JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase --> 
-=======
 
-     <!-- JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db -->
-
-  	 JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase 
->>>>>>> 57a7cb6e6bb049ece22d41edf83e65fa4c643c2a
     UserName sa
     Password
     jtaManaged true
