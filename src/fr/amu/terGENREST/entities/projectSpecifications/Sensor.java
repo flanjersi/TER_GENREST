@@ -3,19 +3,12 @@ package fr.amu.terGENREST.entities.projectSpecifications;
 import java.io.Serializable;
 import java.util.List;
 
-<<<<<<< HEAD
-import javax.persistence.Basic;
-=======
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-<<<<<<< HEAD
-=======
 import javax.persistence.GenerationType;
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,17 +35,6 @@ public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-<<<<<<< HEAD
-	@GeneratedValue
-	private Long id;
-
-	@Column(name = "latitude", nullable = false)
-	@Size(min = 1, max = 200)
-	private double latitude;
-
-	@Column(name = "longitude", nullable = false)
-	@Size(min = 1, max = 200)
-=======
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -60,7 +42,6 @@ public class Sensor implements Serializable {
 	private double latitude;
 
 	@Column(name = "longitude", nullable = false)
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	private double longitude;
 
 	@Column(name = "model", nullable = false)
@@ -79,34 +60,12 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
-<<<<<<< HEAD
-	@Basic
-	private String unitData;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Data> dataList;
-
-	public void addData(Data a) {
-
-		dataList.add(a);
-	}
-
-	public void removeData(Data a) {
-
-		dataList.remove(a);
-	}
-
-	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state) {
-=======
 	@Column(name = "unitData", nullable = false)
 	@Size(min = 1, max = 200)
 	private String unitData;
 
 	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
 			String unitData) {
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -114,35 +73,6 @@ public class Sensor implements Serializable {
 		this.brand = brand;
 		this.reference = reference;
 		this.state = state;
-<<<<<<< HEAD
-	}
-	
-	
-
-	public Sensor() {}
-
-	public Sensor(double longitude, String model, String brand, String reference, String state) {
-		super();
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Sensor(String brand, String reference, String state) {
-		super();
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Sensor(String reference, String state) {
-		super();
-		this.reference = reference;
-		this.state = state;
-	}
-=======
 		this.unitData = unitData;
 	}
 
@@ -150,7 +80,6 @@ public class Sensor implements Serializable {
 		super();
 	}
 	
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 	public Long getId() {
 		return id;
@@ -207,9 +136,6 @@ public class Sensor implements Serializable {
 	public void setState(String state) {
 		this.state = state;
 	}
-<<<<<<< HEAD
-}
-=======
 
 	public String getUnitData() {
 		return unitData;
@@ -295,4 +221,3 @@ public class Sensor implements Serializable {
 
 	
 }
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a

@@ -59,7 +59,7 @@ public class ActuatorManagerTest {
 
 		Address address = new Address("147 rue Aubagne","Marseille","France");
 
-		Building building = new Building(address);
+		Building building = new Building("Batiment",address);
 		project.addBuilding(building);
 
 		Floor floor = new Floor(1);

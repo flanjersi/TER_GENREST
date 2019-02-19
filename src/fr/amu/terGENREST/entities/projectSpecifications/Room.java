@@ -1,9 +1,5 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-<<<<<<< HEAD
-=======
 import javax.persistence.GenerationType;
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -41,27 +34,6 @@ public class Room implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-<<<<<<< HEAD
-	@GeneratedValue
-	Long id;
-
-	@Column(name = "numberRoom", nullable = false)
-	@Size(min = 1, max = 200)
-	int numberRoom;
-
-	@Column(name = "type", nullable = false)
-	@Size(min = 1, max = 200)
-	String type;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	List<Sensor> sensors = new ArrayList<Sensor>();
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Actuator> actuaotors =new ArrayList<Actuator>();
-=======
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -107,7 +79,6 @@ public class Room implements Serializable {
 	public void removeActuator(Actuator a) {
 		actuators.remove(a);
 	}
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 	public int getNumberRoom() {
 		return numberRoom;
@@ -133,46 +104,6 @@ public class Room implements Serializable {
 		this.sensors = sensors;
 	}
 
-<<<<<<< HEAD
-	public List<Actuator> getActuaotors() {
-		return actuaotors;
-	}
-
-	public void setActuaotors(List<Actuator> actuaotors) {
-		this.actuaotors = actuaotors;
-	}
-
-	public Room(int numberRoom, String type, List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.numberRoom = numberRoom;
-		this.type = type;
-		this.sensors = sensors;
-		this.actuaotors = actuaotors;
-	}
-
-	public Room(String type, List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.type = type;
-		this.sensors = sensors;
-		this.actuaotors = actuaotors;
-	}
-
-	public Room(List<Sensor> sensors, List<Actuator> actuaotors) {
-		super();
-		this.sensors = sensors;
-		this.actuaotors = actuaotors;
-	}
-
-	public Room(List<Actuator> actuaotors) {
-		super();
-		this.actuaotors = actuaotors;
-	}
-
-	public Room() {
-		super();
-	}
-
-=======
 	public Long getId() {
 		return id;
 	}
@@ -229,5 +160,4 @@ public class Room implements Serializable {
 	
 
 	
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 }

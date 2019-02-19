@@ -53,7 +53,7 @@ public class CorridorManagerTest {
 		project = new Project("firstProject");
 		adresse = new Address("147 rue Aubagne","Marseille","France");
 		
-		building = new Building(adresse);
+		building = new Building("Batiment",adresse);
 		floor = new Floor(1);
 		motherRoom = new MotherRoom("Appartement",1);
 		corridor = new Corridor(1);

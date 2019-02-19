@@ -1,9 +1,5 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
-<<<<<<< HEAD
-import java.io.Serializable;
-=======
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,37 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-<<<<<<< HEAD
-
-@Table(name = "Floor")
-@Entity
-@NamedQueries({
-	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"),
-})
-public class Floor implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id()
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private Integer floorNumber;
-	
-	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
-	private List<MotherRoom> floorMotherRoom = new ArrayList<MotherRoom>();
-	
-	public Floor() {
-	}
-
-	public Floor(Integer floorNumber) {
-		this.floorNumber = floorNumber;
-	}
-=======
 @Table(name = "Floor")
 @Entity
 @NamedQueries({ @NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"), })
@@ -95,40 +60,11 @@ public class Floor {
 	public void removeCorridor(Corridor corridor) {
 		corridors.remove(corridor);
 	}
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 	public Long getId() {
 		return id;
 	}
 
-<<<<<<< HEAD
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getFloorNumber() {
-		return floorNumber;
-	}
-
-	public void setFloorNumber(Integer floorNumber) {
-		this.floorNumber = floorNumber;
-	}
-
-	public List<MotherRoom> getfloorMotherRoom() {
-		return floorMotherRoom;
-	}
-
-	public void setfloorMotherRoom(List<MotherRoom> floorMotherRoom) {
-		this.floorMotherRoom = floorMotherRoom;
-	}
-	
-	public void addMotherRooom(MotherRoom motherRoom) {
-		floorMotherRoom.add(motherRoom);
-	}
-
-	public void removeMotherRoom(MotherRoom motherRoom) {
-		floorMotherRoom.remove(motherRoom);
-=======
 
 	public int getFloorNumber() {
 		return floorNumber;
@@ -152,15 +88,10 @@ public class Floor {
 
 	public void setCorridors(List<Corridor> corridors) {
 		this.corridors = corridors;
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	}
 
 	@Override
 	public String toString() {
-<<<<<<< HEAD
-		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", floorMotherRoom=" + floorMotherRoom + "]";
-	}
-=======
 		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", buildingMotherRoom=" + buildingMotherRoom
 				+ ", corridors=" + corridors + "]";
 	}
@@ -195,5 +126,4 @@ public class Floor {
 
 	
 	
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 }

@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import javax.persistence.Basic;
-=======
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,15 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-<<<<<<< HEAD
-
-@Table(name = "motherRoom")
-@Entity
-@NamedQueries({
-	@NamedQuery(name = "MotherRoom.findAllmotherRoom", query = "SELECT a FROM MotherRoom a"),
-})
-public class MotherRoom implements Serializable {
-=======
 import javax.validation.constraints.Size;
 
 /**
@@ -42,7 +29,6 @@ import javax.validation.constraints.Size;
 @NamedQueries({ @NamedQuery(name = "MotherRoom.findAllMotherRoom", query = "SELECT m FROM MotherRoom m") })
 public class MotherRoom implements Serializable {
 
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	/**
 	 * 
 	 */
@@ -50,62 +36,6 @@ public class MotherRoom implements Serializable {
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
-<<<<<<< HEAD
-	private long id;
-	
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private int motherRoomNumber;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},  orphanRemoval = true)
-	private List<Room> appartmentRoom = new ArrayList<Room>();
-
-	public MotherRoom() {
-	}
-
-	public MotherRoom(int motherRoomNumber) {
-		this.motherRoomNumber = motherRoomNumber;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public int getmotherRoomNumber() {
-		return motherRoomNumber;
-	}
-
-	public void setmotherRoomNumber(int motherRoomNumber) {
-		this.motherRoomNumber = motherRoomNumber;
-	}
-	
-	public List<Room> getAppartmentRoom() {
-		return appartmentRoom;
-	}
-
-	public void setAppartmentRoom(List<Room> appartmentRoom) {
-		this.appartmentRoom = appartmentRoom;
-	}
-
-	public void addRoom(Room room) {
-		appartmentRoom.add(room);
-	}
-
-	public void removeRoom(Room room) {
-		appartmentRoom.remove(room);
-	}
-
-	@Override
-	public String toString() {
-		return "motherRoom [id=" + id + ", motherRoomNumber=" + motherRoomNumber + ", appartmentRoom=" + appartmentRoom
-				+ "]";
-	}
-}
-=======
 	private Long id;
 
 	@Column(name = "type", nullable = false)
@@ -126,7 +56,6 @@ public class MotherRoom implements Serializable {
 	}
 	
 	public MotherRoom(String type, int numberMotherRoom) {
-		super();
 		this.type = type;
 		this.numberMotherRoom = numberMotherRoom;
 	}
@@ -225,4 +154,3 @@ public class MotherRoom implements Serializable {
 	
 	
 }
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a

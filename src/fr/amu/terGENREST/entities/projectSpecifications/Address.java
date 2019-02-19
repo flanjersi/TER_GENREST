@@ -26,10 +26,7 @@ public class Address implements Serializable {
 	}
 
 	public Address(String street, String city, String country) {
-<<<<<<< HEAD
-=======
 		super();
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		this.street = street;
 		this.city = city;
 		this.country = country;
@@ -63,8 +60,6 @@ public class Address implements Serializable {
 	public String toString() {
 		return "Address(" + street + "," + city + "," + country + ")";
 	}
-<<<<<<< HEAD
-=======
 
 	@Override
 	public int hashCode() {
@@ -104,5 +99,4 @@ public class Address implements Serializable {
 	}
 	
 	
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 }

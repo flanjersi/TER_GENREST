@@ -4,19 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import javax.persistence.Basic;
-=======
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-<<<<<<< HEAD
-=======
 import javax.persistence.GenerationType;
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -40,17 +33,6 @@ public class Actuator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-<<<<<<< HEAD
-	@GeneratedValue
-	private Long id;
-
-	@Column(name = "latitude", nullable = false)
-	@Size(min = 1, max = 200)
-	private double latitude;
-
-	@Column(name = "longitude", nullable = false)
-	@Size(min = 1, max = 200)
-=======
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
@@ -58,7 +40,6 @@ public class Actuator implements Serializable {
 	private double latitude;
 
 	@Column(name = "longitude", nullable = false)
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	private double longitude;
 
 	@Column(name = "model", nullable = false)
@@ -77,26 +58,6 @@ public class Actuator implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
-<<<<<<< HEAD
-	@Basic
-	private String unitData;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	@Size(min = 1, max = 200)
-	List<Data> dataList = new ArrayList<Data>();
-
-	public void addData(Data a) {
-
-		dataList.add(a);
-	}
-
-	public void removeData(Data a) {
-
-		dataList.remove(a);
-	}
-
-=======
 	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -109,7 +70,6 @@ public class Actuator implements Serializable {
 	public Actuator() {	}
 
 	
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	public Long getId() {
 		return id;
 	}
@@ -162,50 +122,6 @@ public class Actuator implements Serializable {
 		this.state = state;
 	}
 
-<<<<<<< HEAD
-	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
-	}
-
-	public Actuator(double latitude, double longitude, String model, String brand, String reference) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-	}
-
-	public Actuator(double latitude, double longitude, String model) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.model = model;
-	}
-
-	public Actuator(double latitude, double longitude) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-	}
-
-	public Actuator(double latitude) {
-		super();
-		this.latitude = latitude;
-	}
-
-	public Actuator() {
-		super();
-	}
-
-}
-=======
 	@Override
 	public String toString() {
 		return "Actuator [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
@@ -274,4 +190,3 @@ public class Actuator implements Serializable {
 	
 	
 }
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a

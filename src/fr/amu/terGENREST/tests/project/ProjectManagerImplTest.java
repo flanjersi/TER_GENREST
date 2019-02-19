@@ -54,73 +54,6 @@ public class ProjectManagerImplTest {
 		//projectManager.removeProject(project);
 		userManager.removeUser(user);
 		EJBContainer.createEJBContainer().close();
-<<<<<<< HEAD
-	}
-//	
-//	@Test
-//	public void testFindProject() {
-//		Project project = new Project("firstProject");
-//		Project project2 = new Project("secondProject");
-//		projectManager.addProject(project);
-//		projectManager.addProject(project2);
-//	}
-//
-//	@Test
-//	public void testAddProject() {
-//		User user = new User("firstName", "lastName", "email0@email.com", "password");
-//		Project project = new Project("firstProject");
-//		user.addProject(project);
-//		userManager.saveUser(user);
-//		Project projcetAdded = projectManager.findProject(project.getId()); 
-//		Assert.assertEquals(projcetAdded, project);	
-//		userManager.removeUser(user);
-//	}
-
-	@Test
-	public void testRemoveProject() {
-		User user = new User("firstName", "lastName", "email@email.com", "password");
-		userManager.saveUser(user);
-		Project project = new Project("firstProject");		
-		user.addProject(project);
-		userManager.updateUser(user); 
-	//	userManager.saveUser(user);
-		user.removeProject(project);
-		userManager.updateUser(user);
-		
-		//Assert.assertNull(userManager.findUser(user.getId()).getProjects());
-		Assert.assertTrue(userManager.findUser(user.getId()).getProjects().size() == 0);
-		userManager.removeUser(user);
-	}
-	
-//	@Test
-//	public void testUpdateProject() {	
-//		User user = new User("firstName", "lastName", "email1@email.com", "password");
-//		Project project = new Project("firstProject");
-//		user.addProject(project);
-//		userManager.saveUser(user);
-//		project.setProjectName("secondProject");
-//		userManager.updateUser(user);
-//		Assert.assertEquals("secondProject", projectManager.findProject(project.getId()).getProjectName());
-//		userManager.removeUser(user);
-//	}
-//	
-//	@Test
-//	public void testFindAllProject() {
-//		User user = new User("firstName", "lastName", "email2@email.com", "password");
-//		User user2 = new User("firstName", "lastName", "email22@email.com", "password");
-//		Project project = new Project("firstProject");
-//		Project project2 = new Project("firstProject");
-//		Project project3 = new Project("firstProject");
-//		user.addProject(project);
-//		user.addProject(project2);
-//		user2.addProject(project3);
-//		userManager.saveUser(user);
-//		userManager.saveUser(user2);
-//		Assert.assertEquals(3,projectManager.findAllProject().size());		
-//		userManager.removeUser(user);
-//		userManager.removeUser(user2);
-//	}
-=======
 		
 	}
 
@@ -153,6 +86,5 @@ public class ProjectManagerImplTest {
 //		Assert.assertEquals(project,projectManager.findByProjectName(project.getProjectName()));
 //	}
 
->>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 }

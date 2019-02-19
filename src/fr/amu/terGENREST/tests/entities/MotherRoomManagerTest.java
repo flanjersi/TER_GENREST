@@ -1,7 +1,6 @@
 package fr.amu.terGENREST.tests.entities;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.ejb.EJB;
@@ -15,21 +14,26 @@ import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
+import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
+import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
 import fr.amu.terGENREST.services.user.UserManager;
 import fr.amu.terGENREST.services.project.ProjectManager;
 import javax.transaction.Transactional;
 
 @Transactional
-public class FloorManagerTest {
+public class MotherRoomManagerTest {
 
 	@EJB
 	private BuildingManager buildingManager;
 	
 	@EJB
 	private FloorManager floorManager;
+	
+	@EJB
+	private MotherRooomManager MotherRoomManager;
 	
 	@EJB
 	private ProjectManager projectManager;
@@ -44,6 +48,8 @@ public class FloorManagerTest {
 	private Building building;
 	
 	private Floor floor; 
+	
+	private MotherRoom motherRoom;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -65,6 +71,10 @@ public class FloorManagerTest {
 		
 		building.addFloor(floor);
 		
+		motherRoom = new MotherRoom("Appartment", 2);
+		
+		floor.addMotherRoom(motherRoom);
+		
 		userManager.saveUser(user);
 	}
 
@@ -75,22 +85,23 @@ public class FloorManagerTest {
 	}
 
 	@Test
-	public void testCRUDFloor() {
+	public void testCRUDMotherRoom() {
 		//Add
-		buildingManager.updateBuilding(building);
-		Building buildUpdated = buildingManager.findById(building.getId());
-		assertTrue(buildUpdated.getBuildingFloor().size() == 1);	
+		floorManager.updateFloor(floor);
+		Floor floorUpdated = floorManager.findById(floor.getId());
+		assertTrue(floorUpdated.getBuildingMotherRoom().size() == 1);	
 		
 		//Update
-		floor.setFloorNumber(17);
-		buildingManager.updateBuilding(buildUpdated);
+		motherRoom.setType("studio");
+		floorManager.updateFloor(floorUpdated);		
 		userManager.updateUser(user);
-		assertEquals(17, floorManager.findById(floor.getId()).getFloorNumber());
-//		
-//		//Delete
-//		buildUpdated.removeFloor(floor);
-//		buildingManager.updateBuilding(buildUpdated);
-//		assertEquals(0, buildingManager.findById(buildUpdated.getId()).getBuildingFloor().size());
+		assertEquals("studio", floorManager.findById(floor.getId()).getBuildingMotherRoom().get(0).getType());
+		
+		
+		//Delete
+//		floorUpdated.removeMotherRoom(motherRoom);
+//		floorManager.updateFloor(floorUpdated);
+//		assertEquals(0, floorManager.findById(floorUpdated.getId()).getBuildingMotherRoom().size());
 
 	}
 }
