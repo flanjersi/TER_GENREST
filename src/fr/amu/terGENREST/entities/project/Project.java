@@ -20,6 +20,15 @@ import javax.validation.constraints.Size;
 
 import fr.amu.terGENREST.entities.projectSpecifications.Building; 
 
+
+/**
+ * 
+ * @author Youcef 
+ * 
+ * Project hava 0 or many building 
+ *
+ */
+
 @NamedQueries({ 
 	@NamedQuery( name="Project.findAll",query="SELECT p FROM Project p"),
 	@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE projectName = :projectName")
@@ -123,8 +132,4 @@ public class Project implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-
-
 }

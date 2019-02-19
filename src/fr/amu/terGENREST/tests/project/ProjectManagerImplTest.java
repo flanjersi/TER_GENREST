@@ -48,24 +48,17 @@ public class ProjectManagerImplTest {
 		userManager.saveUser(user);
 	}
 
-
 	@After
 	public void tearDown() throws Exception {
-		//projectManager.removeProject(project);
 		userManager.removeUser(user);
-		EJBContainer.createEJBContainer().close();
-		
+		EJBContainer.createEJBContainer().close();	
 	}
 	
-
 	@Test
 	public void testAddProject() {
-
 		Project projcetAdded = projectManager.findProject(project.getId()); 
 		Assert.assertEquals(projcetAdded, project);	
-
 	}
-
 
 	@Test
 	public void testRemoveProject() {
@@ -81,11 +74,13 @@ public class ProjectManagerImplTest {
 		Assert.assertEquals("secondProject", projectManager.findProject(project.getId()).getProjectName());
 	}
 	
-
-//	@Test
-//	public void testFindPojectByProjectName() {	
-//		Assert.assertEquals(project,projectManager.findByProjectName(project.getProjectName()));
-//	}
+	@Test
+	public void testFindPojectByProjectName() {	
+		List<Project> projects = projectManager.findByProjectName(project.getProjectName());
+		long nbProject = projects.stream().filter(projectFinded -> projectFinded.equals(project)).count();
+		Assert.assertTrue(nbProject != 0);
+		
+	}
 
 
 }

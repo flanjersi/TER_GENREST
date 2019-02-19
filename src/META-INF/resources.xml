@@ -2,7 +2,6 @@
 
 <resources>
 
-<<<<<<< HEAD
 <Resource id="myDatabase" type="javax.sql.DataSource">
     JdbcDriver org.hsqldb.jdbcDriver
 
@@ -13,21 +12,6 @@
     Password
     jtaManaged true
 </Resource>
-=======
-	<Resource id="myDatabase" type="javax.sql.DataSource">
-		JdbcDriver org.hsqldb.jdbcDriver
 
-		<!-- JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db -->
-		<!-- JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase -->
-		<!-- JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db -->
-
-		JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase
-
-		UserName sa
-		Password
-		jtaManaged
-		true
-	</Resource>
->>>>>>> 9304ca4c82fa6df1ba771df1b1009d89475e32de
 
 </resources>

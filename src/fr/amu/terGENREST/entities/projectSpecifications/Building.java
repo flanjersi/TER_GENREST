@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +17,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
 
 /**
  * Building have one or many floors. Floors have one or many
@@ -32,27 +36,42 @@ public class Building implements Serializable {
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
+	private Long id;
+	
 	@Embedded
 	private Address address;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Floor> buildingFloor = new ArrayList<Floor>();
+	
+	@Basic(optional = false) 
+	@Column(nullable = false,length=20) 
+	@Size(min = 1, max = 20) 
+	private String type; 
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
-			CascadeType.PERSIST }, orphanRemoval = true)
-	private List<Apartment> floorAprtment = new ArrayList<Apartment>();
 
 	public Building() {
-
+	}
+	
+	public Building(String type, Address address) {
+		this.type = type;
+		this.address = address;
 	}
 
-	public long getId() {
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -64,28 +83,12 @@ public class Building implements Serializable {
 		this.buildingFloor = buildingFloor;
 	}
 
-	public List<Apartment> getFloorAprtment() {
-		return floorAprtment;
-	}
-
-	public void setFloorAprtment(List<Apartment> floorAprtment) {
-		this.floorAprtment = floorAprtment;
-	}
-
 	public void addFloor(Floor floor) {
 		buildingFloor.add(floor);
 	}
 
 	public void removeFloor(Floor floor) {
 		buildingFloor.remove(floor);
-	}
-
-	public void addAppartment(Apartment apartment) {
-		floorAprtment.add(apartment);
-	}
-
-	public void removeAppartment(Apartment apartment) {
-		floorAprtment.remove(apartment);
 	}
 
 	public Address getAddress() {
@@ -96,97 +99,9 @@ public class Building implements Serializable {
 		this.address = address;
 	}
 
-	public Building(Address address, List<Floor> buildingFloor, List<Apartment> floorAprtment) {
-		super();
-		this.address = address;
-		this.buildingFloor = buildingFloor;
-		this.floorAprtment = floorAprtment;
-	}
-
-	public Building(List<Floor> buildingFloor, List<Apartment> floorAprtment) {
-		super();
-		this.buildingFloor = buildingFloor;
-		this.floorAprtment = floorAprtment;
-	}
-
-	public Building(List<Apartment> floorAprtment) {
-		super();
-		this.floorAprtment = floorAprtment;
-	}
-
-<<<<<<< HEAD
-	public void addFloor(Floor floor) {
-		buildingFloor.add(floor);
-	}
-	
-	public void removeFloor(Floor floor) {
-		buildingFloor.remove(floor);
-	}
-	
-	public void addAppartment(Apartment apartment) {
-		floorAprtment.add(apartment);
-	}
-	
-	public void removeAppartment(Apartment apartment) {
-		floorAprtment.remove(apartment);
-	}
-	
 	@Override
 	public String toString() {
-		return "Building [id=" + id + ", number=" + number + ", street=" + street + ", city=" + city + ", zipCode="
-				+ zipCode + ", country=" + country + "]";
+		return "Building [id=" + id + ", address=" + address + ", buildingFloor=" + buildingFloor + ", type=" + type
+				+ "]";
 	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Building other = (Building) obj;
-		if (buildingFloor == null) {
-			if (other.buildingFloor != null)
-				return false;
-		} else if (!buildingFloor.equals(other.buildingFloor))
-			return false;
-		if (city == null) {
-			if (other.city != null)
-				return false;
-		} else if (!city.equals(other.city))
-			return false;
-		if (country == null) {
-			if (other.country != null)
-				return false;
-		} else if (!country.equals(other.country))
-			return false;
-		if (floorAprtment == null) {
-			if (other.floorAprtment != null)
-				return false;
-		} else if (!floorAprtment.equals(other.floorAprtment))
-			return false;
-		if (id != other.id)
-			return false;
-		if (number != other.number)
-			return false;
-		if (street == null) {
-			if (other.street != null)
-				return false;
-		} else if (!street.equals(other.street))
-			return false;
-		if (zipCode != other.zipCode)
-			return false;
-		return true;
-	}	
-	
-	
-	
-	
-	
-	
-	
-=======
->>>>>>> 9304ca4c82fa6df1ba771df1b1009d89475e32de
 }
