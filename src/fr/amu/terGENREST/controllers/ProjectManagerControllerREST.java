@@ -141,15 +141,24 @@ public class ProjectManagerControllerREST {
 	@Path("/{idProject:[0-9]+}")
 	public Response deleteProject(@PathParam("idProject") Long id,@PathParam("idUser") Long idUser) {
 		
-		if(projectManager.findProject(id) == null) {
+		Project projectRemoved = projectManager.findProject(id);
+		
+		if(projectRemoved == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
 					.build();
 		}
 		
-		Project projectRemoved = projectManager.findProject(id);
 		User user = userManager.findUser(idUser);
+		
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + idUser + "' no exist"))
+					.build();
+		}
+		
 		user.removeProject(projectRemoved);
 		userManager.updateUser(user);
 			
