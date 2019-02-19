@@ -19,10 +19,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import fr.amu.terGENREST.controllers.utils.Utils;
-import fr.amu.terGENREST.entities.environmentTechnical.Language;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
-import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
@@ -144,63 +142,4 @@ public class BuildingManagerControllerREST {
 		
 		return Response.ok().build();
 	}
-	
-//	@PUT
-//	@Path("{idBuilding:[0-9]+}/floors")
-//	public Response createFloor(@PathParam("idBuilding") Long idLanguage, Floor floor) {
-//		Building building= buildingManager.findById(idLanguage);
-//
-//		if(building == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "building id '" + idLanguage + "' no exist"))
-//					.build();
-//		}
-//
-//		if(floor.getFloorNumber() == null) {
-//			return Response
-//					.status(400)
-//					.entity(Utils.makeErrorMessage(400, "'floorNumber' property is missing"))
-//					.build();			
-//		}
-//	
-//		//Delete the setup of the id by the user
-//		//configuration.setId(0);
-//
-//			building.addFloor(floor);
-//			floorManager.updateFloor(floor);
-//			
-//			JsonObject jsonResponse = Json.createObjectBuilder().add("id", (JsonValue) floorManager.findById(floor.getId())).build();
-//			return Response.ok().entity(jsonResponse).build();
-//	}
-//	
-//	@DELETE
-//	@Path("{idBuilding:[0-9]+}/floors/{id:[0-9]+}")
-//	public Response deleteFloors(@PathParam("idBuilding") Long idBuilding, @PathParam("id") Long id) {
-//		Building building = buildingManager.findById(idBuilding);
-//
-//		if(building == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
-//					.build();
-//		}
-//		
-//
-//		Optional<Floor> floor = building.getBuildingFloor()
-//				.stream().filter(c -> c.getId() == id).findFirst();
-//		
-//		if(!floor.isPresent()) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Floor with id '" + id + "' not found"))
-//					.build();
-//		}
-//		
-//		building.removeFloor(floor.get());
-//		buildingManager.updateBuilding(building);
-//		
-//		return Response.ok().build();
-//	}
 		}
-
