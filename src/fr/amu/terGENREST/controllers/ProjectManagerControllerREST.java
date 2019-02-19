@@ -23,7 +23,7 @@ import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/user/{idUser:[0-9]+}/projects")
+@Path("api/users/{idUser:[0-9]+}/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProjectManagerControllerREST {
@@ -35,17 +35,26 @@ public class ProjectManagerControllerREST {
 	@EJB
 	private ProjectManager projectManager;
 
-	public ProjectManagerControllerREST() {
-
-	}
+	public ProjectManagerControllerREST() {}
 
 	@GET
 	@Path("")
 	public Response getAllProject() {
-
-		List<Project> languages = projectManager.findAllProject();
-		
+		List<Project> languages = projectManager.findAllProject();		
 		return Response.ok().entity(languages).build();
+	}
+	
+	@GET
+	@Path("/{id:[0-9]+}")
+	public Response getProjectById(@PathParam("id") Long id) {	
+		Project project = projectManager.findProject(id);
+		if(project == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "No project with id : " + id))
+					.build();
+		}
+		return Response.ok().entity(project).build();
 	}
 	
 	@PUT
@@ -106,35 +115,35 @@ public class ProjectManagerControllerREST {
 	
 	
 	
-	@POST
-	@Path("{id:[0-9]+}")
-	public Response updateProject(@PathParam("id") Long id, Project project) {
-		if(projectManager.findProject(id)== null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
-					.build();
-		}
-		
-		projectManager.updateProject(project);
-		
-		return Response.ok().entity(projectManager.findProject(id)).build();
-	}
-
-	@DELETE
-	@Path("{id:[0-9]+}")
-	public Response deleteProject(@PathParam("id") Long id) {
-		if(projectManager.findProject(id) == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
-					.build();
-		}
-		
-		projectManager.removeProject(projectManager.findProject(id));
-		
-		return Response.ok().build();
-	}
+//	@POST
+//	@Path("{id:[0-9]+}")
+//	public Response updateProject(@PathParam("id") Long id, Project project) {
+//		if(projectManager.findProject(id)== null) {
+//			return Response
+//					.status(404)
+//					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
+//					.build();
+//		}
+//		
+//		projectManager.updateProject(project);
+//		
+//		return Response.ok().entity(projectManager.findProject(id)).build();
+//	}
+//
+//	@DELETE
+//	@Path("{id:[0-9]+}")
+//	public Response deleteProject(@PathParam("id") Long id) {
+//		if(projectManager.findProject(id) == null) {
+//			return Response
+//					.status(404)
+//					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
+//					.build();
+//		}
+//		
+//		projectManager.removeProject(projectManager.findProject(id));
+//		
+//		return Response.ok().build();
+//	}
 	
 
 }
