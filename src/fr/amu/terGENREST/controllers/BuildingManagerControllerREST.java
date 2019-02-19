@@ -58,7 +58,7 @@ public class BuildingManagerControllerREST {
 	
 	
 	@GET
-	@Path("{id:[0-9]+}")
+	@Path("/{id:[0-9]+}")
 	public Response getBuildingById(@PathParam("id") Long id) {	
 		Building building = buildingManager.findById(id);
 		
@@ -96,17 +96,6 @@ public class BuildingManagerControllerREST {
 					.build();		
 		}
 		
-//		Long nbBuildings = project.getBuilding()
-//				.stream()
-//				.filter(projectUser -> (projectUser.getType().equals(building.getType())))
-//				.count();
-//		
-//		if(nbBuildings != 0) {
-//			return  Response
-//					.status(400)
-//					.entity(Utils.makeErrorMessage(400, "Building: '"+ project.getProjectName() +"' is already use"))
-//					.build();
-//		}
 		project.addBuilding(building);
 		projectManager.updateProject(project);
 		
@@ -120,38 +109,41 @@ public class BuildingManagerControllerREST {
 		return Response.ok().entity(jsonResponse).build();
 		}
 	
-//	@POST
-//	@Path("{id:[0-9]+}")
-//	public Response updateBuilding(@PathParam("id") Long id, Building building) {
-//		if(buildingManager.findById(id) == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
-//					.build();
-//		}
+	@POST
+	@Path("/{id:[0-9]+}")
+	public Response updateBuilding(@PathParam("id") Long id, Building buildingUpdated) {
+		Building building;
+		if(buildingManager.findById(id) == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
+					.build();
+		}
+		if(id != buildingUpdated.getId()) {
+			buildingUpdated.setId(id);
+		}
+		
+		building = buildingManager.updateBuilding(buildingUpdated);
+		return Response.ok().entity(building).build();
+	}
 //		
-//		buildingManager.updateBuilding(building);
-//		
-//		return Response.ok().entity(buildingManager.findById(id)).build();
-//	}
-//		
-//	@DELETE
-//	@Path("{id:[0-9]+}")
-//	public Response deleteBuilding(@PathParam("id") Long id) {
-//		
-//		if(buildingManager.findById(id) == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
-//					.build();
-//		}
-//		
-//		Project project = projectManager.findProject(id);
-//		project.removeBuildings(buildingManager.findById(id));
-//		projectManager.updateProject(project);
-//		
-//		return Response.ok().build();
-//	}
+	@DELETE
+	@Path("/{id:[0-9]+}")
+	public Response deleteBuilding(@PathParam("id") Long id) {
+		
+		if(buildingManager.findById(id) == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
+					.build();
+		}
+		
+		Project project = projectManager.findProject(id);
+		project.removeBuildings(buildingManager.findById(id));
+		projectManager.updateProject(project);
+		
+		return Response.ok().build();
+	}
 	
 //	@PUT
 //	@Path("{idBuilding:[0-9]+}/floors")
