@@ -39,7 +39,7 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public void updateUser(User user) {
 		try {
-			em.merge(user);
+			 em.merge(user);
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
@@ -78,5 +78,31 @@ public class UserManagerImpl implements UserManager {
 			throw new DBException(e);
 		}
 	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		try {
+			Query request = em.createNamedQuery("User.findUserByEmail");
+			request.setParameter(PARAM_EMAIL, email);
+			return (User) request.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (Exception e) {
+			throw new DBException(e);
+		}
+	}
+
+	@Override
+	public List<User> findAllUser() {
+		try {
+			return  em.createNamedQuery("User.findAll").getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} catch (Exception e) {
+			throw new DBException(e);
+		}
+	}
+	
+	
 
 }
