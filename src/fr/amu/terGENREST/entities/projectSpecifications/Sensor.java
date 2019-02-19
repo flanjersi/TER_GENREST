@@ -3,12 +3,19 @@ package fr.amu.terGENREST.entities.projectSpecifications;
 import java.io.Serializable;
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.persistence.Basic;
+=======
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+<<<<<<< HEAD
+=======
+import javax.persistence.GenerationType;
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,6 +42,7 @@ public class Sensor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+<<<<<<< HEAD
 	@GeneratedValue
 	private Long id;
 
@@ -44,6 +52,15 @@ public class Sensor implements Serializable {
 
 	@Column(name = "longitude", nullable = false)
 	@Size(min = 1, max = 200)
+=======
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@Column(name = "latitude", nullable = false)
+	private double latitude;
+
+	@Column(name = "longitude", nullable = false)
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	private double longitude;
 
 	@Column(name = "model", nullable = false)
@@ -62,6 +79,7 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String state;
 
+<<<<<<< HEAD
 	@Basic
 	private String unitData;
 
@@ -81,6 +99,14 @@ public class Sensor implements Serializable {
 	}
 
 	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state) {
+=======
+	@Column(name = "unitData", nullable = false)
+	@Size(min = 1, max = 200)
+	private String unitData;
+
+	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
+			String unitData) {
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -88,6 +114,7 @@ public class Sensor implements Serializable {
 		this.brand = brand;
 		this.reference = reference;
 		this.state = state;
+<<<<<<< HEAD
 	}
 	
 	
@@ -115,6 +142,15 @@ public class Sensor implements Serializable {
 		this.reference = reference;
 		this.state = state;
 	}
+=======
+		this.unitData = unitData;
+	}
+
+	public Sensor() {
+		super();
+	}
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 	public Long getId() {
 		return id;
@@ -171,4 +207,92 @@ public class Sensor implements Serializable {
 	public void setState(String state) {
 		this.state = state;
 	}
+<<<<<<< HEAD
 }
+=======
+
+	public String getUnitData() {
+		return unitData;
+	}
+
+	public void setUnitData(String unitData) {
+		this.unitData = unitData;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
+				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + ", unitData=" + unitData
+				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((unitData == null) ? 0 : unitData.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sensor other = (Sensor) obj;
+		if (brand == null) {
+			if (other.brand != null)
+				return false;
+		} else if (!brand.equals(other.brand))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
+			return false;
+		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
+			return false;
+		if (model == null) {
+			if (other.model != null)
+				return false;
+		} else if (!model.equals(other.model))
+			return false;
+		if (reference == null) {
+			if (other.reference != null)
+				return false;
+		} else if (!reference.equals(other.reference))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		if (unitData == null) {
+			if (other.unitData != null)
+				return false;
+		} else if (!unitData.equals(other.unitData))
+			return false;
+		return true;
+	}
+
+	
+
+	
+}
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a

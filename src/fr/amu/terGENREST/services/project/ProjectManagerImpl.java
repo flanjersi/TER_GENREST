@@ -24,32 +24,28 @@ public class ProjectManagerImpl  implements ProjectManager{
 	
 	@Override
 	public Project findProject(Long id) {
-		// TODO Auto-generated method stub
 		return em.find(Project.class, id);
 	}
 
 	@Override
-	public void addProject(Project project) {
-		// TODO Auto-generated method stub
-		em.persist(project);
-	}
-
-	@Override
 	public void removeProject(Project project) {
-		// TODO Auto-generated method stub
 		em.remove(em.contains(project) ? project : em.merge(project));		
 	}
 
 	@Override
 	public Project updateProject(Project project) {
-		// TODO Auto-generated method stub
 		return em.merge(project);
 	}
 
 
 	@Override
+	public List<Project> findByProjectName(String projectName) {
+		TypedQuery<Project> q  = em.createNamedQuery("Project.findByName", Project.class).setParameter("projectName", projectName);
+		return  q.getResultList();
+	}
+
+	@Override
 	public List<Project> findAllProject() {
-		// TODO Auto-generated method stub
 		return em.createNamedQuery("Project.findAll", Project.class).getResultList();
 	}
 	

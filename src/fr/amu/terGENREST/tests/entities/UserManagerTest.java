@@ -11,7 +11,10 @@ import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
+<<<<<<< HEAD
 import org.junit.Ignore;
+=======
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 import org.junit.Test;
 
 import fr.amu.terGENREST.entities.user.User;
@@ -51,7 +54,11 @@ public class UserManagerTest {
 		userManager.saveUser(user);
 		User findedUser = userManager.findUser(user.getId());
 		assertEquals(user.getEmail(), findedUser.getEmail());
+<<<<<<< HEAD
 		//userManager.removeUser(user);
+=======
+		userManager.removeUser(user);
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	}
 	
 	@Test
@@ -62,10 +69,17 @@ public class UserManagerTest {
 		userManager.updateUser(user);
 		User findedUser = userManager.findUser(user.getId());
 		assertEquals("marcde", findedUser.getFirstName());
+<<<<<<< HEAD
 		//userManager.removeUser(user);
 	}
 	
 	@Ignore
+=======
+		userManager.removeUser(user);
+	}
+	
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@Test
 	public void testRemoveUser() {
 
@@ -76,7 +90,11 @@ public class UserManagerTest {
 		assertNull(findedUser);
 		userManager.removeUser(user);
 	}
+<<<<<<< HEAD
 	@Ignore
+=======
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@Test
 	public void testFindUser() {
 		User user = new User("Jack", "Marez", "ma@gmail.fr", "pass2");
@@ -85,7 +103,11 @@ public class UserManagerTest {
 		assertEquals(user.getEmail(), findedUser.getEmail());
 		userManager.removeUser(user);
 	}
+<<<<<<< HEAD
 	@Ignore
+=======
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@Test
 	public void testAuthentification() {
 		User user1 = new User("Nicky", "larson", "nick@gmail.fr", "azerty");
@@ -93,7 +115,11 @@ public class UserManagerTest {
 		assertNotNull(userManager.authentification("nick@gmail.fr", "azerty"));
 		userManager.removeUser(user1);
 	}
+<<<<<<< HEAD
 	@Ignore
+=======
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@Test
 	public void testFindUserByEmail() {
 		User user1 = new User("Mofe", "ieje", "eaijd@gmail.fr", "eid");
@@ -101,7 +127,11 @@ public class UserManagerTest {
 		assertNotNull(userManager.findUserByEmail("eaijd@gmail.fr"));
 		userManager.removeUser(user1);
 	}
+<<<<<<< HEAD
 	@Ignore
+=======
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@Test
 	public void testFindAllUser() {
 		User user1 = new User("Nicky", "larson", "nick@gmail.fr", "azerty");

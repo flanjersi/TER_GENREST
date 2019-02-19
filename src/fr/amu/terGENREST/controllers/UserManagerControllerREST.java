@@ -55,6 +55,7 @@ public class UserManagerControllerREST {
 	@PUT
 	public Response createUser(User user) {
 	    
+<<<<<<< HEAD
 		if( userManager.findUserByEmail(user.getEmail()) != null ) {
 			return Response
 					.status(403)
@@ -62,6 +63,43 @@ public class UserManagerControllerREST {
 					.build();
 		}
 		
+=======
+		if( user.getEmail() == null ) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.build();
+		}
+		
+		if( user.getFirstName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.build();
+		}
+		if( user.getLastName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.build();
+		}
+		
+		if( user.getPassword() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.build();
+		}
+		
+		if( userManager.findUserByEmail(user.getEmail()) != null ) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+					.build();
+		}
+		
+		
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		userManager.saveUser(user);
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", user.getId()).build();
 		return Response.ok().entity(jsonResponse).build();
@@ -70,6 +108,46 @@ public class UserManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateUser(@PathParam("id") Long id, User user) {
+<<<<<<< HEAD
+=======
+	    
+		if( user.getEmail() == null ) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.build();
+		}
+		
+		if( user.getFirstName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.build();
+		}
+		if( user.getLastName() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.build();
+		}
+		
+		if( user.getPassword() == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.build();
+		}
+		// If he want to change the email, check if it is not used
+		if( !userManager.findUser(id).getEmail().equals(user.getEmail()) ) {
+			if( userManager.findUserByEmail(user.getEmail()) != null ) {
+				return Response
+						.status(403)
+						.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+						.build();
+			}
+		}
+		
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		if(userManager.findUser(id) == null) {
 			return Response
 					.status(403)
@@ -77,7 +155,13 @@ public class UserManagerControllerREST {
 					.build();
 		}
 		
+<<<<<<< HEAD
 		User u =  userManager.findUser(id);
+=======
+		if(id != user.getId()) {
+			user.setId(id);
+		}
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 		userManager.updateUser(user);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
@@ -97,6 +181,10 @@ public class UserManagerControllerREST {
 		return Response.ok().build();
 	}
 	
+<<<<<<< HEAD
+=======
+	
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 	@GET
 	@Path("/{email}/{password}")
 	public Response getUserByEmailAndPassword(@PathParam("email") String email, @PathParam("password") String password) {	

@@ -31,4 +31,8 @@ public class FloorManagerImpl implements FloorManager{
 		TypedQuery<Floor> q = em.createNamedQuery("floor.findAllFloor", Floor.class);
 		return q.getResultList();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a

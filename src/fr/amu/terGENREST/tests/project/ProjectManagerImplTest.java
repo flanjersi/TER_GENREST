@@ -18,6 +18,7 @@ import fr.amu.terGENREST.services.user.UserManager;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
 
+
 /**
  * DAO test to project
  * @author Youcef
@@ -34,16 +35,26 @@ public class ProjectManagerImplTest {
 	@EJB
 	UserManager userManager;
 
+	User user;
 	
+	Project project;
+
 	@Before
 	public void setUp() throws Exception {
 		EJBContainer.createEJBContainer().getContext().bind("inject", this);
+		user = new User("firstName", "lastName", "email0@email.com", "password");
+		project = new Project("firstProject");
+		user.addProject(project);
+		userManager.saveUser(user);
 	}
+
 
 	@After
 	public void tearDown() throws Exception {
-		
+		//projectManager.removeProject(project);
+		userManager.removeUser(user);
 		EJBContainer.createEJBContainer().close();
+<<<<<<< HEAD
 	}
 //	
 //	@Test
@@ -109,5 +120,39 @@ public class ProjectManagerImplTest {
 //		userManager.removeUser(user);
 //		userManager.removeUser(user2);
 //	}
+=======
+		
+	}
+
+	@Test
+	public void testAddProject() {
+
+		Project projcetAdded = projectManager.findProject(project.getId()); 
+		Assert.assertEquals(projcetAdded, project);	
+
+	}
+
+
+	@Test
+	public void testRemoveProject() {
+		user.removeProject(project);
+		userManager.updateUser(user);
+		Assert.assertEquals(0,userManager.findUser(user.getId()).getProjects().size());
+	}
+
+	@Test
+	public void testUpdateProject() {	
+		project.setProjectName("secondProject");
+		userManager.updateUser(user);
+		Assert.assertEquals("secondProject", projectManager.findProject(project.getId()).getProjectName());
+	}
+	
+
+//	@Test
+//	public void testFindPojectByProjectName() {	
+//		Assert.assertEquals(project,projectManager.findByProjectName(project.getProjectName()));
+//	}
+
+>>>>>>> bf2e63f2a54a766ff5904a4e1e577f5167caa11a
 
 }

@@ -8,15 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table
-public class Configuration implements Serializable{
+@NamedQueries({
+		@NamedQuery(name = "Configuration.findByName", query = "SELECT c FROM Configuration c WHERE name = :name"),
+		@NamedQuery(name = "Configuration.findByPathFolder", query = "SELECT c FROM Configuration c WHERE pathFolder = :pathFolder") })
+public class Configuration implements Serializable {
 
 	/**
+	 * 
 	 * 
 	 */
 	private static final long serialVersionUID = 6321329799125743622L;
@@ -24,26 +29,29 @@ public class Configuration implements Serializable{
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	@Basic(optional = false) @Size(min = 1, max = 50)
+
+	@Basic(optional = false)
+	@Size(min = 1, max = 50)
 	@Column(nullable = false, length = 50, unique = true)
 	private String name;
-	
-	@Basic(optional = false) @Size(min = 1, max = 2000)
+
+	@Basic(optional = false)
+	@Size(min = 1, max = 2000)
 	@Column(nullable = false, length = 2000)
 	private String description;
-	
+
 	/**
 	 * Path folder where all of templates are store
 	 */
-	@Basic(optional = false) @Size(min = 1, max = 200)
+	@Basic(optional = false)
+	@Size(min = 1, max = 200)
 	@Column(nullable = false, length = 200, unique = true)
 	private String pathFolder;
-	
+
 	public Configuration() {
-		
+
 	}
-	
+
 	public Configuration(String name, String description, String pathFolder) {
 		this.pathFolder = pathFolder;
 		this.description = description;
@@ -81,7 +89,6 @@ public class Configuration implements Serializable{
 	public void setPathFolder(String pathFolder) {
 		this.pathFolder = pathFolder;
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -107,6 +114,7 @@ public class Configuration implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Configuration [id=" + id + ", name=" + name + ", description=" + description + ", pathFolder=" + pathFolder + "]";
+		return "Configuration [id=" + id + ", name=" + name + ", description=" + description + ", pathFolder="
+				+ pathFolder + "]";
 	}
 }
