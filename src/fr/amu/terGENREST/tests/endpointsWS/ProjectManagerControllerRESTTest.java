@@ -29,7 +29,7 @@ public class ProjectManagerControllerRESTTest {
 	@Test
 	public void testCreateProject() throws IOException {
 		
-		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/user/100/projects");
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/100/projects");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "firstProject").build();
 

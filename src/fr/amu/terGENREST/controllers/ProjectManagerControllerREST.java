@@ -23,7 +23,7 @@ import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/user/{idUser:[0-9]+}/projects")
+@Path("api/users/{idUser:[0-9]+}/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProjectManagerControllerREST {
