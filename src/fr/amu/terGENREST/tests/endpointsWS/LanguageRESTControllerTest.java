@@ -71,7 +71,7 @@ public class LanguageRESTControllerTest {
 
 		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/language/" + id);
 
-		response = HttpClientBuilder.create().build().execute( requestUpdate );
+		response = HttpClientBuilder.create().build().execute( requestGetData );
 
 		assertEquals(200, response.getStatusLine().getStatusCode());
 
