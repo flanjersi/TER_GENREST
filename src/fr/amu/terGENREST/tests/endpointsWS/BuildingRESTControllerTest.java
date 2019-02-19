@@ -27,7 +27,7 @@ public class BuildingRESTControllerTest {
 	public void testCRUD() throws IOException {
 
 		//Add data
-		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/1/projects/1/buildings/");
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/projects/1/buildings/");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("type", "studio").build();
 
@@ -48,24 +48,24 @@ public class BuildingRESTControllerTest {
 		
 		//		//Update data
 
-//		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/100/projects/3/buildings/" + id);
-//
-//		jsonPayloadRequest = Json.createObjectBuilder().add("type", "studiostudio").build();
-//
-//
-//		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-//		requestUpdate.setHeader("Content-Type", "application/json");
-//
-//		response = HttpClientBuilder.create().build().execute( requestUpdate );
-//
-//		assertEquals(200, response.getStatusLine().getStatusCode());
-//
-//		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-//
-//		assertTrue(responseObject.containsKey("id"));
-//		assertTrue(responseObject.containsKey("type"));
-//
-//		assertEquals("studiostudio", responseObject.getString("type"));		
+		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/projects/1/buildings/" + id);
+
+		jsonPayloadRequest = Json.createObjectBuilder().add("type", "studiostudio").build();
+
+
+		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
+		requestUpdate.setHeader("Content-Type", "application/json");
+
+		response = HttpClientBuilder.create().build().execute( requestUpdate );
+
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+
+		assertTrue(responseObject.containsKey("id"));
+		assertTrue(responseObject.containsKey("type"));
+
+		assertEquals("studiostudio", responseObject.getString("type"));		
 //	
 //
 //		//Find data
