@@ -64,10 +64,6 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String unitData;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Data> dataList;
-
 	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
 			String unitData) {
 		super();
@@ -84,13 +80,6 @@ public class Sensor implements Serializable {
 		super();
 	}
 	
-	public void addData(Data a) {
-		dataList.add(a);
-	}
-
-	public void removeData(Data a) {
-		dataList.remove(a);
-	}
 
 	public Long getId() {
 		return id;
@@ -156,19 +145,12 @@ public class Sensor implements Serializable {
 		this.unitData = unitData;
 	}
 
-	public List<Data> getDataList() {
-		return dataList;
-	}
-
-	public void setDataList(List<Data> dataList) {
-		this.dataList = dataList;
-	}
 
 	@Override
 	public String toString() {
 		return "Sensor [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
 				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + ", unitData=" + unitData
-				+ ", dataList=" + dataList + "]";
+				+ "]";
 	}
 
 	@Override
