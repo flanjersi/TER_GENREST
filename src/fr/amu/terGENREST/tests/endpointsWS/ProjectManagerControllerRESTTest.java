@@ -28,6 +28,7 @@ import fr.amu.terGENREST.tests.utils.Utils;
 
 public class ProjectManagerControllerRESTTest {
 
+
 	long id;
 
 	@Before
@@ -50,7 +51,6 @@ public class ProjectManagerControllerRESTTest {
 				id = responseObjectUser.getJsonNumber("id").longValue();
 	}
 	
-
 	@After
 	public void tearDown() throws Exception {
 		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
@@ -99,8 +99,6 @@ public class ProjectManagerControllerRESTTest {
 		assertTrue(responseObject2.containsKey("projectName"));		
 		assertEquals("MySecondProject", responseObject2.getString("projectName"));		
 	}
-	
-	
 	
 	@Test
 	public void testRemoveProject() throws IOException {
