@@ -17,10 +17,6 @@ public class CorridorManagerImpl implements CorridorManager {
 	@PersistenceContext(unitName = "database")
 	private EntityManager em;
 
-	@Override
-	public void removeCorridor(Corridor corridor) {
-		em.remove(em.contains(corridor) ? corridor : em.merge(corridor));
-	}
 
 	@Override
 	public Corridor findCorridor(Long id) {
@@ -28,10 +24,6 @@ public class CorridorManagerImpl implements CorridorManager {
 	}
 
 
-	@Override
-	public void addCorridor(Corridor corridor) {
-       em.persist(corridor);		
-	}
 
 	@Override
 	public Corridor updateCorridor(Corridor corridor) {
