@@ -1,5 +1,7 @@
 package fr.amu.terGENREST.services.projectSpecifications;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
@@ -20,5 +22,7 @@ public interface CorridorManager {
 	public void removeCorridor(Corridor corridor);
 
 	public Corridor findCorridor(Long id);
+	
+	public List<Corridor> findAllCorridor();
 
 }

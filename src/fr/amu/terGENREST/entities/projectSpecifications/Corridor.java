@@ -27,7 +27,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Corridor")
-@NamedQueries({ @NamedQuery(name = "Corridor.findAllCorridor", query = "SELECT c FROM Corridor c"), })
+@NamedQueries({ @NamedQuery(name = "Corridor.findAllCorridor", query = "select c from Corridor c") })
 public class Corridor implements Serializable {
 
 	private static final long serialVersionUID = 1L;

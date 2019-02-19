@@ -109,6 +109,7 @@ public class UserRESTControllerTest {
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		
 	}
+	
 	@Ignore // to test findAllUser you have to empty the database
 	@Test
 	public void testFindAllUser() throws IOException{
