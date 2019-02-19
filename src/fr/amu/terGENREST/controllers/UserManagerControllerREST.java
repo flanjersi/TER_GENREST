@@ -58,7 +58,7 @@ public class UserManagerControllerREST {
 		if( user.getEmail() == null ) {
 			return Response
 					.status(403)
-					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.entity(Utils.makeErrorMessage(403, " 'email' property is missing"))
 					.build();
 		}
 		

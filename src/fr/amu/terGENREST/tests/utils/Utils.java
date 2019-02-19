@@ -30,12 +30,13 @@ public class Utils {
 	}
 	
 	public static JsonObject stringToJsonObject(String strJson) {
+		System.out.println("fzfaaaaaaaaaaaaaaaaaaa"+strJson);
 		JsonReader jsonReader = Json.createReader(new StringReader(strJson));
-		
+		System.out.println("fffffffffffffffffffffffffffffff"+jsonReader.toString());
 		JsonObject jsonObject = jsonReader.readObject();
 		
 		jsonReader.close();
-		
+		System.out.println("grrrrrrrrrrrrrrrrrrrrrrr"+jsonObject);
 		return jsonObject;
 	}
 	
