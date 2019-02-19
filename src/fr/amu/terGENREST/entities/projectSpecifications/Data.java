@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /***
- * Data: represented by id (auto gÃ©nÃ©rÃ©)dateTime (not null)value (not null)
+ * Data: represented by id (auto généré)dateTime (not null)value (not null)
  * 
  * 
  * @author tsila

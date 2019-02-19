@@ -16,25 +16,19 @@ public class BuildingManagerImpl implements BuildingManager {
     private EntityManager em;
 
 	@Override
-	public void addBuilding(Building building) {
-		em.persist(building);
-	}
-
-	@Override
 	public Building updateBuilding(Building building) {
 		return em.merge(building);
 	}
 
-	@Override
 	public void removeBuilding(Building building) {
 		em.remove(em.contains(building) ? building : em.merge(building));
 	}
 
 	@Override
-	public Building findById(Long id) {
+	public Building findById(Long id){
 		return em.find(Building.class, id);
 	}
-	
+
 	@Override
 	public List<Building> findAllBuilding() {
 		TypedQuery<Building> q = em.createNamedQuery("Building.findAllBuilding", Building.class);

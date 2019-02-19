@@ -30,8 +30,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Building;
  */
 
 @NamedQueries({ 
-	@NamedQuery( name="Project.findAll",query="SELECT p FROM Project p"),
-	@NamedQuery(name = "Project.findByName", query = "SELECT p FROM Project p WHERE projectName = :projectName")
+	@NamedQuery( name="Project.findAll",query="SELECT p from Project p")
 }) 
 
 @Entity
@@ -50,8 +49,12 @@ public class Project implements Serializable{
 	@Size(min = 1, max = 200) 
 	private String projectName; 
 
-	@OneToMany(fetch= FetchType.EAGER,cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
+			CascadeType.PERSIST }, orphanRemoval = true)
 	private List<Building> buildings = new ArrayList<>();
+
+	//@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+	//private List<House> houses = new ArrayList<>();
 
 	public Project() {
 		
@@ -65,6 +68,12 @@ public class Project implements Serializable{
 	public Long getId() {
 		return id;
 	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 
 	public String getProjectName() {
 		return projectName;
@@ -96,6 +105,30 @@ public class Project implements Serializable{
 	public void removeBuildings(Building building) {
 		this.buildings.remove(building);
 	}
+	
+//--------------------------------------- HOUSE ------------------------------------ // 	
+
+//	public List<House>  getHouses() {
+//	return houses;
+//}
+//
+//
+//public void setHouse(List<House> houses) {
+//	this.houses = houses;
+//}
+
+//public void addHouse(House house) {
+//	if(this.houses == null) {
+//		this.houses = new ArrayList<>();
+//	}
+//	
+//	this.houses.add(house);
+//}
+//
+//
+//public void removeHouse(House house) {
+//	this.houses.remove(house);
+//}
 
 	@Override
 	public String toString() {

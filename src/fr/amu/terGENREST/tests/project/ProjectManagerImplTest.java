@@ -53,7 +53,7 @@ public class ProjectManagerImplTest {
 		userManager.removeUser(user);
 		EJBContainer.createEJBContainer().close();	
 	}
-	
+
 	@Test
 	public void testAddProject() {
 		Project projcetAdded = projectManager.findProject(project.getId()); 

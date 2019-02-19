@@ -4,16 +4,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.amu.terGENREST.entities.environmentTechnical.Configuration;
@@ -21,6 +19,8 @@ import fr.amu.terGENREST.entities.environmentTechnical.Language;
 import fr.amu.terGENREST.services.environmentTechnical.ConfigurationManager;
 import fr.amu.terGENREST.services.environmentTechnical.LanguagesManager;
 
+
+@Transactional
 public class ConfigurationManagerTest {
 
 	@EJB
