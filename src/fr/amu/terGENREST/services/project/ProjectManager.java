@@ -14,9 +14,6 @@ import fr.amu.terGENREST.entities.project.Project;
 public interface ProjectManager {
 
 	public Project findProject(Long id);
-
-	@Deprecated
-	public void removeProject(Project project);
 	public Project updateProject(Project project);
 	public List<Project> findAllProject();
 	public List<Project> findByProjectName(String projectName);

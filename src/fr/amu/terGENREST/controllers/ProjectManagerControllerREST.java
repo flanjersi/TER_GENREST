@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import fr.amu.terGENREST.controllers.utils.Utils;
+import fr.amu.terGENREST.entities.environmentTechnical.Language;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
@@ -39,9 +41,8 @@ public class ProjectManagerControllerREST {
 
 	@GET
 	@Path("")
-	public Response getAllProject() {
-		List<Project> languages = projectManager.findAllProject();		
-		return Response.ok().entity(languages).build();
+	public Response getAllProject(@PathParam("idUser") Long id) {	
+		return Response.ok().entity(userManager.findUser(id).getProjects()).build();
 	}
 	
 	@GET
@@ -59,22 +60,14 @@ public class ProjectManagerControllerREST {
 	
 	@PUT
 	@Path("")
-	public Response createProject(@PathParam("idUser") Long idUser, Project project) {
-		
-		long id = 1L;
-		
-		if(userManager.findUser(id) == null) {
-			User user1 = new  User("firstName", "lastName", "email007@email.com", "password");
-			userManager.saveUser(user1);
-			id = user1.getId();
-		}
+	public Response createProject(@PathParam("idUser") Long id, Project project) {
 		
 		User user = userManager.findUser(id);
 		
 		if( user == null){
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "User with id '" + idUser + "' not exist"))
+					.entity(Utils.makeErrorMessage(400, "User with id '" + id + "' not exist"))
 					.build();
 		}
 					
@@ -110,40 +103,67 @@ public class ProjectManagerControllerREST {
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", projectAdded.get().getId()).build();
 			
-		return Response.status(201).entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();		
 	}
+		
+	@POST
+	@Path("")
+	public Response updateProject(@PathParam("idUser") Long id, Project project) {
+			
+		if(userManager.findUser(id) == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "User with id '" + id + "' no exist"))
+					.build();
+		}
+		
+		long nbProject = userManager.findUser(id).getProjects()
+				.stream()
+				.filter(projectUser -> (projectUser.getId().equals(project.getId())))
+				.count();
+		
+		if(nbProject == 0) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "Project with id '" + project.getId() + "' no exist"))
+					.build();
+		}
 	
-	
-	
-//	@POST
-//	@Path("{id:[0-9]+}")
-//	public Response updateProject(@PathParam("id") Long id, Project project) {
-//		if(projectManager.findProject(id)== null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
-//					.build();
-//		}
-//		
-//		projectManager.updateProject(project);
-//		
-//		return Response.ok().entity(projectManager.findProject(id)).build();
-//	}
-//
-//	@DELETE
-//	@Path("{id:[0-9]+}")
-//	public Response deleteProject(@PathParam("id") Long id) {
-//		if(projectManager.findProject(id) == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
-//					.build();
-//		}
-//		
-//		projectManager.removeProject(projectManager.findProject(id));
-//		
-//		return Response.ok().build();
-//	}
+		projectManager.updateProject(project);
+		
+		List<Project> u = userManager.findUser(id).getProjects();		
+		Optional<Project> p = u.stream().filter(projectFinded -> projectFinded.equals(project)).findFirst();
+				
+		return Response.status(200).entity(p).build();
+	}
+
+	@DELETE
+	@Path("/{idProject:[0-9]+}")
+	public Response deleteProject(@PathParam("idProject") Long id,@PathParam("idUser") Long idUser) {
+		
+		Project projectRemoved = projectManager.findProject(id);
+		
+		if(projectRemoved == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
+					.build();
+		}
+		
+		User user = userManager.findUser(idUser);
+		
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + idUser + "' no exist"))
+					.build();
+		}
+		
+		user.removeProject(projectRemoved);
+		userManager.updateUser(user);
+			
+		return Response.ok().build();
+	}
 	
 
 }
