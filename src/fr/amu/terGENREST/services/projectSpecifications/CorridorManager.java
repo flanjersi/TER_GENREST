@@ -8,6 +8,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 
 /***
  * DAO for Corridor add, update, remove, find by id.
+ * 
  * @author tsila
  *
  */
@@ -15,14 +16,10 @@ import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 @Local
 public interface CorridorManager {
 
-	public void addCorridor(Corridor corridor);
-
 	public Corridor updateCorridor(Corridor corridor);
 
-	public void removeCorridor(Corridor corridor);
-
 	public Corridor findCorridor(Long id);
-	
+
 	public List<Corridor> findAllCorridor();
 
 }
