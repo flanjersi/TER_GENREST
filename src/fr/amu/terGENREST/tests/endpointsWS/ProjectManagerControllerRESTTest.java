@@ -31,7 +31,7 @@ public class ProjectManagerControllerRESTTest {
 		
 		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/100/projects");
 
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "firstProject").build();
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "MyfirstProject1").build();
 
 		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
 		request.setHeader("Content-Type", "application/json");
@@ -45,7 +45,6 @@ public class ProjectManagerControllerRESTTest {
 		assertTrue(responseObject.containsKey("id"));
 		assertFalse(responseObject.containsKey("projectName"));
 
-		//long id = responseObject.getJsonNumber("id").longValue();
 
 	}
 
