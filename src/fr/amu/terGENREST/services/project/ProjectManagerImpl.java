@@ -28,15 +28,9 @@ public class ProjectManagerImpl  implements ProjectManager{
 	}
 
 	@Override
-	public void removeProject(Project project) {
-		em.remove(em.contains(project) ? project : em.merge(project));		
-	}
-
-	@Override
 	public Project updateProject(Project project) {
 		return em.merge(project);
 	}
-
 
 	@Override
 	public List<Project> findByProjectName(String projectName) {
