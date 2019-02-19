@@ -131,6 +131,12 @@ public class ConfigurationManagerControllerRESTTest {
 		response = HttpClientBuilder.create().build().execute( requestGetData );
 
 		assertEquals(404, response.getStatusLine().getStatusCode());		
+
+		HttpDelete requestDeleteDataLangage = new HttpDelete("http://localhost:8090/terGENREST/api/language/" + id);
+		response = HttpClientBuilder.create().build().execute( requestDeleteDataLangage );
+		assertEquals(200, response.getStatusLine().getStatusCode());
+	
+	
 	}
 	
 }
