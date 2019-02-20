@@ -1,11 +1,11 @@
 package fr.amu.terGENREST.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import fr.amu.terGENREST.controllers.utils.Utils;
+import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.user.UserManager;
 
@@ -55,7 +56,7 @@ public class UserManagerControllerREST {
 	
 	@PUT
 	public Response createUser(User user) {
-	    
+	    //TODO Modification des codes 403 en 400
 		if( user.getEmail() == null ) {
 			return Response
 					.status(403)
@@ -65,21 +66,21 @@ public class UserManagerControllerREST {
 		
 		if( user.getFirstName() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, " 'firstname' property is missing"))
 					.build();
 		}
 		if( user.getLastName() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, " 'lastname' property is missing"))
 					.build();
 		}
 		
 		if( user.getPassword() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, " 'password' property is missing"))
 					.build();
 		}
 		
@@ -99,7 +100,8 @@ public class UserManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateUser(@PathParam("id") Long id, User user) {
-	    
+	    //TODO Changement vers la modification plus propre -> modification si != null
+		
 		if( user.getEmail() == null ) {
 			return Response
 					.status(403)
@@ -146,6 +148,7 @@ public class UserManagerControllerREST {
 		if(id != user.getId()) {
 			user.setId(id);
 		}
+		
 		userManager.updateUser(user);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
@@ -156,8 +159,8 @@ public class UserManagerControllerREST {
 	public Response deleteUser(@PathParam("id") Long id) {
 		if(userManager.findUser(id) == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User no exist"))
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id +"' not found"))
 					.build();
 		}
 		
@@ -169,6 +172,8 @@ public class UserManagerControllerREST {
 	@GET
 	@Path("/{email}/{password}")
 	public Response getUserByEmailAndPassword(@PathParam("email") String email, @PathParam("password") String password) {	
+		//TODO changer le chemin avec les queryParam : https://www.mkyong.com/webservices/jax-rs/jax-rs-queryparam-example/
+		
 		User user = userManager.authentification(email, password);
 		if(user == null) {
 			return Response
@@ -177,6 +182,103 @@ public class UserManagerControllerREST {
 					.build();
 		}
 		return Response.ok().entity(user).build();
+	}
+	
+	@GET
+	@Path("/{id:[0-9]+}/projects")
+	public Response getAllProject(@PathParam("id") Long id) {
+		User user = userManager.findUser(id);
+		
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not found"))
+					.build();
+		}
+		
+		return Response.ok().entity(user.getProjects()).build();
+	}
+	
+	@PUT
+	@Path("/{idUser:[0-9]+}/projects")
+	public Response createProject(@PathParam("idUser") Long id, Project project) {
+		
+		User user = userManager.findUser(id);
+		
+		if(user == null){
+			return  Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not exist"))
+					.build();
+		}
+					
+		if(project.getProjectName() == null) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'ProjectName' property is missing"))
+					.build();
+		}
+		
+		Long nbProjects = user.getProjects()
+			.stream()
+			.filter(projectUser -> (projectUser.getProjectName().equals(project.getProjectName())))
+			.count();
+		
+		if(nbProjects != 0) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Project : '"+ project.getProjectName() +"' is already use"))
+					.build();
+		}
+		
+		user.addProject(project);
+		userManager.updateUser(user);
+		
+		user = userManager.findUser(user.getId());
+		
+		Optional<Project> projectAdded = user.getProjects()
+				.stream()
+				.filter(projectUser -> (projectUser.getProjectName().equals(project.getProjectName())))
+				.findFirst();
+		
+		
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", projectAdded.get().getId()).build();
+			
+		return Response.status(201).entity(jsonResponse).build();		
+	}
+	
+
+	@DELETE
+	@Path("/{idUser:[0-9]+}/projects/{idProject:[0-9]+}")
+	public Response deleteProject(@PathParam("idUser") Long idUser, @PathParam("idProject") Long idProject) {
+
+		User user = userManager.findUser(idUser);
+
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + idUser + "' no exist"))
+					.build();
+		}
+
+		Optional<Project> projectRemoved = user.getProjects()
+				.stream()
+				.filter(projectUser -> projectUser.getId() == idProject)
+				.findFirst();
+		
+		
+		if(!projectRemoved.isPresent()) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User don't have project with id '" + idProject + "'"))
+					.build();
+		}
+
+
+		user.removeProject(projectRemoved.get());
+		userManager.updateUser(user);
+
+		return Response.ok().build();
 	}
 
 }

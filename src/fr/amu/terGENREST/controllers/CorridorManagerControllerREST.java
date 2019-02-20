@@ -58,6 +58,8 @@ public class CorridorManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, " 'NumberCorridor' property is missing"))
 					.build();
 		}
+		
+		//TODO Changement vers la modification plus propre -> modification si != null
 			
 //		if(id != corridor.getId()) {
 //			corridor.setId(id);
@@ -65,4 +67,10 @@ public class CorridorManagerControllerREST {
 		corridorManager.updateCorridor(corridor);
 		return Response.ok().entity(corridorManager.findCorridor(id)).build();
 	}
+	
+	//TODO Création d'une méthode d'ajout de sensor (note à moi même)
+	//TODO Création d'une méthode d'ajout de actuator
+	//TODO Création d'une méthode de suppression de sensor (note à moi même)
+	//TODO Création d'une méthode de suppression de actuator
+	
 }

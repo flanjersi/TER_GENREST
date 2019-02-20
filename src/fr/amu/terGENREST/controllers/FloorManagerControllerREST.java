@@ -30,27 +30,15 @@ import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/projects/{idProject:[0-9]+}/buildings/floors")
+@Path("api/floors")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-
 public class FloorManagerControllerREST {
 
 	@EJB
-	private BuildingManager buildingManager;
-	
-	@EJB
 	private FloorManager floorManager;
-	
-	@EJB
-	private ProjectManager projectManager;
-	
-	@EJB
-	private UserManager userManager;
-	
-	
-	public FloorManagerControllerREST() {
-	}
+
+	public FloorManagerControllerREST() {}
 
 	@GET
 	@Path("")
@@ -58,41 +46,34 @@ public class FloorManagerControllerREST {
 		List<Floor>floors = floorManager.findAllFloor();
 		return Response.ok().entity(floors).build();
 	}
-	
+
 	@GET
 	@Path("/{id:[0-9]+}")
 	public Response getFloorById(@PathParam("id") Long id) {	
 		Floor floor = floorManager.findById(id);
-		
+
 		if(floor == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "No floor with id : " + id))
 					.build();
 		}
-		
+
 		return Response.ok().entity(floor).build();
 	}
+
+	//TODO Création d'une méthode de mise à jour de l'étage
 	
-	@POST
-	@Path("/{id:[0-9]+}")
-	public Response updateBuilding(@PathParam("id") Long id, Building buildingUpdated) {
-		Building building;
-		if(buildingManager.findById(id) == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
-					.build();
-	}
-//		if(id != buildingUpdated.getId()) {
-//			buildingUpdated.setId(id);
-//		}
-		
-		building = buildingManager.updateBuilding(buildingUpdated);
-		return Response.ok().entity(building).build();
-	}
-	
+	//TODO Création d'une méthode d'ajout de corridor
+	//TODO Création d'une méthode d'ajout de motherRoom
+
+	//TODO Création d'une méthode de suppression de corridor
+	//TODO Création d'une méthode de suppression de motherRoom
+
 }
+
+//TODO Trier les commentaires
+
 //@PUT
 //@Path("")
 //public Response createFloor(@PathParam("idFloor") Long idFloor, Floor floor) {

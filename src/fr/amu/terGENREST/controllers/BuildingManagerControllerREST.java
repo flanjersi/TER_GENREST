@@ -18,20 +18,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import fr.amu.terGENREST.controllers.utils.Utils;
-import fr.amu.terGENREST.entities.environmentTechnical.Configuration;
-import fr.amu.terGENREST.entities.environmentTechnical.Language;
-import fr.amu.terGENREST.entities.project.Project;
-import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
-import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/projects/{idProject:[0-9]+}/buildings")
+@Path("api/buildings")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
@@ -39,85 +35,87 @@ public class BuildingManagerControllerREST {
 
 	@EJB
 	private BuildingManager buildingManager;
-	
+
 	@EJB
 	private FloorManager floorManager;
-	
+
 	@EJB
 	private ProjectManager projectManager;
-	
+
 	@EJB
 	private UserManager userManager;
-	
-	
-	
+
+
+
 	@GET
 	@Path("")
 	public Response getAllBuildings() {
 		List<Building> buildings = buildingManager.findAllBuilding();
 		return Response.ok().entity(buildings).build();
 	}
-	
-	
+
+
 	@GET
 	@Path("/{id:[0-9]+}")
 	public Response getBuildingById(@PathParam("id") Long id) {	
 		Building building = buildingManager.findById(id);
-		
+
 		if(building == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "No building with id : " + id))
 					.build();
 		}
-		
+
 		return Response.ok().entity(building).build();
 	}
-	
+
 
 	@POST
-	@Path("")
-	public Response updateBuilding(@PathParam("idProject") Long id, Building buildingUpdated) {
+	@Path("/{idBuilding:[0-9]+}")
+	public Response updateBuilding(@PathParam("idBuilding") Long idBuilding, Building buildingUpdated) {
+		//TODO Changement vers la modification plus propre -> modification si != null
+
 		Building building;
-		if(buildingManager.findById(id) == null) {
+		if(buildingManager.findById(idBuilding) == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
+					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
 					.build();
 		}
-		if(id != buildingUpdated.getId()) {
-			buildingUpdated.setId(id);
+		if(idBuilding != buildingUpdated.getId()) {
+			buildingUpdated.setId(idBuilding);
 		}
-		
+
 		building = buildingManager.updateBuilding(buildingUpdated);
 		return Response.ok().entity(building).build();
 	}
 
 	@PUT
-	@Path("{idBuilding:[0-9]+}/floors")
+	@Path("/{idBuilding:[0-9]+}/floors")
 	public Response createFloor(@PathParam("idBuilding") Long idBuilding, Floor floor) {
 		Building building = buildingManager.findById(idBuilding );
+		
 		if(building == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
 					.build();
 		}
-		
-		
-		//Delete the setup of the id by the user
-				//floor.setId(0);
 
-				building.addFloor(floor);
-				buildingManager.updateBuilding(building);
+		//TODO Ajout vérification présence champs obligatoire pour l'ajout d'un étage
 
-				JsonObject jsonResponse = Json.createObjectBuilder().add("id", (JsonValue) floorManager.findById(floor.getId())).build();
+		building.addFloor(floor);
+		buildingManager.updateBuilding(building);
 
-				return Response.ok().entity(jsonResponse).build();
-			}
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", (JsonValue) floorManager.findById(floor.getId())).build();
+
+		return Response.ok().entity(jsonResponse).build();
+	}
+	
 	@DELETE
-	@Path("{idBuilding:[0-9]+}/floors/{id:[0-9]+}")
-	public Response deleteConfiguration(@PathParam("idBuilding") Long idBuilding, @PathParam("id") Long id) {
+	@Path("/{idBuilding:[0-9]+}/floors/{id:[0-9]+}")
+	public Response deleteFloor(@PathParam("idBuilding") Long idBuilding, @PathParam("id") Long idFloor) {
 		Building building = buildingManager.findById(idBuilding );
 
 		if(building == null) {
@@ -126,24 +124,27 @@ public class BuildingManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "building id '" + idBuilding + "' no exist"))
 					.build();
 		}
-		
+
 
 		Optional<Floor> floor = building.getBuildingFloor()
-				.stream().filter(c -> c.getId() == id).findFirst();
-		
+				.stream().filter(c -> c.getId() == idFloor).findFirst();
+
 		if(!floor.isPresent()) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "floor with id '" + id + "' not found"))
+					.entity(Utils.makeErrorMessage(404, "floor with id '" + idFloor + "' not found"))
 					.build();
 		}
-		
+
 		building.removeFloor(floor.get());
 		buildingManager.updateBuilding(building);
-		
+
 		return Response.ok().build();
 	}
 }
+
+//TODO Trier les commentaires
+
 //		Long id = 1L;
 //	
 //		if(buildingManager.findById(id) == null) {
@@ -190,9 +191,9 @@ public class BuildingManagerControllerREST {
 //			return Response.ok().build();
 //		}
 //}
-	
-	
-	
+
+
+
 //		
 
 //@PUT
