@@ -28,9 +28,11 @@ public class Utils {
 	
 	public static JsonObject stringToJsonObject(String strJson) {
 		JsonReader jsonReader = Json.createReader(new StringReader(strJson));
+
 		JsonObject jsonObject = jsonReader.readObject();
 		
 		jsonReader.close();
+
 		return jsonObject;
 	}
 	

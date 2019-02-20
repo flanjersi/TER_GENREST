@@ -57,11 +57,19 @@ public class OperatingSystemsManagerControllerRest {
 	@PUT
 	@Path("")
 	public Response createOperatingSystem(OperatingSystem operatingSystem) {
+		
 		if(operatingSystem.getName() == null) {
 			return Response
 					.status(400)
 					.entity(Utils.makeErrorMessage(400, "'name' property is missing"))
 					.build();		
+		}
+		
+		if(operatingSystemManager.findByName(operatingSystem.getName()) != null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "OperatingSystem '" + operatingSystem.getName() + "' already use"))
+					.build();
 		}
 		
 		if(operatingSystem.getNameFolder() == null) {
@@ -71,41 +79,60 @@ public class OperatingSystemsManagerControllerRest {
 					.build();		
 		}
 		
-		
-		if(operatingSystemManager.findByName(operatingSystem.getName()) != null) {
+		if(operatingSystemManager.findByPathFolder(operatingSystem.getNameFolder()) != null) {
 			return Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "OperatingSystem '" + operatingSystem.getName() + "' already use"))
+					.entity(Utils.makeErrorMessage(400, "OperatingSystem with name folder '" + operatingSystem.getNameFolder() + "' already use"))
 					.build();
 		}
 		
-		//Delete the setup of the id by the user
-		operatingSystem.setId(0);
 		
 		operatingSystemManager.addOperatingSystem(operatingSystem);
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", operatingSystem.getId()).build();
 		
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@POST
 	@Path("{id:[0-9]+}")
 	public Response updateOperatingSystem(@PathParam("id") Long id, OperatingSystem operatingSystem) {
-		if(operatingSystemManager.findById(id) == null) {
+		
+		OperatingSystem operatingSystemFinded = operatingSystemManager.findById(id);
+		
+		if(operatingSystemFinded == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "OperatingSystem with id '" + id + "' no exist"))
 					.build();
 		}
 		
-		if(id != operatingSystem.getId()) {
-			operatingSystem.setId(id);
+		if(operatingSystem.getName() != null) {
+			if(operatingSystemManager.findByName(operatingSystem.getName()) != null) {
+				return Response
+						.status(400)
+						.entity(Utils.makeErrorMessage(400, "OperatingSystem '" + operatingSystem.getName() + "' already use"))
+						.build();
+			}
+			
+			operatingSystemFinded.setName(operatingSystem.getName());
 		}
 		
-		operatingSystemManager.updateOperatingSystem(operatingSystem);
+		if(operatingSystem.getNameFolder() != null) {
+			if(operatingSystemManager.findByPathFolder(operatingSystem.getNameFolder()) != null) {
+				return Response
+						.status(400)
+						.entity(Utils.makeErrorMessage(400, "OperatingSystem with name folder '" + operatingSystem.getNameFolder() + "' already use"))
+						.build();
+			}
+
+			operatingSystemFinded.setNameFolder(operatingSystem.getNameFolder());
+		}
 		
-		return Response.ok().entity(operatingSystemManager.findById(id)).build();
+		
+		operatingSystemFinded = operatingSystemManager.updateOperatingSystem(operatingSystemFinded);
+		
+		return Response.ok().entity(operatingSystemFinded).build();
 	}
 
 	@DELETE

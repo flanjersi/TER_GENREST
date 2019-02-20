@@ -25,5 +25,7 @@ public interface OperatingSystemManager {
 	public List<OperatingSystem> findAllOperatingSystem();
 	
 	public OperatingSystem findByName(String name);
+
+	public OperatingSystem findByPathFolder(String nameFolder);
 	
 }

@@ -78,6 +78,22 @@ public class OperatingSystemManagerTest {
     }
     
     @Test
+    public void testFindByNameFolder() {
+    	OperatingSystem operatingSystem = new OperatingSystem("UbuntuFound", "path");
+
+		operatingSystemManager.addOperatingSystem(operatingSystem);
+		
+		OperatingSystem operatingSystemFound = operatingSystemManager.findByPathFolder("path");
+		
+		assertNotNull(operatingSystemFound);
+		
+		operatingSystemFound = operatingSystemManager.findByPathFolder("pathNotFound");
+		assertNull(operatingSystemFound);
+		
+		operatingSystemManager.removeOperatingSystem(operatingSystem);
+    }
+    
+    @Test
     public void testUniqueNameConstraint() {
     	OperatingSystem operatingSystem = new OperatingSystem("Ubuntu", "path");
 

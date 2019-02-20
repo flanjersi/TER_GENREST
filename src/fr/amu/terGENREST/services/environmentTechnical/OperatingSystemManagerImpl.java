@@ -57,4 +57,16 @@ public class OperatingSystemManagerImpl implements OperatingSystemManager{
 		}
 	}
 
+	@Override
+	public OperatingSystem findByPathFolder(String nameFolder) {
+		TypedQuery<OperatingSystem> q = em.createNamedQuery("OperatingSystem.findByPathFolder", OperatingSystem.class)
+				.setParameter("nameFolder", nameFolder);
+		
+		try {
+			return q.getSingleResult();	
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }

@@ -139,7 +139,6 @@ public class RequestsHelper {
 		request.setEntity(new StringEntity(payload.toString(), ENCODING));
 		request.setHeader(NAMEHEADER, VALUEHEADER);
 
-		
 		HttpResponse response = HttpClientBuilder.create().build().execute( request );
 
 		JsonObject payloadResponse = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));

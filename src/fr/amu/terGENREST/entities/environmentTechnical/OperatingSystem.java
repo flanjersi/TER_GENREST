@@ -17,7 +17,9 @@ import javax.validation.constraints.Size;
 @Entity
 @NamedQueries ({
 	@NamedQuery(name = "OperatingSystem.findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op"),
-	@NamedQuery(name = "OperatingSystem.findByName", query = "SELECT op FROM OperatingSystem op WHERE name = :name" )
+	@NamedQuery(name = "OperatingSystem.findByName", query = "SELECT op FROM OperatingSystem op WHERE name = :name" ),
+	@NamedQuery(name = "OperatingSystem.findByPathFolder", query = "SELECT op FROM OperatingSystem op WHERE nameFolder = :nameFolder" )
+	
 })
 public class OperatingSystem implements Serializable {
 
@@ -54,9 +56,6 @@ public class OperatingSystem implements Serializable {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
