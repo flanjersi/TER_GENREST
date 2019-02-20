@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.Utils;
+import junit.framework.Assert;
 
 public class LanguageRESTControllerTest {
 
@@ -169,4 +170,13 @@ public class LanguageRESTControllerTest {
 
 		assertEquals(404, response.getResponseCode());
 	}
+	
+	@Test
+	public void findAllLanguage() throws IOException {
+		RequestsHelper.ResponseJsonArray response = RequestsHelper.httpGetJsonArray(URL_ROOT_LANGUAGE);
+
+		assertEquals(200, response.getResponseCode());
+	}
+	
 }
+
