@@ -17,11 +17,16 @@ import org.apache.http.util.EntityUtils;
 /**
  * Helper to test the RESTFul api
  * With that helper who can send GET, POST, PUT and DELETE HTTP request
- * @author Jeremy
+ * @author Jeremy, med
  *
  */
 public class RequestsHelper {
 
+	private final static String ENCODING = "UTF-8"; 
+	private final static String NAMEHEADER = "Content-Type";
+	private final static String VALUEHEADER = "application/json";
+	
+	
 	/**
 	 * POJO to get the response of request with JsonObject response payload
 	 * @author Jeremy
@@ -116,8 +121,8 @@ public class RequestsHelper {
 
 		HttpPost requestUpdate = new HttpPost(url);
 
-		requestUpdate.setEntity(new StringEntity(payload.toString(), "UTF-8"));
-		requestUpdate.setHeader("Content-Type", "application/json");
+		requestUpdate.setEntity(new StringEntity(payload.toString(), ENCODING));
+		requestUpdate.setHeader(NAMEHEADER, VALUEHEADER);
 
 		HttpResponse response = HttpClientBuilder.create().build().execute( requestUpdate );
 
@@ -131,8 +136,8 @@ public class RequestsHelper {
 	public static ResponseJsonObject httpPUT(String url, JsonObject payload) throws IOException {
 		HttpPut request = new HttpPut(url);
 
-		request.setEntity(new StringEntity(payload.toString(), "UTF-8"));
-		request.setHeader("Content-Type", "application/json");
+		request.setEntity(new StringEntity(payload.toString(), ENCODING));
+		request.setHeader(NAMEHEADER, VALUEHEADER);
 
 		
 		HttpResponse response = HttpClientBuilder.create().build().execute( request );

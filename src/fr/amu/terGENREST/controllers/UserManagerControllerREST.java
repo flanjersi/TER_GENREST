@@ -149,8 +149,7 @@ public class UserManagerControllerREST {
 		userManager.updateUser(user);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
-	
-	
+		
 	@DELETE
 	@Path("/{id:[0-9]+}")
 	public Response deleteUser(@PathParam("id") Long id) {
@@ -164,7 +163,6 @@ public class UserManagerControllerREST {
 		userManager.removeUser(userManager.findUser(id));
 		return Response.ok().build();
 	}
-	
 	
 	@GET
 	@Path("/{email}/{password}")

@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.tests.utils.JsonRequestandResponseManager;
-import fr.amu.terGENREST.tests.utils.RequestHelper;
+import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 
@@ -47,7 +47,7 @@ public class UserRESTControllerTest {
 		JsonRequestandResponseManager jsonReqandResManager = new JsonRequestandResponseManager();
 		
 			responseAndJsonObject = jsonReqandResManager.putRequest( uri,
-						RequestHelper.jsonPayloadRequestUser());
+						PayloadDataRequestREST.jsonPayloadRequestUser());
 	
 		Optional<HttpResponse> response = responseAndJsonObject.keySet().stream().findFirst();
 		//HttpResponse response = (HttpResponse) resp;
