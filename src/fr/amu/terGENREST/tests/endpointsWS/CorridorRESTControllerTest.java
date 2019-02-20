@@ -40,20 +40,18 @@ public class CorridorRESTControllerTest {
 		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings/"+ idBuilding+"/floors/", 
 				PayloadDataRequestREST.jsonPayloadRequestFloor());
 		idFloor = response.getPayload().getJsonNumber("id").longValue();
-
 	}
 	
 	@Test
 	public void testCRUDUserRest() throws IOException {
-
+		// add floor
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings/"+ idBuilding+"/floor/"+idFloor+"/corridors/", 
 												PayloadDataRequestREST.jsonPayloadRequestCorridor());
 		Long idCorridor = response.getPayload().getJsonNumber("id").longValue();
 		 
-		// find user by id
+		// find floor by id
 		RequestsHelper.ResponseJsonObject responseObject =
 				RequestsHelper.httpGetJsonObject(URL_ROOT_PROJECT + idProject + "/buildings/"+ idBuilding+"/floor/"+idFloor+"/corridors/"+idCorridor);
-		//long idFloor = responseObject.getPayload().getJsonNumber("id").longValue();
 
 		assertEquals(200, responseObject.getResponseCode()); 
 		assertTrue(responseObject.getPayload().containsKey("numberCorridor"));
