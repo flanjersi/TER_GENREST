@@ -1,14 +1,10 @@
 package fr.amu.terGENREST.tests.utils;
 
 
-import java.io.IOException;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import fr.amu.terGENREST.entities.user.User;
-
-public class RequestHelper {
+public class PayloadDataRequestREST {
 
 	public static JsonObject jsonPayloadRequestUser() {
 		return Json.createObjectBuilder().add("email", "leo@gmail.fr")
