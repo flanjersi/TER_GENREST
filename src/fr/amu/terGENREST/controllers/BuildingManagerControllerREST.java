@@ -31,7 +31,7 @@ import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/users/{idUser:[0-9]+}/projects/{idProject:[0-9]+}/buildings")
+@Path("api/projects/{idProject:[0-9]+}/buildings")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 

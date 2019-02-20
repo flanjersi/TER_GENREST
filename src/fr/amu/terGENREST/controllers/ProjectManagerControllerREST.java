@@ -28,7 +28,7 @@ import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/users/{idUser:[0-9]+}/projects")
+@Path("api/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProjectManagerControllerREST {
@@ -184,16 +184,20 @@ public class ProjectManagerControllerREST {
 					.build();
 		}
 		
+		project.addBuilding(building);
+		projectManager.updateProject(project);
 		
-		//Delete the setup of the id by the user
-				//floor.setId(0);
-
-				project.addBuilding(building);
-				projectManager.updateProject(project);
-
-				JsonObject jsonResponse = Json.createObjectBuilder().add("id", (JsonValue) buildingManager.findById(building.getId())).build();
-
-				return Response.ok().entity(jsonResponse).build();
+		project = projectManager.findProject(project.getId());
+		
+		Optional<Building> buildingAdded = project.getBuilding()
+				.stream()
+				.filter(projectUser -> (projectUser.getType().equals(building.getType())))
+				.findFirst();
+		
+		
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
+			
+		return Response.status(201).entity(jsonResponse).build();
 			}
 	@DELETE
 	@Path("{idProject:[0-9]+}/buildings/{id:[0-9]+}")
