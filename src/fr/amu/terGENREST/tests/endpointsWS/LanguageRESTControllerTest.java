@@ -18,84 +18,154 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 public class LanguageRESTControllerTest {
 
+	private static final String URL_ROOT_LANGUAGE = "http://localhost:8090/terGENREST/api/language";
+
 	@Test
 	public void testCRUD() throws IOException {
 
-		//Add data
-		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/language/");
+		//ADD data
 
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("name", "JavaTest").build();
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "JavaTest")
+				.build();
 
-		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-		request.setHeader("Content-Type", "application/json");
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
 
-		HttpResponse response = HttpClientBuilder.create().build().execute( request );
+		assertEquals(201, response.getResponseCode());
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertFalse(response.getPayload().containsKey("name"));
 
-		JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-
-		assertTrue(responseObject.containsKey("id"));
-		assertFalse(responseObject.containsKey("name"));
-
-		long id = responseObject.getJsonNumber("id").longValue();
+		long id = response.getPayload().getJsonNumber("id").longValue();
 
 		//Update data
-
-		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/language/" + id);
-
 		jsonPayloadRequest = Json.createObjectBuilder().add("name", "JavaTestUpdate").build();
 
-		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-		requestUpdate.setHeader("Content-Type", "application/json");
+		response = RequestsHelper.httpPOST(URL_ROOT_LANGUAGE + "/" + id, jsonPayloadRequest);
 
-		response = HttpClientBuilder.create().build().execute( requestUpdate );
+		assertEquals(200, response.getResponseCode());
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("configurationsAvailable"));
 
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+		assertEquals("JavaTestUpdate", response.getPayload().getString("name"));
 
-		assertTrue(responseObject.containsKey("id"));
-		assertTrue(responseObject.containsKey("name"));
-		assertTrue(responseObject.containsKey("configurationsAvailable"));
-
-		assertEquals("JavaTestUpdate", responseObject.getString("name"));
+		id = response.getPayload().getJsonNumber("id").longValue();
 
 		//Find data
 
-		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/language/" + id);
+		response = RequestsHelper.httpGetJsonObject(URL_ROOT_LANGUAGE + "/" + id);
 
-		response = HttpClientBuilder.create().build().execute( requestGetData );
+		assertEquals(200, response.getResponseCode());
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("configurationsAvailable"));
 
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-
-		assertTrue(responseObject.containsKey("id"));
-		assertTrue(responseObject.containsKey("name"));
-		assertTrue(responseObject.containsKey("configurationsAvailable"));
-
-		assertEquals("JavaTestUpdate", responseObject.getString("name"));
+		assertEquals("JavaTestUpdate", response.getPayload().getString("name"));
 
 		//Delete data
 
-		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/language/" + id);
-		response = HttpClientBuilder.create().build().execute( requestDeleteData );
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + "/" + id);
+
+		assertEquals(200, response.getResponseCode());
 
 		//Find data deleted
 
-		requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/language/" + id);
+		response = RequestsHelper.httpGetJsonObject(URL_ROOT_LANGUAGE + "/" + id);
 
-		response = HttpClientBuilder.create().build().execute( requestGetData );
-
-		assertEquals(404, response.getStatusLine().getStatusCode());		
+		assertEquals(404, response.getResponseCode());	
 	}
 
+	@Test
+	public void updateNothing() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "JavaTest")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
+
+		long id = response.getPayload().getJsonNumber("id").longValue();
+
+		//Update data
+		jsonPayloadRequest = Json.createObjectBuilder().build();
+
+		response = RequestsHelper.httpPOST(URL_ROOT_LANGUAGE + "/" + id, jsonPayloadRequest);
+
+		assertEquals(200, response.getResponseCode());
+
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("configurationsAvailable"));
+
+		assertEquals("JavaTest", response.getPayload().getString("name"));
+
+		id = response.getPayload().getJsonNumber("id").longValue();
+
+		//Delete data
+
+		response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + "/" + id);
+	}
+	
+	@Test
+	public void testCreateLanguageWithNullName() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+	}
+	
+	@Test
+	public void testCreateConstraintUniqueName() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "JavaTest")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
+
+		long id = response.getPayload().getJsonNumber("id").longValue();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+		
+		//Delete data
+
+		response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + "/" + id);
+	}
+	
+	@Test
+	public void testUpdateWithUnknowID() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("name", "JavaTestUpdate").build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_LANGUAGE + "/999999999", jsonPayloadRequest);
+
+		assertEquals(404, response.getResponseCode());
+	}
+
+
+	@Test
+	public void testGetWithUnknowId() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_LANGUAGE + "/999999999");
+
+		assertEquals(404, response.getResponseCode());
+
+	}
+	
+	@Test
+	public void testDELETEWithUnknowId() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_LANGUAGE + "/999999999");
+
+		assertEquals(404, response.getResponseCode());
+	}
 }

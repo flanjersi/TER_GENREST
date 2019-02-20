@@ -20,7 +20,6 @@ import fr.amu.terGENREST.services.environmentTechnical.LanguagesManager;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ConfigurationManagerControllerREST {
 
-
 	@EJB
 	private LanguagesManager languagesManager;
 
@@ -50,20 +49,47 @@ public class ConfigurationManagerControllerREST {
 	@POST
 	@Path("{id:[0-9]+}")
 	public Response updateConfiguration(@PathParam("id") Long id, Configuration configurationUpdate) {
-		Configuration configuration;
+		Configuration configuration = configurationManager.findById(id);
 
-		if(configurationManager.findById(id) == null) {
+		if(configuration == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Configuration with id '" + id + "' not found"))
 					.build();
 		}
 
-		if(id != configurationUpdate.getId()) {
-			configurationUpdate.setId(id);
+		if(configurationUpdate.getName() != null) {
+		
+			if(configurationManager.findByName(configurationUpdate.getName()) != null) {
+				return Response
+						.status(400)
+						.entity(Utils.makeErrorMessage(400, "Configuration '" + configuration.getName() + "' already use"))
+						.build();
+			}
+			
+			configuration.setName(configurationUpdate.getName());
 		}
-
-		configuration = configurationManager.updateConfiguration(configurationUpdate);
+		
+		
+		
+		if(configurationUpdate.getDescription() != null) {
+			configuration.setDescription(configurationUpdate.getDescription());
+		}
+		
+		if(configurationUpdate.getPathFolder() != null) {
+		
+			if(configurationManager.findByPathFolder(configurationUpdate.getPathFolder()) != null) {
+				return Response
+						.status(400)
+						.entity(Utils.makeErrorMessage(400, "Path folder '" + configuration.getPathFolder() + "' already use"))
+						.build();
+			}
+			
+			configuration.setPathFolder(configurationUpdate.getPathFolder());
+		}
+		
+		
+		configuration = configurationManager.updateConfiguration(configuration);
 
 		return Response.ok().entity(configuration).build();
 	}
