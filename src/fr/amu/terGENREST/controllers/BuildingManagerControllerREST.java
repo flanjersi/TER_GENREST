@@ -1,6 +1,10 @@
 package fr.amu.terGENREST.controllers;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +22,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
+
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
@@ -44,8 +58,7 @@ public class BuildingManagerControllerREST {
 	
 	@EJB
 	private UserManager userManager;
-	
-	
+
 	
 	@GET
 	@Path("")
@@ -72,21 +85,29 @@ public class BuildingManagerControllerREST {
 	
 	@PUT
 	@Path("")
-	public Response createBuilding(@PathParam("idProject") Long idProject, Building building) {
+	public Response createBuilding(@PathParam("idProject") Long idProject, Building building,@PathParam("idUser") Long idUser) {
 		
-		Long id = 1L;
-	
-		if(projectManager.findProject(id) == null) {
-			 User user = new User("firstName", "lastName", "email007@email.com", "password");
-			 userManager.saveUser(user);
-			Project project= new Project("firstProject");
-			
-			user.addProject(project);
-			id = project.getId();
+
+		if(userManager.findUser(idUser) == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "User with id '" + idUser + "' no exist"))
+					.build();
 		}
+		List<Project> projects = userManager.findUser(idUser).getProjects();
 		
-		Project project = projectManager.findProject(id);
+		long nbProject = projects
+				.stream()
+				.filter(projectUser -> (projectUser.getId().equals(idProject)))
+				.count();
 		
+		if(nbProject == 0) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "Project with id '" + idProject + "' no exist"))
+					.build();
+		}
+			
 		if(building.getType() == null) {
 			return Response
 					.status(400)
@@ -94,13 +115,15 @@ public class BuildingManagerControllerREST {
 					.build();		
 		}
 		
-		project.addBuilding(building);
-		projectManager.updateProject(project);
+		Project p = projectManager.findProject(idProject);
+       
+		p.addBuilding(building);
 		
-		project = projectManager.findProject(project.getId());
-		Optional<Building> buildingAdded = project.getBuilding()
+		projectManager.updateProject(p);
+		
+		Optional<Building> buildingAdded = p.getBuilding()
 				.stream()
-				.filter(projectbuilding -> (projectbuilding.getType().equals(building.getType())))
+				.filter(projectUser -> (projectUser.getType().equals(building.getType())))
 				.findFirst();
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
@@ -109,20 +132,40 @@ public class BuildingManagerControllerREST {
 	
 	@POST
 	@Path("/{id:[0-9]+}")
-	public Response updateBuilding(@PathParam("id") Long id, Building buildingUpdated) {
-		Building building;
-		if(buildingManager.findById(id) == null) {
+	public Response updateBuilding(@PathParam("id") Long id,@PathParam("idUser") Long idUser,@PathParam("idProject") Long idProject, Building buildingUpdated) {
+		
+		if(userManager.findUser(idUser) == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
+					.entity(Utils.makeErrorMessage(400, "User with id '" + idUser + "' no exist"))
 					.build();
 		}
-		if(id != buildingUpdated.getId()) {
-			buildingUpdated.setId(id);
+
+		
+		if(projectManager.findProject(idProject) == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "Project with id '" + idProject + "' no exist"))
+					.build();
 		}
 		
-		building = buildingManager.updateBuilding(buildingUpdated);
-		return Response.ok().entity(building).build();
+
+		long nbBuilding = projectManager.findProject(idProject).getBuilding()
+				.stream()
+				.filter(buildingProject -> (buildingProject.getId() == buildingUpdated.getId()))
+				.count();
+		
+		if(nbBuilding == 0) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "Building with id '" + buildingUpdated.getId() + "' no exist"))
+					.build();
+		}		
+		Building building = buildingManager.updateBuilding(buildingUpdated);
+		List<Building> buildingsResearch = projectManager.findProject(idProject).getBuilding();		
+		Optional<Building> buildingResearch = buildingsResearch.stream().filter(buildingFinded -> buildingFinded.equals(buildingUpdated)).findFirst();
+				
+		return Response.status(200).entity(buildingResearch).build();
 	}
 //		
 	@DELETE

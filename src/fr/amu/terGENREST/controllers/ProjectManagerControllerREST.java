@@ -131,10 +131,10 @@ public class ProjectManagerControllerREST {
 	
 		projectManager.updateProject(project);
 		
-		List<Project> u = userManager.findUser(id).getProjects();		
-		Optional<Project> p = u.stream().filter(projectFinded -> projectFinded.equals(project)).findFirst();
+		List<Project> projectsResearch = userManager.findUser(id).getProjects();		
+		Optional<Project> projectResearch = projectsResearch.stream().filter(projectFinded -> projectFinded.equals(project)).findFirst();
 				
-		return Response.status(200).entity(p).build();
+		return Response.status(200).entity(projectResearch).build();
 	}
 
 	@DELETE
