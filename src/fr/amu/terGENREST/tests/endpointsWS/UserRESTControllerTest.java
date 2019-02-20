@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -17,7 +16,6 @@ import javax.json.JsonObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -26,9 +24,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import fr.amu.terGENREST.entities.project.Project;
-import fr.amu.terGENREST.tests.utils.JsonRequestandResponseManager;
-import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 
@@ -44,10 +39,10 @@ public class UserRESTControllerTest {
 		Map<HttpResponse,JsonObject> responseAndJsonObject = new HashMap<>();
 		// add user
 		String uri = "http://localhost:8090/terGENREST/api/users/" ;
-		JsonRequestandResponseManager jsonReqandResManager = new JsonRequestandResponseManager();
-		
-			responseAndJsonObject = jsonReqandResManager.putRequest( uri,
-						PayloadDataRequestREST.jsonPayloadRequestUser());
+		//PayloadDataRequestREST jsonReqandResManager = new JsonRequestandResponseManager();
+		//
+		//	responseAndJsonObject = jsonReqandResManager.putRequest( uri,
+		//				PayloadDataRequestREST.jsonPayloadRequestUser());
 	
 		Optional<HttpResponse> response = responseAndJsonObject.keySet().stream().findFirst();
 		//HttpResponse response = (HttpResponse) resp;
@@ -91,27 +86,27 @@ public class UserRESTControllerTest {
 		
 		
 		// find user by id	
-		 uri = "http://localhost:8090/terGENREST/api/users/" + id ;
-		 responseAndJsonObject = jsonReqandResManager.getRequestJsonObject(uri);
-	
-		response = responseAndJsonObject.keySet().stream().findFirst();
-		responseObject = responseAndJsonObject.values().stream().findFirst();
-		
-		assertEquals(200, response.get().getStatusLine().getStatusCode());
-
-		assertTrue(responseObject.get().containsKey("id"));
-		assertTrue(responseObject.get().containsKey("email"));
-		assertTrue(responseObject.get().containsKey("password"));
-		assertTrue(responseObject.get().containsKey("lastName"));
-		assertTrue(responseObject.get().containsKey("firstName"));
-
-		assertEquals("leo@gmail.fr", responseObject.get().getString("email"));
-		
-		
-		//Delete user
-		uri = "http://localhost:8090/terGENREST/api/users/" + id ;
-		HttpResponse resp= jsonReqandResManager.deleteRequest(uri);
-		assertEquals(200, resp.getStatusLine().getStatusCode());		
+//		 uri = "http://localhost:8090/terGENREST/api/users/" + id ;
+//		 responseAndJsonObject = jsonReqandResManager.getRequestJsonObject(uri);
+//	
+//		response = responseAndJsonObject.keySet().stream().findFirst();
+//		responseObject = responseAndJsonObject.values().stream().findFirst();
+//		
+//		assertEquals(200, response.get().getStatusLine().getStatusCode());
+//
+//		assertTrue(responseObject.get().containsKey("id"));
+//		assertTrue(responseObject.get().containsKey("email"));
+//		assertTrue(responseObject.get().containsKey("password"));
+//		assertTrue(responseObject.get().containsKey("lastName"));
+//		assertTrue(responseObject.get().containsKey("firstName"));
+//
+//		assertEquals("leo@gmail.fr", responseObject.get().getString("email"));
+//		
+//		
+//		//Delete user
+//		uri = "http://localhost:8090/terGENREST/api/users/" + id ;
+//		HttpResponse resp= jsonReqandResManager.deleteRequest(uri);
+//		assertEquals(200, resp.getStatusLine().getStatusCode());		
 	}
 	
 	@Ignore // to test findAllUser you have to empty the database
