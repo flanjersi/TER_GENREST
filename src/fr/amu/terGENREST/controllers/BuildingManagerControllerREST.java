@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -73,23 +72,31 @@ public class BuildingManagerControllerREST {
 
 	@POST
 	@Path("/{idBuilding:[0-9]+}")
-	public Response updateBuilding(@PathParam("idBuilding") Long idBuilding, Building buildingUpdated) {
-		//TODO Changement vers la modification plus propre -> modification si != null
+	public Response updateBuilding(@PathParam("idBuilding") Long idBuilding, Building building) {
 
-		Building building;
-		if(buildingManager.findById(idBuilding) == null) {
+		Building buildingFinded = buildingManager.findById(idBuilding);
+		
+		if(buildingFinded == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
 					.build();
 		}
-		if(idBuilding != buildingUpdated.getId()) {
-			buildingUpdated.setId(idBuilding);
+	
+		if(building.getType() != null) {
+			buildingFinded.setType(building.getType());
 		}
+		
+		if(building.getAddress() != null) {
+			buildingFinded.setAddress(building.getAddress());
+		}
+		
+		
+		buildingFinded = buildingManager.updateBuilding(buildingFinded);
 
-		building = buildingManager.updateBuilding(buildingUpdated);
-		return Response.ok().entity(building).build();
+		return Response.ok().entity(buildingFinded).build();
 	}
+	
 
 	@PUT
 	@Path("/{idBuilding:[0-9]+}/floors")
@@ -102,13 +109,25 @@ public class BuildingManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
 					.build();
 		}
-
-		//TODO Ajout vérification présence champs obligatoire pour l'ajout d'un étage
+		
+		if(floor.getFloorNumber() == 0) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'FloorNumber' property is missing"))
+					.build();
+		}
 
 		building.addFloor(floor);
 		buildingManager.updateBuilding(building);
+		
+		building = buildingManager.findById(building.getId());
+		
+		Optional<Floor> floorAdded = building.getBuildingFloor()
+				.stream()
+				.filter(buildingFloor -> (buildingFloor.getFloorNumber()==(floor.getFloorNumber())))
+				.findFirst();
 
-		JsonObject jsonResponse = Json.createObjectBuilder().add("id", (JsonValue) floorManager.findById(floor.getId())).build();
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", floorAdded.get().getId()).build();
 
 		return Response.ok().entity(jsonResponse).build();
 	}
@@ -126,129 +145,19 @@ public class BuildingManagerControllerREST {
 		}
 
 
-		Optional<Floor> floor = building.getBuildingFloor()
+		Optional<Floor> floorRemoved = building.getBuildingFloor()
 				.stream().filter(c -> c.getId() == idFloor).findFirst();
 
-		if(!floor.isPresent()) {
+		if(!floorRemoved.isPresent()) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "floor with id '" + idFloor + "' not found"))
 					.build();
 		}
 
-		building.removeFloor(floor.get());
+		building.removeFloor(floorRemoved.get());
 		buildingManager.updateBuilding(building);
 
 		return Response.ok().build();
 	}
 }
-
-//TODO Trier les commentaires
-
-//		Long id = 1L;
-//	
-//		if(buildingManager.findById(id) == null) {
-//			 User user = new User("firstName", "lastName", "email007@email.com", "password");
-//			 userManager.saveUser(user);
-//			Project project= new Project("firstProject");
-//			user.addProject(project);
-//			Address address = new Address("147 rue Aubagne","Marseille","France");
-//			Building building = new Building("bat", address);
-//			project.addBuilding(building);
-//			id = project.getId();
-//		}
-//		
-//		Building building = buildingManager.findById(id);
-//		
-//		building.addFloor(floor);
-//		buildingManager.updateBuilding(building);
-//		building = buildingManager.findById(building.getId());
-//		Optional<Floor> floorAdded = building.getBuildingFloor()
-//				.stream()
-//				.filter(projectbuilding -> (projectbuilding.getFloorNumber.equals(floor.getFloorNumber())))
-//				.findFirst();
-//		
-//		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
-//		return Response.ok().entity(jsonResponse).build();
-//		}
-
-//			
-//		@DELETE
-//		@Path("/{id:[0-9]+}")
-//		public Response deleteBuilding(@PathParam("id") Long id) {
-//			
-//			if(buildingManager.findById(id) == null) {
-//				return Response
-//						.status(404)
-//						.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
-//						.build();
-//			}
-//			
-//			Project project = projectManager.findProject(id);
-//			project.removeBuildings(buildingManager.findById(id));
-//			projectManager.updateProject(project);
-//			
-//			return Response.ok().build();
-//		}
-//}
-
-
-
-//		
-
-//@PUT
-//@Path("")
-//public Response createBuilding(@PathParam("idProject") Long idProject, Building building) {
-//	
-//	Long id = 1L;
-//
-//	if(projectManager.findProject(id) == null) {
-//		 User user = new User("firstName", "lastName", "email007@email.com", "password");
-//		 userManager.saveUser(user);
-//		Project project= new Project("firstProject");
-//		
-//		user.addProject(project);
-//		id = project.getId();
-//	}
-//	
-//	Project project = projectManager.findProject(id);
-//	
-//	if(building.getType() == null) {
-//		return Response
-//				.status(400)
-//				.entity(Utils.makeErrorMessage(400, "'type' property is missing"))
-//				.build();		
-//	}
-//	
-//	project.addBuilding(building);
-//	projectManager.updateProject(project);
-//	
-//	project = projectManager.findProject(project.getId());
-//	Optional<Building> buildingAdded = project.getBuilding()
-//			.stream()
-//			.filter(projectbuilding -> (projectbuilding.getType().equals(building.getType())))
-//			.findFirst();
-//	
-//	JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
-//	return Response.ok().entity(jsonResponse).build();
-//	}
-
-
-//	@DELETE
-//	@Path("/{id:[0-9]+}")
-//	public Response deleteBuilding(@PathParam("id") Long id) {
-//		
-//		if(buildingManager.findById(id) == null) {
-//			return Response
-//					.status(404)
-//					.entity(Utils.makeErrorMessage(404, "Building with id '" + id + "' no exist"))
-//					.build();
-//		}
-//		
-//		Project project = projectManager.findProject(id);
-//		project.removeBuildings(buildingManager.findById(id));
-//		projectManager.updateProject(project);
-//		
-//		return Response.ok().build();
-//	}
-//		}
