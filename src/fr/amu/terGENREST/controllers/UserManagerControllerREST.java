@@ -1,11 +1,11 @@
 package fr.amu.terGENREST.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,10 +14,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import fr.amu.terGENREST.controllers.utils.Utils;
+import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.user.UserManager;
 
@@ -55,38 +57,37 @@ public class UserManagerControllerREST {
 	
 	@PUT
 	public Response createUser(User user) {
-	    
 		if( user.getEmail() == null ) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, " 'email' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'email' property is missing"))
 					.build();
 		}
 		
 		if( user.getFirstName() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'firstname' property is missing"))
 					.build();
 		}
 		if( user.getLastName() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'lastname' property is missing"))
 					.build();
 		}
 		
 		if( user.getPassword() == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'password' property is missing"))
 					.build();
 		}
 		
 		if( userManager.findUserByEmail(user.getEmail()) != null ) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "User '" + user.getEmail() + "' already used"))
 					.build();
 		}
 		
@@ -99,54 +100,38 @@ public class UserManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateUser(@PathParam("id") Long id, User user) {
-	    
-		if( user.getEmail() == null ) {
+		User findedUser = userManager.findUser(id);
+		if( findedUser == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not found"))
 					.build();
 		}
 		
-		if( user.getFirstName() == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
-					.build();
-		}
-		if( user.getLastName() == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
-					.build();
-		}
-		
-		if( user.getPassword() == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
-					.build();
-		}
-		// If he want to change the email, check if it is not used
-		if( !userManager.findUser(id).getEmail().equals(user.getEmail()) ) {
-			if( userManager.findUserByEmail(user.getEmail()) != null ) {
-				return Response
-						.status(403)
-						.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
-						.build();
+			// Email 
+		if(!user.getEmail().equals(findedUser.getEmail()) )
+		{	if( userManager.findUserByEmail(user.getEmail()) == null  ) {
+					findedUser.setEmail(user.getEmail());
+				}else {
+					return Response
+							.status(403)
+							.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+							.build();
+				}
 			}
+		
+		if( user.getFirstName() != null) {
+			findedUser.setFirstName(user.getFirstName());
+		}
+		if( user.getLastName() != null) {
+			findedUser.setLastName(user.getLastName());
 		}
 		
-		if(userManager.findUser(id) == null) {
-			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User no exist"))
-					.build();
+		if( user.getPassword() != null) {
+			findedUser.setPassword(user.getPassword());
 		}
 		
-		if(id != user.getId()) {
-			user.setId(id);
-		}
-		userManager.updateUser(user);
+		userManager.updateUser(findedUser);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
 		
@@ -155,8 +140,8 @@ public class UserManagerControllerREST {
 	public Response deleteUser(@PathParam("id") Long id) {
 		if(userManager.findUser(id) == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User no exist"))
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id +"' not found"))
 					.build();
 		}
 		
@@ -165,8 +150,8 @@ public class UserManagerControllerREST {
 	}
 	
 	@GET
-	@Path("/{email}/{password}")
-	public Response getUserByEmailAndPassword(@PathParam("email") String email, @PathParam("password") String password) {	
+	@Path("/query")
+	public Response getUserByEmailAndPassword(@QueryParam("email") String email, @QueryParam("password") String password) {			
 		User user = userManager.authentification(email, password);
 		if(user == null) {
 			return Response
@@ -175,6 +160,103 @@ public class UserManagerControllerREST {
 					.build();
 		}
 		return Response.ok().entity(user).build();
+	}
+	
+	@GET
+	@Path("/{id:[0-9]+}/projects")
+	public Response getAllProject(@PathParam("id") Long id) {
+		User user = userManager.findUser(id);
+		
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not found"))
+					.build();
+		}
+		
+		return Response.ok().entity(user.getProjects()).build();
+	}
+	
+	@PUT
+	@Path("/{idUser:[0-9]+}/projects")
+	public Response createProject(@PathParam("idUser") Long id, Project project) {
+		
+		User user = userManager.findUser(id);
+		
+		if(user == null){
+			return  Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not exist"))
+					.build();
+		}
+					
+		if(project.getProjectName() == null) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'ProjectName' property is missing"))
+					.build();
+		}
+		
+		Long nbProjects = user.getProjects()
+			.stream()
+			.filter(projectUser -> (projectUser.getProjectName().equals(project.getProjectName())))
+			.count();
+		
+		if(nbProjects != 0) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Project : '"+ project.getProjectName() +"' is already use"))
+					.build();
+		}
+		
+		user.addProject(project);
+		userManager.updateUser(user);
+		
+		user = userManager.findUser(user.getId());
+		
+		Optional<Project> projectAdded = user.getProjects()
+				.stream()
+				.filter(projectUser -> (projectUser.getProjectName().equals(project.getProjectName())))
+				.findFirst();
+		
+		
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", projectAdded.get().getId()).build();
+			
+		return Response.status(201).entity(jsonResponse).build();		
+	}
+	
+
+	@DELETE
+	@Path("/{idUser:[0-9]+}/projects/{idProject:[0-9]+}")
+	public Response deleteProject(@PathParam("idUser") Long idUser, @PathParam("idProject") Long idProject) {
+
+		User user = userManager.findUser(idUser);
+
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User with id '" + idUser + "' no exist"))
+					.build();
+		}
+
+		Optional<Project> projectRemoved = user.getProjects()
+				.stream()
+				.filter(projectUser -> projectUser.getId() == idProject)
+				.findFirst();
+		
+		
+		if(!projectRemoved.isPresent()) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "User don't have project with id '" + idProject + "'"))
+					.build();
+		}
+
+
+		user.removeProject(projectRemoved.get());
+		userManager.updateUser(user);
+
+		return Response.ok().build();
 	}
 
 }

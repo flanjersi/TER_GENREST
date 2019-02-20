@@ -80,38 +80,38 @@ public class LanguagesManagerControllerREST {
 					.build();
 		}
 		
-		//Delete the setup of the id by the user
-		language.setId(0);
-		
 		languagesManager.addLanguage(language);
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", language.getId()).build();
 		
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@POST
 	@Path("{id:[0-9]+}")
 	public Response updateLangage(@PathParam("id") Long id, Language language) {
-		if(languagesManager.findById(id) == null) {
+		Language languageFinded = languagesManager.findById(id) ;
+		
+		if(languageFinded == null) {
 			return Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Language with id '" + id + "' no exist"))
 					.build();
 		}
 		
-		if(id != language.getId()) {
-			language.setId(id);
+		if(language.getName() != null) {
+			languageFinded.setName(language.getName());
 		}
 		
-		languagesManager.updateLanguage(language);
+		languageFinded = languagesManager.updateLanguage(languageFinded);
 		
-		return Response.ok().entity(languagesManager.findById(id)).build();
+		return Response.ok().entity(languageFinded).build();
 	}
 
 	@DELETE
 	@Path("{id:[0-9]+}")
 	public Response deleteLanguage(@PathParam("id") Long id) {
+		
 		if(languagesManager.findById(id) == null) {
 			return Response
 					.status(404)
@@ -143,6 +143,14 @@ public class LanguagesManagerControllerREST {
 					.build();			
 		}
 		
+		if(configurationManager.findByName(configuration.getName()) != null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Configuration '" + configuration.getName() + "' already use"))
+					.build();
+		}
+		
+		
 		if(configuration.getPathFolder() == null) {
 			return Response
 					.status(400)
@@ -150,32 +158,26 @@ public class LanguagesManagerControllerREST {
 					.build();			
 		}
 		
-		
-		if(configurationManager.findByName(configuration.getName()) != null) {
-			return Response
-					.status(400)
-					.entity(Utils.makeErrorMessage(400, "Configuration '" + configuration.getName() + "' already use"))
-					.build();
-		}
 		if(configurationManager.findByPathFolder(configuration.getPathFolder()) != null) {
 			return Response
 					.status(400)
 					.entity(Utils.makeErrorMessage(400, "Path folder '" + configuration.getPathFolder() + "' already use"))
 					.build();
 		}
-
-
-		//Delete the setup of the id by the user
-		configuration.setId(0);
+		
+		if(configuration.getDescription() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'description' property is missing"))
+					.build();			
+		}
 
 		language.addConfiguration(configuration);
 		languagesManager.updateLanguage(language);
-
-		
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", configurationManager.findByName(configuration.getName()).getId()).build();
 
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@DELETE

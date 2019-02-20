@@ -16,7 +16,7 @@ import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
 
-@Path("api/buildings/{idBuilding:[0-9]+}/floors/{idFloor: [0-9]+}/motherrooms")
+@Path("api/motherrooms")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class MotherRoomManagerControllerREST {
@@ -40,7 +40,7 @@ public class MotherRoomManagerControllerREST {
 	public Response getMotherRoomById(@PathParam("id") Long id) {
 		MotherRoom motherRoom = motherRoomManager.findById(id);
 		if (motherRoom == null) {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "No Corridor to id : " + id)).build();
+			return Response.status(404).entity(Utils.makeErrorMessage(404, "No mother room to id : " + id)).build();
 		}
 		return Response.ok().entity(motherRoom).build();
 	}
@@ -49,18 +49,24 @@ public class MotherRoomManagerControllerREST {
 	@Path("/{id:[0-9]+}")
 	public Response updateMotherRoom(@PathParam("id") Long id, MotherRoom motherRoom) {
 
+		//TODO Changement vers la modification plus propre -> modification si != null
+		
 		if (motherRoom.getNumberMotherRoom() == 0) {
-			return Response.status(403).entity(Utils.makeErrorMessage(404, " 'NumberMotherRoom' property is missing"))
+			return Response.status(404).entity(Utils.makeErrorMessage(404, " 'NumberMotherRoom' property is missing"))
 					.build();
 		}
 
 		if (motherRoom.getType() == null) {
-			return Response.status(403).entity(Utils.makeErrorMessage(404, " 'MotherRoomType' property is missing"))
+			return Response.status(404).entity(Utils.makeErrorMessage(404, " 'MotherRoomType' property is missing"))
 					.build();
 		}
 		
 		motherRoomManager.updateMotherRoom(motherRoom);
 		return Response.ok().entity(motherRoomManager.findById(id)).build();
 	}
-
+	
+	//TODO Création d'une méthode d'ajout de room 
+	//TODO Création d'une méthode d'ajout de corridor
+	//TODO Création d'une méthode de suppression de room 
+	//TODO Création d'une méthode de suppression de corridor
 }

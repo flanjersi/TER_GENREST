@@ -5,10 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -26,9 +22,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import fr.amu.terGENREST.entities.project.Project;
-import fr.amu.terGENREST.tests.utils.JsonRequestandResponseManager;
-import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
+import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 
@@ -41,79 +35,81 @@ public class UserRESTControllerTest {
 	
 	@Test
 	public void testCRUDUserRest() throws IOException {
-		Map<HttpResponse,JsonObject> responseAndJsonObject = new HashMap<>();
+
 		// add user
-		String uri = "http://localhost:8090/terGENREST/api/users/" ;
-		JsonRequestandResponseManager jsonReqandResManager = new JsonRequestandResponseManager();
-		
-			responseAndJsonObject = jsonReqandResManager.putRequest( uri,
-						PayloadDataRequestREST.jsonPayloadRequestUser());
-	
-		Optional<HttpResponse> response = responseAndJsonObject.keySet().stream().findFirst();
-		//HttpResponse response = (HttpResponse) resp;
-		Optional<JsonObject> responseObject = responseAndJsonObject.values().stream().findFirst();
-		
-		assertEquals(200, response.get().getStatusLine().getStatusCode());
+		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
-		assertTrue(responseObject.get().containsKey("id"));
-		assertFalse(responseObject.get().containsKey("email"));
-		assertFalse(responseObject.get().containsKey("password"));
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
+				.add("firstName", "Jean")
+				.add("lastName", "Marc")
+				.add("password", "zeoi")
+				.build();
+		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
+		request.setHeader("Content-Type", "application/json");
 
-		long id = responseObject.get().getJsonNumber("id").longValue();
+		HttpResponse response = HttpClientBuilder.create().build().execute( request );
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+
+		assertTrue(responseObject.containsKey("id"));
+		assertFalse(responseObject.containsKey("email"));
+		assertFalse(responseObject.containsKey("password"));
+
+		long id = responseObject.getJsonNumber("id").longValue();
 		
 		// update user
-//		uri = "http://localhost:8090/terGENREST/api/users/" + id;
-//		responseAndJsonObject = jsonReqandResManager.putOrPostRequest( uri,
-//				RequestHelper.jsonPayloadRequestUser());
-//		
-//		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
-//				.add("firstName", "JeanUpdate")
-//				.add("lastName", "Marc")
-//				.add("password", "zeoi")
-//				.build();
-//
-//		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-//		requestUpdate.setHeader("Content-Type", "application/json");
-//
-//		response = HttpClientBuilder.create().build().execute( requestUpdate );
-//
-//		assertEquals(200, response.getStatusLine().getStatusCode());
-//
-//		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-//
-//		assertTrue(responseObject.containsKey("id"));
-//		assertTrue(responseObject.containsKey("email"));
-//		assertTrue(responseObject.containsKey("password"));
-//		assertTrue(responseObject.containsKey("lastName"));
-//		assertTrue(responseObject.containsKey("firstName"));
-//
-//		assertEquals("JeanUpdate", responseObject.getString("firstName"));
-		
-		
-		// find user by id	
-		 uri = "http://localhost:8090/terGENREST/api/users/" + id ;
-		 responseAndJsonObject = jsonReqandResManager.getRequestJsonObject(uri);
-	
-		response = responseAndJsonObject.keySet().stream().findFirst();
-		responseObject = responseAndJsonObject.values().stream().findFirst();
-		
-		assertEquals(200, response.get().getStatusLine().getStatusCode());
+		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/" + id);
 
-		assertTrue(responseObject.get().containsKey("id"));
-		assertTrue(responseObject.get().containsKey("email"));
-		assertTrue(responseObject.get().containsKey("password"));
-		assertTrue(responseObject.get().containsKey("lastName"));
-		assertTrue(responseObject.get().containsKey("firstName"));
+		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
+				.add("firstName", "JeanUpdate")
+				.add("lastName", "Marc")
+				.add("password", "zeoi")
+				.build();
 
-		assertEquals("leo@gmail.fr", responseObject.get().getString("email"));
+		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
+		requestUpdate.setHeader("Content-Type", "application/json");
+
+		response = HttpClientBuilder.create().build().execute( requestUpdate );
+
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+
+		assertTrue(responseObject.containsKey("id"));
+		assertTrue(responseObject.containsKey("email"));
+		assertTrue(responseObject.containsKey("password"));
+		assertTrue(responseObject.containsKey("lastName"));
+		assertTrue(responseObject.containsKey("firstName"));
+
+		assertEquals("JeanUpdate", responseObject.getString("firstName"));
+		
+		
+		// find user by id
+		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" + id);
+		
+		 response = HttpClientBuilder.create().build().execute( requestGetData );
+
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		 responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+
+		assertTrue(responseObject.containsKey("id"));
+		assertTrue(responseObject.containsKey("email"));
+		assertTrue(responseObject.containsKey("password"));
+		assertTrue(responseObject.containsKey("lastName"));
+		assertTrue(responseObject.containsKey("firstName"));
+
+		assertEquals("jmj@gmail.dez", responseObject.getString("email"));
 		
 		
 		//Delete user
-		uri = "http://localhost:8090/terGENREST/api/users/" + id ;
-		HttpResponse resp= jsonReqandResManager.deleteRequest(uri);
-		assertEquals(200, resp.getStatusLine().getStatusCode());		
+
+		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
+		response = HttpClientBuilder.create().build().execute( requestDeleteData );
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		
 	}
-	
 	@Ignore // to test findAllUser you have to empty the database
 	@Test
 	public void testFindAllUser() throws IOException{
@@ -182,18 +178,20 @@ public class UserRESTControllerTest {
 		assertEquals(200, response.getStatusLine().getStatusCode());
 		
 	}
-	@Ignore
+	
 	@Test
 	public void testGetUserByEmailAndPassword() throws IOException {
 		
 		// add user
 		
+		User u = new User ("Jean","Marc","jmc84@gmail.fr","aerty105");
+		
 		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "oaiehf@gmail.dez")
-				.add("firstName", "Jean")
-				.add("lastName", "Marc")
-				.add("password", "efoke")
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", u.getEmail())
+				.add("firstName", u.getFirstName())
+				.add("lastName", u.getLastName())
+				.add("password", u.getPassword())
 				.build();
 		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
 		request.setHeader("Content-Type", "application/json");
@@ -207,25 +205,29 @@ public class UserRESTControllerTest {
 		assertFalse(responseObject.containsKey("email"));
 		assertFalse(responseObject.containsKey("password"));
 		long id = responseObject.getJsonNumber("id").longValue();
+		
 		// find by Email and Password
 
-		String email = "oaiehf@gmail.dez";
-		String password = "efoke";
+		String email = u.getEmail();
+		String password = u.getPassword();
 		
-		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" +email+"/"+ password);
+		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users?email="+email+"&password="+password);
+	
 		 response = HttpClientBuilder.create().build().execute( requestGetData );
 
 		 assertEquals(200, response.getStatusLine().getStatusCode());
 		
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+		 JsonArray responseArray = Utils.stringToJsonArray(EntityUtils.toString(response.getEntity()));
 
+		 responseObject = responseArray.getJsonObject(0);
+		 
 		assertTrue(responseObject.containsKey("id"));
 		assertTrue(responseObject.containsKey("email"));
 		assertTrue(responseObject.containsKey("password"));
 		assertTrue(responseObject.containsKey("lastName"));
 		assertTrue(responseObject.containsKey("firstName"));
 
-		assertEquals("oaiehf@gmail.dez", responseObject.getString("email"));
+		assertEquals(email, responseObject.getString("email"));
 		
 		//Delete user
 

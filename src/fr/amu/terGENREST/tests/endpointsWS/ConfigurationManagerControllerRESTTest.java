@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -17,62 +18,54 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
+import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 public class ConfigurationManagerControllerRESTTest {
 
+	private static final String URL_ROOT_LANGUAGE = "http://localhost:8090/terGENREST/api/language/";
+	private static final String URL_ROOT_CONFIGURATION = "http://localhost:8090/terGENREST/api/configurations/";
+
+	private long idLanguage;
+
+	@Before
+	public void setup() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, PayloadDataRequestREST.jsonPayloadRequestLanguage());
+
+		idLanguage = response.getPayload().getJsonNumber("id").longValue();
+	}
+
+	@After
+	public void tearDown() throws IOException {
+		RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage);
+	}
+
+
 	@Test
 	public void testCRUD() throws IOException {
-
-		//Add Language data
-		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/language/");
-
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("name", "JavaTest").build();
-
-		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-		request.setHeader("Content-Type", "application/json");
-
-		HttpResponse response = HttpClientBuilder.create().build().execute( request );
-
-		assertEquals(200, response.getStatusLine().getStatusCode());
-
-		JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-
-		assertTrue(responseObject.containsKey("id"));
-		assertFalse(responseObject.containsKey("name"));
-		
-
-		long id = responseObject.getJsonNumber("id").longValue();
-
-		request = new HttpPut("http://localhost:8090/terGENREST/api/language/" + id + "/configurations/");
-
-		jsonPayloadRequest = Json.createObjectBuilder()
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "node-js-express")
 				.add("pathFolder", "path")
 				.add("description", "description")
 				.build();
 
-		request.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-		request.setHeader("Content-Type", "application/json");
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
 
-		response = HttpClientBuilder.create().build().execute( request );
+		assertEquals(201, response.getResponseCode());
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertFalse(response.getPayload().containsKey("name"));
+		assertFalse(response.getPayload().containsKey("pathFolder"));
+		assertFalse(response.getPayload().containsKey("description"));
 
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-
-		assertTrue(responseObject.containsKey("id"));
-		assertFalse(responseObject.containsKey("name"));
-		assertFalse(responseObject.containsKey("pathFolder"));
-		assertFalse(responseObject.containsKey("description"));
-		
-		long idConfiguration = responseObject.getJsonNumber("id").longValue();
+		long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
 
 		//Update data
-
-		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/configurations/" + idConfiguration);
 
 		jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "node-js-expressUpdate")
@@ -80,63 +73,260 @@ public class ConfigurationManagerControllerRESTTest {
 				.add("description", "descriptionUpdate")		
 				.build();
 
-		requestUpdate.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-		requestUpdate.setHeader("Content-Type", "application/json");
 
-		response = HttpClientBuilder.create().build().execute( requestUpdate );
+		response = RequestsHelper.httpPOST(URL_ROOT_CONFIGURATION + idConfiguration, jsonPayloadRequest);
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertEquals(200, response.getResponseCode());
 
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("pathFolder"));
+		assertTrue(response.getPayload().containsKey("description"));
 
-		assertTrue(responseObject.containsKey("id"));
-		assertTrue(responseObject.containsKey("name"));
-		assertTrue(responseObject.containsKey("pathFolder"));
-		assertTrue(responseObject.containsKey("description"));
+		assertEquals("node-js-expressUpdate", response.getPayload().getString("name"));
+		assertEquals("pathUpdate", response.getPayload().getString("pathFolder"));
+		assertEquals("descriptionUpdate", response.getPayload().getString("description"));	
 
-		assertEquals("node-js-expressUpdate", responseObject.getString("name"));
-		assertEquals("pathUpdate", responseObject.getString("pathFolder"));
-		assertEquals("descriptionUpdate", responseObject.getString("description"));
-
-		
 		//Find data
 
-		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/configurations/" + idConfiguration);
+		response = RequestsHelper.httpGetJsonObject(URL_ROOT_CONFIGURATION + idConfiguration);
 
-		response = HttpClientBuilder.create().build().execute( requestGetData );
+		assertEquals(200, response.getResponseCode());
 
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("pathFolder"));
+		assertTrue(response.getPayload().containsKey("description"));
 
-		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
-
-		assertTrue(responseObject.containsKey("id"));
-		assertTrue(responseObject.containsKey("name"));
-		assertTrue(responseObject.containsKey("pathFolder"));
-		assertTrue(responseObject.containsKey("description"));
-
-		assertEquals("node-js-expressUpdate", responseObject.getString("name"));
-		assertEquals("pathUpdate", responseObject.getString("pathFolder"));
-		assertEquals("descriptionUpdate", responseObject.getString("description"));
+		assertEquals("node-js-expressUpdate", response.getPayload().getString("name"));
+		assertEquals("pathUpdate", response.getPayload().getString("pathFolder"));
+		assertEquals("descriptionUpdate", response.getPayload().getString("description"));
 
 		//Delete data
 
-		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/language/" + id + "/configurations/" + idConfiguration);
-		response = HttpClientBuilder.create().build().execute( requestDeleteData );
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage + "/configurations/" + idConfiguration);
+
+		assertEquals(200, response.getResponseCode());
 
 		//Find data deleted
 
-		requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/configurations/" + idConfiguration);
+		response = RequestsHelper.httpGetJsonObject(URL_ROOT_CONFIGURATION + idConfiguration);
 
-		response = HttpClientBuilder.create().build().execute( requestGetData );
-
-		assertEquals(404, response.getStatusLine().getStatusCode());		
-
-		HttpDelete requestDeleteDataLangage = new HttpDelete("http://localhost:8090/terGENREST/api/language/" + id);
-		response = HttpClientBuilder.create().build().execute( requestDeleteDataLangage );
-		assertEquals(200, response.getStatusLine().getStatusCode());
-	
-	
+		assertEquals(404, response.getResponseCode());	
 	}
+
+	@Test
+	public void getConfigurationWithUnknowID() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_CONFIGURATION + "99999999");
+
+		assertEquals(404, response.getResponseCode());
+	}
+
+	@Test
+	public void updateConfigurationWithNothing() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+
+		//Update data
+
+		jsonPayloadRequest = Json.createObjectBuilder().build();
+
+		response = RequestsHelper.httpPOST(URL_ROOT_CONFIGURATION + idConfiguration, jsonPayloadRequest);
+
+		assertEquals(200, response.getResponseCode());
+
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("pathFolder"));
+		assertTrue(response.getPayload().containsKey("description"));
+
+		assertEquals("node-js-express", response.getPayload().getString("name"));
+		assertEquals("path", response.getPayload().getString("pathFolder"));
+		assertEquals("description", response.getPayload().getString("description"));	
+	}
+
+	@Test
+	public void updateConfigurationWithUniqueNameConstraint() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+
+		jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express2")
+				.add("pathFolder", "path2")
+				.add("description", "description2")
+				.build();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		
+		//Update data
+
+		jsonPayloadRequest = Json.createObjectBuilder().add("name", "node-js-express2").build();
+
+		response = RequestsHelper.httpPOST(URL_ROOT_CONFIGURATION + idConfiguration, jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+	}
+
+	@Test
+	public void updateConfigurationWithUniquePathFolderConstraint() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+
+		jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express2")
+				.add("pathFolder", "path2")
+				.add("description", "description2")
+				.build();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		
+		//Update data
+
+		jsonPayloadRequest = Json.createObjectBuilder().add("pathFolder", "path2").build();
+
+		response = RequestsHelper.httpPOST(URL_ROOT_CONFIGURATION + idConfiguration, jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+	}
+
+	@Test
+	public void createConfigurationWithUnknowLanguageID() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + 9999 + "/configurations/", jsonPayloadRequest);
+
+		assertEquals(404, response.getResponseCode());
+	}
+
+	@Test
+	public void createConfigurationNullName() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+
+	}
+
+	@Test
+	public void createConfigurationUniqueNameConstraint() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path2")
+				.add("description", "description2")
+				.build();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
 	
+		assertEquals(400, response.getResponseCode());
+	}
+
+	@Test
+	public void createConfigurationNullPathFolder() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+	}
+
+	@Test
+	public void createConfigurationUniquePathFolderConstraint() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express2")
+				.add("pathFolder", "path")
+				.add("description", "description2")
+				.build();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+	
+		assertEquals(400, response.getResponseCode());
+
+	}
+
+	@Test
+	public void createConfigurationNullDescription() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("pathFolder", "path")
+				.add("name", "node-js-express")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		assertEquals(400, response.getResponseCode());
+	}
+
+	@Test
+	public void deleteConfigurtionWithUnknwowLanguageID() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("name", "node-js-express")
+				.add("pathFolder", "path")
+				.add("description", "description")
+				.build();
+
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
+
+		long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+
+		response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + "999999/configurations/" + idConfiguration);
+
+		assertEquals(404, response.getResponseCode());
+	}
+
+	@Test
+	public void deleteConfigurationWithUnknowConfigurationID() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage + "/configurations/99999");
+
+		assertEquals(404, response.getResponseCode());
+	}
+
 }
