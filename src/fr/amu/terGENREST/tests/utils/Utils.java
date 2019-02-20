@@ -11,9 +11,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-
 public class Utils {
 
 	public static String readContentOfStream(InputStream inputStream) throws IOException {
@@ -30,12 +27,13 @@ public class Utils {
 	}
 	
 	public static JsonObject stringToJsonObject(String strJson) {
+		System.out.println("fzfaaaaaaaaaaaaaaaaaaa"+strJson);
 		JsonReader jsonReader = Json.createReader(new StringReader(strJson));
-		
+		System.out.println("fffffffffffffffffffffffffffffff"+jsonReader.toString());
 		JsonObject jsonObject = jsonReader.readObject();
 		
 		jsonReader.close();
-		
+		System.out.println("grrrrrrrrrrrrrrrrrrrrrrr"+jsonObject);
 		return jsonObject;
 	}
 	

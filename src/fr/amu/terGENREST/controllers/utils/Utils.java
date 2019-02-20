@@ -1,7 +1,13 @@
 package fr.amu.terGENREST.controllers.utils;
 
+import javax.json.Json;
+
 public class Utils {
 	public static String makeErrorMessage(int code, String message) {
-		return "{ error: " + message + ", code : " + code + "}";
+		return Json.createObjectBuilder()
+				.add("error", message)
+				.add("code", code)
+				.build()
+				.toString();
 	}
 }
