@@ -123,7 +123,7 @@ public class ConfigurationManagerControllerRESTTest {
 	}
 
 	@Test
-	public void updateConfigurationWithNoting() throws IOException {
+	public void updateConfigurationWithNothing() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "node-js-express")
 				.add("pathFolder", "path")
