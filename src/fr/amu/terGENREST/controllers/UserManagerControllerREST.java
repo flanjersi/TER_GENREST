@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -56,38 +57,37 @@ public class UserManagerControllerREST {
 	
 	@PUT
 	public Response createUser(User user) {
-	    //TODO Modification des codes 403 en 400
 		if( user.getEmail() == null ) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, " 'email' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'email' property is missing"))
 					.build();
 		}
 		
 		if( user.getFirstName() == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, " 'firstname' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'firstname' property is missing"))
 					.build();
 		}
 		if( user.getLastName() == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, " 'lastname' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'lastname' property is missing"))
 					.build();
 		}
 		
 		if( user.getPassword() == null) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, " 'password' property is missing"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, " 'password' property is missing"))
 					.build();
 		}
 		
 		if( userManager.findUserByEmail(user.getEmail()) != null ) {
 			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "User '" + user.getEmail() + "' already used"))
 					.build();
 		}
 		
@@ -100,56 +100,38 @@ public class UserManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateUser(@PathParam("id") Long id, User user) {
-	    //TODO Changement vers la modification plus propre -> modification si != null
-		
-		if( user.getEmail() == null ) {
-			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(404, " 'email' property is missing"))
-					.build();
-		}
-		
-		if( user.getFirstName() == null) {
+		User findedUser = userManager.findUser(id);
+		if( findedUser == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'firstname' property is missing"))
-					.build();
-		}
-		if( user.getLastName() == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'lastname' property is missing"))
+					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not found"))
 					.build();
 		}
 		
-		if( user.getPassword() == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, " 'password' property is missing"))
-					.build();
-		}
-		// If he want to change the email, check if it is not used
-		if( !userManager.findUser(id).getEmail().equals(user.getEmail()) ) {
-			if( userManager.findUserByEmail(user.getEmail()) != null ) {
-				return Response
-						.status(403)
-						.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
-						.build();
+			// Email 
+		if(!user.getEmail().equals(findedUser.getEmail()) )
+		{	if( userManager.findUserByEmail(user.getEmail()) == null  ) {
+					findedUser.setEmail(user.getEmail());
+				}else {
+					return Response
+							.status(403)
+							.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+							.build();
+				}
 			}
+		
+		if( user.getFirstName() != null) {
+			findedUser.setFirstName(user.getFirstName());
+		}
+		if( user.getLastName() != null) {
+			findedUser.setLastName(user.getLastName());
 		}
 		
-		if(userManager.findUser(id) == null) {
-			return Response
-					.status(403)
-					.entity(Utils.makeErrorMessage(403, "User no exist"))
-					.build();
+		if( user.getPassword() != null) {
+			findedUser.setPassword(user.getPassword());
 		}
 		
-		if(id != user.getId()) {
-			user.setId(id);
-		}
-		
-		userManager.updateUser(user);
+		userManager.updateUser(findedUser);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
 	
@@ -170,10 +152,8 @@ public class UserManagerControllerREST {
 	
 	
 	@GET
-	@Path("/{email}/{password}")
-	public Response getUserByEmailAndPassword(@PathParam("email") String email, @PathParam("password") String password) {	
-		//TODO changer le chemin avec les queryParam : https://www.mkyong.com/webservices/jax-rs/jax-rs-queryparam-example/
-		
+	@Path("/query")
+	public Response getUserByEmailAndPassword(@QueryParam("email") String email, @QueryParam("password") String password) {			
 		User user = userManager.authentification(email, password);
 		if(user == null) {
 			return Response
