@@ -21,11 +21,14 @@ import javax.ws.rs.core.Response;
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.environmentTechnical.Language;
 import fr.amu.terGENREST.entities.project.Project;
+import fr.amu.terGENREST.entities.projectSpecifications.Building;
+import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.project.ProjectManager;
+import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
-@Path("api/users/{idUser:[0-9]+}/projects")
+@Path("api/projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProjectManagerControllerREST {
@@ -36,7 +39,11 @@ public class ProjectManagerControllerREST {
 	
 	@EJB
 	private ProjectManager projectManager;
-
+	
+	@EJB
+	private BuildingManager buildingManager;
+	
+	
 	public ProjectManagerControllerREST() {}
 
 	@GET
@@ -165,5 +172,61 @@ public class ProjectManagerControllerREST {
 		return Response.ok().build();
 	}
 	
+	
+	@PUT
+	@Path("{idProject:[0-9]+}/buildings")
+	public Response createBuilding(@PathParam("idProject") Long idProject, Building building) {
+		Project project = projectManager.findProject(idProject);
+		if(project == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Project with id '" + idProject + "' no exist"))
+					.build();
+		}
+		
+		project.addBuilding(building);
+		projectManager.updateProject(project);
+		
+		project = projectManager.findProject(project.getId());
+		
+		Optional<Building> buildingAdded = project.getBuilding()
+				.stream()
+				.filter(projectUser -> (projectUser.getType().equals(building.getType())))
+				.findFirst();
+		
+		
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
+			
+		return Response.status(201).entity(jsonResponse).build();
+			}
+	@DELETE
+	@Path("{idProject:[0-9]+}/buildings/{id:[0-9]+}")
+	public Response deleteConfiguration(@PathParam("idProject") Long idProject, @PathParam("id") Long id) {
+		Project project = projectManager.findProject(idProject);
 
+		if(project == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "project id '" + idProject + "' no exist"))
+					.build();
+		}
+		
+
+		Optional<Building> building = project.getBuilding()
+				.stream().filter(c -> c.getId() == id).findFirst();
+		
+		if(!building.isPresent()) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "building with id '" + id + "' not found"))
+					.build();
+		}
+		
+		project.removeBuildings(building.get());
+		projectManager.updateProject(project);
+		
+		return Response.ok().build();
+	}
+	
+	
 }
