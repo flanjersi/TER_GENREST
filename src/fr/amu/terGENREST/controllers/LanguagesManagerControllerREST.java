@@ -164,13 +164,20 @@ public class LanguagesManagerControllerREST {
 					.entity(Utils.makeErrorMessage(400, "Path folder '" + configuration.getPathFolder() + "' already use"))
 					.build();
 		}
+		
+		if(configuration.getDescription() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'description' property is missing"))
+					.build();			
+		}
 
 		language.addConfiguration(configuration);
 		languagesManager.updateLanguage(language);
 		
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", configurationManager.findByName(configuration.getName()).getId()).build();
 
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@DELETE

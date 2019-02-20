@@ -43,6 +43,7 @@ public class LanguageRESTControllerTest {
 
 		assertTrue(response.getPayload().containsKey("id"));
 		assertFalse(response.getPayload().containsKey("name"));
+		assertFalse(response.getPayload().containsKey("configurationsAvailable"));
 
 		long id = response.getPayload().getJsonNumber("id").longValue();
 
