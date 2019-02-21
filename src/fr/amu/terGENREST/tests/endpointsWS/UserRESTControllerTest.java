@@ -34,8 +34,7 @@ public class UserRESTControllerTest {
 	
 
 	@Before
-	public void setUp() throws Exception {
-		
+	public void setUp() throws Exception {	
 	}
 	
 	@Test
@@ -226,10 +225,7 @@ public class UserRESTControllerTest {
 				.add("lastName", "Marc")
 				.add("password", "zeoi")
 				.build();
-
-
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, jsonPayloadRequest);
-
 		assertEquals(400, response.getResponseCode());
 	}
 	

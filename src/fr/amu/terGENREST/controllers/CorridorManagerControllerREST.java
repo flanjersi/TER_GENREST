@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
+import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 
 @Path("api/corridors")
@@ -39,7 +40,6 @@ public class CorridorManagerControllerREST {
 		List<Corridor> corridors = corridorManager.findAllCorridor();
 		return Response.ok().entity(corridors).build();
 	}
-	
 	
 	@GET
 	@Path("/{id:[0-9]+}")
@@ -165,6 +165,21 @@ public class CorridorManagerControllerREST {
 			corridorManager.updateCorridor(corridor);
 
 			return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/{idCorridor:[0-9]+}/projects")
+	public Response getAllActuators(@PathParam("idCorridor") Long idCorridor) {
+		Corridor corridor = corridorManager.findCorridor(idCorridor);
+		
+		if(corridor == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "corridor with id '" + idCorridor + "' not found"))
+					.build();
+		}
+		
+		return Response.ok().entity(corridor.getActuators()).build();
 	}
 	
 	
