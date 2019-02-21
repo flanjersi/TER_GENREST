@@ -80,12 +80,8 @@ public class MotherRoomManagerControllerREST {
 	@Path("/{idMotherRoom:[0-9]+}/rooms/")
 	public Response addRoom(@PathParam("idMotherRoom") Long idMotherroom, Room room) {
 		
-		System.out.println(idMotherroom);
-		
 		MotherRoom motherRoomToFind = motherRoomManager.findById(idMotherroom);
 
-		System.out.println(motherRoomToFind);
-		
 		if (motherRoomToFind == null) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, " MotherRoom with id: " + idMotherroom + "not found")).build();
