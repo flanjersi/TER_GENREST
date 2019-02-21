@@ -11,6 +11,7 @@ import javax.json.JsonObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
@@ -47,28 +48,24 @@ public class FloorManagerControllerRESTTest {
 		idBuilding = response1.getPayload().getJsonNumber("id").longValue();
 	}
 
-	@After
-	public void tearDown() throws IOException {
-		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
-	}
 
 
 	@Test
 	public void testAddFloor() throws IOException {
 
-		//RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors", jsonPayloadRequest);
-		HttpPost requestProjectUpdate = new HttpPost("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors");	
+		
+		HttpPut requestProjectUpdate = new HttpPut("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors");	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder()
 				.add("floorNumber", 513)
 				.build();
+		
 		requestProjectUpdate.setEntity(new StringEntity(jsonPayloadRequest2.toString(), "UTF-8"));
 		requestProjectUpdate.setHeader("Content-Type", "application/json");
 		HttpResponse responseProject2 = HttpClientBuilder.create().build().execute( requestProjectUpdate );
 		
-		assertEquals(200, responseProject2.getStatusLine().getStatusCode());
+		assertEquals(201, responseProject2.getStatusLine().getStatusCode());
 		JsonObject responseObject2 = Utils.stringToJsonObject(EntityUtils.toString(responseProject2.getEntity()));
 		assertTrue(responseObject2.containsKey("id"));
-		
-		//long idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+
 	}
 }
