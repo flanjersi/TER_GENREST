@@ -2,13 +2,15 @@ package fr.amu.terGENREST.services.projectSpecifications;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 
-public class MotherRoomManagerImpl implements MotherRooomManager {
+@Stateless
+public class MotherRoomManagerImpl implements MotherRoomManager {
 
 	@PersistenceContext(unitName = "database")
     private EntityManager em;

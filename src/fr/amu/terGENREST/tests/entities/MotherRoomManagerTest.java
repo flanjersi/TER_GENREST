@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,12 +17,11 @@ import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
-import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
+import fr.amu.terGENREST.services.projectSpecifications.MotherRoomManager;
 import fr.amu.terGENREST.services.user.UserManager;
-import fr.amu.terGENREST.services.project.ProjectManager;
-import javax.transaction.Transactional;
 
 @Transactional
 public class MotherRoomManagerTest {
@@ -33,7 +33,7 @@ public class MotherRoomManagerTest {
 	private FloorManager floorManager;
 	
 	@EJB
-	private MotherRooomManager MotherRoomManager;
+	private MotherRoomManager MotherRoomManager;
 	
 	@EJB
 	private ProjectManager projectManager;
