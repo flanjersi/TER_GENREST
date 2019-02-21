@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.amu.terGENREST.tests.utils.RequestHelper;
+import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.RequestsHelper;
 
 public class SensorRESTControllerTest {
@@ -14,49 +14,48 @@ public class SensorRESTControllerTest {
 
 	@Before
 	public void setUp() throws IOException {
-		
 		//ADD USER
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/api/users", RequestHelper.jsonPayloadRequestUser());
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/api/users", PayloadDataRequestREST.jsonPayloadRequestUser());
 		long idUser = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD PROJECT
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/users/" + idUser + "/projects", RequestHelper.jsonPayloadRequestProject());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/users/" + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
 		long idProject = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD BUILDING
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/projects/" + idProject + "/buildings", RequestHelper.jsonPayloadRequestBuilding());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/projects/" + idProject + "/buildings", PayloadDataRequestREST.jsonPayloadRequestBuilding());
 		long idBuilding = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD FLOOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/buildings/" + idBuilding + "/floors", RequestHelper.jsonPayloadRequestFloor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/buildings/" + idBuilding + "/floors", PayloadDataRequestREST.jsonPayloadRequestFloor());
 		long idFloor = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD CORRIDOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/floors/" + idFloor + "/corridors", RequestHelper.jsonPayloadRequestCorridor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/floors/" + idFloor + "/corridors", PayloadDataRequestREST.jsonPayloadRequestCorridor());
 		long idCorridor = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD SENSOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/corridors/" + idCorridor + "/sensors", RequestHelper.jsonPayloadRequestSensor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/corridors/" + idCorridor + "/sensors", PayloadDataRequestREST.jsonPayloadRequestSensor());
 		long idSensor = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD MOTHER ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/floors/" + idFloor + "/motherRooms", RequestHelper.jsonPayloadRequestMotherRoom());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
 		long idMotherRoom = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/motherRooms/" + idMotherRoom + "/rooms", RequestHelper.jsonPayloadRequestRoom());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/motherRooms/" + idMotherRoom + "/rooms", PayloadDataRequestREST.jsonPayloadRequestRoom());
 		long idRoom = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD SENSOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/rooms/" + idRoom + "/sensors", RequestHelper.jsonPayloadRequestSensor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/rooms/" + idRoom + "/sensors", PayloadDataRequestREST.jsonPayloadRequestSensor());
 		long idSensorInRoom = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD CORRIDOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/motherRooms/" + idMotherRoom + "/corridors", RequestHelper.jsonPayloadRequestCorridor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/motherRooms/" + idMotherRoom + "/corridors", PayloadDataRequestREST.jsonPayloadRequestCorridor());
 		long idCorridorInMotherRoom = response.getPayload().getJsonNumber("id").longValue();
 		
 		//ADD SENSOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/api/corridors/" + idCorridorInMotherRoom + "/sensors", RequestHelper.jsonPayloadRequestSensor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/api/corridors/" + idCorridorInMotherRoom + "/sensors", PayloadDataRequestREST.jsonPayloadRequestSensor());
 		long idSensorInCorridorInMotherRoom = response.getPayload().getJsonNumber("id").longValue();
 
 	}

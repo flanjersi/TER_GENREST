@@ -62,8 +62,8 @@ public class ProjectManagerControllerREST {
 		
 		if(projectFinded == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Project with id '" + id + "' no exist"))
 					.build();
 		}
 
