@@ -52,8 +52,7 @@ public class FloorManagerControllerRESTTest {
 
 	@Test
 	public void testAddFloor() throws IOException {
-
-		
+	
 		HttpPut requestProjectUpdate = new HttpPut("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors");	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder()
 				.add("floorNumber", 513)
