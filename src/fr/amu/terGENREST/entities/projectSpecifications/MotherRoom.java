@@ -101,20 +101,20 @@ public class MotherRoom implements Serializable {
 	}
 
 
-	public List<Room> getListRoom() {
+	public List<Room> getRooms() {
 		return rooms;
 	}
 
-	public void setListRoom(List<Room> listRoom) {
-		this.rooms = listRoom;
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
-	public List<Corridor> getListCorridor() {
+	public List<Corridor> getCorridors() {
 		return corridors;
 	}
 
-	public void setListCorridor(List<Corridor> listCorridor) {
-		this.corridors = listCorridor;
+	public void setCorridors(List<Corridor> corridors) {
+		this.corridors = corridors;
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class MotherRoomManagerControllerREST {
 	@PUT
 	@Path("/{idMotherRoom:[0-9]+}/rooms/")
 	public Response addRoom(@PathParam("idMotherRoom") Long idMotherroom, Room room) {
-
+		
 		MotherRoom motherRoomToFind = motherRoomManager.findById(idMotherroom);
 
 		if (motherRoomToFind == null) {
@@ -93,7 +93,6 @@ public class MotherRoomManagerControllerREST {
 
 		if (room.getType() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'type' is missing")).build();
-
 		}
 
 		motherRoomToFind.addRoom(room);
@@ -101,7 +100,7 @@ public class MotherRoomManagerControllerREST {
 
 		motherRoomToFind = motherRoomManager.findById(motherRoomToFind.getId());
 
-		Optional<Room> roomToadd = motherRoomToFind.getListRoom().stream()
+		Optional<Room> roomToadd = motherRoomToFind.getRooms().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", roomToadd.get().getId()).build();
@@ -129,7 +128,7 @@ public class MotherRoomManagerControllerREST {
 
 		motherRoomToFind = motherRoomManager.findById(motherRoomToFind.getId());
 
-		Optional<Corridor> corridorToadd = motherRoomToFind.getListCorridor().stream()
+		Optional<Corridor> corridorToadd = motherRoomToFind.getCorridors().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorToadd.get().getId()).build();
@@ -146,7 +145,7 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))
 					.build();
 		}
-		Optional<Room> roomToremove = motehrRoomTofind.getListRoom().stream().filter(r -> r.getId() == idRoom)
+		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId() == idRoom)
 				.findFirst();
 
 		if (roomToremove.isPresent()) {
@@ -171,7 +170,7 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idCorridor))
 					.build();
 		}
-		Optional<Corridor> corridorToremove = motehrRoomTofind.getListCorridor().stream()
+		Optional<Corridor> corridorToremove = motehrRoomTofind.getCorridors().stream()
 				.filter(c -> c.getId() == idCorridor).findFirst();
 
 		if (corridorToremove.isPresent()) {
