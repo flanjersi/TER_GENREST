@@ -1,4 +1,4 @@
-package fr.amu.terGENREST.tests.project;
+package fr.amu.terGENREST.tests.entities;
 import java.util.List;
 
 import javax.ejb.EJB;

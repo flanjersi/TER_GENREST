@@ -69,6 +69,9 @@ public class SensorRESTControllerTest {
 	}
 
 	@Test
-	public void testCRUD() { }
+	public void testCRUD() { 
+		
+		
+	}
 
 }
