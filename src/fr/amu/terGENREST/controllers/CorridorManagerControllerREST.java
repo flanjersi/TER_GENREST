@@ -144,7 +144,7 @@ public class CorridorManagerControllerREST {
 						.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not exist"))
 						.build();
 			}
-			Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId() == idActuator).findFirst();
+			Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId().equals(idActuator)).findFirst();
 
 			if(!actuator.isPresent()) {
 				return Response

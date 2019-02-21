@@ -154,7 +154,7 @@ public class BuildingManagerControllerREST {
 
 
 		Optional<Floor> floorRemoved = building.getFloors()
-				.stream().filter(c -> c.getId() == idFloor).findFirst();
+				.stream().filter(c -> c.getId().equals(idFloor)).findFirst();
 
 		if(!floorRemoved.isPresent()) {
 			return Response
