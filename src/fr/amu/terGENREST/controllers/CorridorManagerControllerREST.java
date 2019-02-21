@@ -221,8 +221,9 @@ public class CorridorManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No corridor with id : " + idCorridor)).build();
 		}
 
-		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId() == idSensor).findFirst();
-
+	
+		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId().equals(idSensor)).findFirst();
+		
 		if (!sensorTofind.isPresent()) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, "Sensor with id '" + idSensor + "' not found")).build();
