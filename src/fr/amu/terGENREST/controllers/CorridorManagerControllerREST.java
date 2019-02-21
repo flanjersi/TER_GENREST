@@ -21,6 +21,8 @@ import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.entities.projectSpecifications.Room;
+import fr.amu.terGENREST.entities.projectSpecifications.Sensor;
 import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 
 @Path("api/corridors")
@@ -126,18 +128,9 @@ public class CorridorManagerControllerREST {
 		corridor = corridorManager.findCorridor(corridor.getId());
 		Optional<Actuator> addedActuator =  corridor.getActuators().stream().max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
 
-		if (addedActuator.isPresent()) {
-			JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedActuator.get().getId()).build();
-			
-			return Response.status(201).entity(jsonResponse).build();		
-		}
-		else {
-			return  Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Added actuator not found"))
-					.build();
-		}
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedActuator.get().getId()).build();
 		
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@DELETE
@@ -182,7 +175,78 @@ public class CorridorManagerControllerREST {
 		return Response.ok().entity(corridor.getActuators()).build();
 	}
 	
+
+	@PUT
+	@Path("{idCorridor:[0-9]+}/sensors/")
+	public Response addSensor(@PathParam("idCorridor") Long idCorridor, Sensor sensor) {
+
+		Corridor corridorFinded = corridorManager.findCorridor(idCorridor);
+
+		if (corridorFinded == null) {
+			return Response.status(404).entity(Utils.makeErrorMessage(404, "No corridor with id : " + idCorridor)).build();
+		}
+
+		if (sensor.getBrand() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor brand is missing")).build();
+		}
+		if (sensor.getLatitude() == 0) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor latitude is missing")).build();
+
+		}
+
+		if (sensor.getLongitude() == 0) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor longitude is missing")).build();
+
+		}
+
+		if (sensor.getModel() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor model is missing")).build();
+		}
+		if (sensor.getReference() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor reference is missing")).build();
+
+		}
+		if (sensor.getState() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor state is missing")).build();
+
+		}
+
+		if (sensor.getUnitData() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor unitdata is missing")).build();
+
+		}
+
+		corridorFinded.addSensor(sensor);
+		corridorFinded = corridorManager.updateCorridor(corridorFinded);
+
+		Optional<Sensor> addedSensor = corridorFinded.getSensors().stream()
+				.max((s1, s2) -> Long.compare(s1.getId(), s2.getId()));
+
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedSensor.get().getId()).build();
+
+		return Response.status(201).entity(jsonResponse).build();
+	}
 	
-	//TODO Création d'une méthode d'ajout de sensor (note à moi même)
-	//TODO Création d'une méthode de suppression de sensor (note à moi même)	
+	@DELETE
+	@Path("{idCorridor:[0-9]+}/sensors/{idSensor:[0-9]+}")
+	public Response removeSensor(@PathParam("idCorridor") Long idCorridor, @PathParam("idSensor") Long idSensor) {
+
+		Corridor corridorFinded = corridorManager.findCorridor(idCorridor);
+
+		if (corridorFinded == null) {
+			return Response.status(404).entity(Utils.makeErrorMessage(404, "No corridor with id : " + idCorridor)).build();
+		}
+
+		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId() == idSensor).findFirst();
+
+		if (!sensorTofind.isPresent()) {
+			return Response.status(404)
+					.entity(Utils.makeErrorMessage(404, "Sensor with id '" + idSensor + "' not found")).build();
+		}
+
+		corridorFinded.removeSensor(sensorTofind.get());
+		corridorManager.updateCorridor(corridorFinded);
+
+		return Response.ok().build();
+	}	
 }

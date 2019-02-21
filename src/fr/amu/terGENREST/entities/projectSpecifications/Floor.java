@@ -25,7 +25,7 @@ public class Floor {
 	private Long id;
 
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private int floorNumber;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
