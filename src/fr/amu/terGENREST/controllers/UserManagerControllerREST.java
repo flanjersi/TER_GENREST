@@ -205,7 +205,7 @@ public class UserManagerControllerREST {
 		
 		if(nbProjects != 0) {
 			return  Response
-					.status(400)
+					.status(403)
 					.entity(Utils.makeErrorMessage(400, "Project : '"+ project.getProjectName() +"' is already use"))
 					.build();
 		}

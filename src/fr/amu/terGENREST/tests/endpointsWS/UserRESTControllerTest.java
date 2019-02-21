@@ -344,6 +344,28 @@ public class UserRESTControllerTest {
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
 
 	}
+	
+
+	@Test
+	public void testCreateTwoProjectsWithTheSameNameForSameUser() throws IOException {	
+		//ADD USER
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+		assertEquals(200, response.getResponseCode());
+		long id = response.getPayload().getJsonNumber("id").longValue();
+		// fist Project		
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "Project")
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest);
+		assertEquals(201, response.getResponseCode());
+		// second project
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
+		assertEquals(403, response.getResponseCode());
+		//Delete user and Project
+		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
+
+	}
 
 	@Test
 	public void updateNothing() throws IOException {
