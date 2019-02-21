@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
-import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.entities.projectSpecifications.Sensor;
 import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 

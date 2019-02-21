@@ -2,9 +2,12 @@ package fr.amu.terGENREST.services.projectSpecifications;
 
 import java.util.List;
 
+import javax.ejb.Local;
+
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 
-public interface MotherRooomManager {
+@Local
+public interface MotherRoomManager {
 	
 	public MotherRoom updateMotherRoom(MotherRoom motherRoom);
 	

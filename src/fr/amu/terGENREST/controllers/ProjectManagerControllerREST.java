@@ -62,8 +62,8 @@ public class ProjectManagerControllerREST {
 		
 		if(projectFinded == null) {
 			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Project with id '" + id + "' no exist"))
 					.build();
 		}
 
@@ -79,6 +79,7 @@ public class ProjectManagerControllerREST {
 	@PUT
 	@Path("{idProject:[0-9]+}/buildings")
 	public Response createBuilding(@PathParam("idProject") Long idProject, Building building) {
+		
 		Project project = projectManager.findProject(idProject);
 		
 		if(project == null) {
@@ -88,6 +89,15 @@ public class ProjectManagerControllerREST {
 					.build();
 		}
 
+<<<<<<< HEAD
+=======
+		if(building.getType() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'type' property is missing"))
+					.build();		
+		}
+>>>>>>> 14d2d73c0dfc2bda9e80a364b7c9976186d58375
 		
 		if(building.getType() == null) {
 			return Response
@@ -103,7 +113,8 @@ public class ProjectManagerControllerREST {
 
 		Optional<Building> buildingAdded = project.getBuilding()
 				.stream()
-				.max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
+				.filter(projectUser -> (projectUser.getType().equals(building.getType())))
+				.findFirst();
 
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();

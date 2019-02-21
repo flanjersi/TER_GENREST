@@ -135,8 +135,7 @@ public class UserManagerControllerREST {
 		userManager.updateUser(findedUser);
 		return Response.ok().entity(userManager.findUser(id)).build();
 	}
-	
-	
+		
 	@DELETE
 	@Path("/{id:[0-9]+}")
 	public Response deleteUser(@PathParam("id") Long id) {
@@ -150,7 +149,6 @@ public class UserManagerControllerREST {
 		userManager.removeUser(userManager.findUser(id));
 		return Response.ok().build();
 	}
-	
 	
 	@GET
 	@Path("/query")
@@ -244,7 +242,7 @@ public class UserManagerControllerREST {
 
 		Optional<Project> projectRemoved = user.getProjects()
 				.stream()
-				.filter(projectUser -> projectUser.getId() == idProject)
+				.filter(projectUser -> projectUser.getId().equals(idProject))
 				.findFirst();
 		
 		

@@ -1,12 +1,12 @@
 package fr.amu.terGENREST.services.projectSpecifications;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
 
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.services.DBException;
@@ -35,7 +35,7 @@ public class CorridorManagerImpl implements CorridorManager {
 		try {
 			return em.createNamedQuery("Corridor.findAllCorridor").getResultList();
 		} catch (NoResultException e) {
-			return null;
+			return new ArrayList<>();
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
