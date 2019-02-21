@@ -17,13 +17,14 @@ import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 
-public class SensorRESTControllerTest {
+public class ActuatorRESTControllerTEST {
+
 
 	private long idUser;
-	
+
 	private long idCorridor;
 	private long idRoom;
-	
+
 	@Before
 	public void setUp() throws IOException {
 		//ADD USER
@@ -63,47 +64,44 @@ public class SensorRESTControllerTest {
 	@Test
 	public void testCRUDCorridors() throws IOException { 
 		//ADD
-		
+
 		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
 				.add("longitude", 12L)
 				.add("model", "model")
 				.add("brand", "brand")
 				.add("reference", "ref")
 				.add("state", "OFF")
-				.add("unitData", "Celsius")
 				.build();
-		
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
-	
+
+		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/actuators", payload);
+
 		assertEquals(201, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
-		
+
 		assertFalse(response.getPayload().containsKey("latitude"));
 		assertFalse(response.getPayload().containsKey("longitude"));
 		assertFalse(response.getPayload().containsKey("model"));
 		assertFalse(response.getPayload().containsKey("brand"));
 		assertFalse(response.getPayload().containsKey("reference"));
 		assertFalse(response.getPayload().containsKey("state"));
-		assertFalse(response.getPayload().containsKey("unitData"));
 
-		long idSensor = response.getPayload().getJsonNumber("id").longValue();	
-		
+		long idActuator = response.getPayload().getJsonNumber("id").longValue();	
+
 		//UPDATE
-		
+
 		payload =  Json.createObjectBuilder().add("latitude", 14L)
 				.add("longitude", 15L)
 				.add("model", "modelU")
 				.add("brand", "brandU")
 				.add("reference", "refU")
 				.add("state", "OFFU")
-				.add("unitData", "CelsiusU")
 				.build();
-		
-		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/sensors/" + idSensor, payload);
-		
+
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/actuators/" + idActuator, payload);
+
 		assertEquals(200, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
@@ -111,22 +109,20 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("brand"));
 		assertTrue(response.getPayload().containsKey("reference"));
 		assertTrue(response.getPayload().containsKey("state"));
-		assertTrue(response.getPayload().containsKey("unitData"));
-		
-		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
+
+		assertEquals(idActuator, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
 		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
 		assertEquals("brandU", response.getPayload().getString("brand"));
 		assertEquals("refU", response.getPayload().getString("reference"));
 		assertEquals("OFFU", response.getPayload().getString("state"));
-		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
-		
+
 		//FIND
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
-		
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/actuators/" + idActuator);
+
 		assertEquals(200, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
@@ -134,71 +130,66 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("brand"));
 		assertTrue(response.getPayload().containsKey("reference"));
 		assertTrue(response.getPayload().containsKey("state"));
-		assertTrue(response.getPayload().containsKey("unitData"));
-		
-		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
+
+		assertEquals(idActuator, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
 		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
 		assertEquals("brandU", response.getPayload().getString("brand"));
 		assertEquals("refU", response.getPayload().getString("reference"));
 		assertEquals("OFFU", response.getPayload().getString("state"));
-		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
-		
+
 		//DELETE
-		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors/" + idSensor);
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/actuators/" + idActuator);
 		assertEquals(200, response.getResponseCode());
-		
+
 		//FIND
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/actuators/" + idActuator);
 		assertEquals(404, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void testCRUDRoom() throws IOException {
 		//ADD
-		
+
 		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
 				.add("longitude", 12L)
 				.add("model", "model")
 				.add("brand", "brand")
 				.add("reference", "ref")
 				.add("state", "OFF")
-				.add("unitData", "Celsius")
 				.build();
-		
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
-	
+
+		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/actuators", payload);
+
 		System.out.println(response.getPayload());
 		assertEquals(201, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
-		
+
 		assertFalse(response.getPayload().containsKey("latitude"));
 		assertFalse(response.getPayload().containsKey("longitude"));
 		assertFalse(response.getPayload().containsKey("model"));
 		assertFalse(response.getPayload().containsKey("brand"));
 		assertFalse(response.getPayload().containsKey("reference"));
 		assertFalse(response.getPayload().containsKey("state"));
-		assertFalse(response.getPayload().containsKey("unitData"));
 
-		long idSensor = response.getPayload().getJsonNumber("id").longValue();	
-		
+		long idActuator = response.getPayload().getJsonNumber("id").longValue();	
+
 		//UPDATE
-		
+
 		payload =  Json.createObjectBuilder().add("latitude", 14L)
 				.add("longitude", 15L)
 				.add("model", "modelU")
 				.add("brand", "brandU")
 				.add("reference", "refU")
 				.add("state", "OFFU")
-				.add("unitData", "CelsiusU")
 				.build();
-		
-		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/sensors/" + idSensor, payload);
-		
+
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/actuators/" + idActuator, payload);
+
 		assertEquals(200, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
@@ -206,23 +197,21 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("brand"));
 		assertTrue(response.getPayload().containsKey("reference"));
 		assertTrue(response.getPayload().containsKey("state"));
-		assertTrue(response.getPayload().containsKey("unitData"));
-		
-		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
+
+		assertEquals(idActuator, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
 		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
 		assertEquals("brandU", response.getPayload().getString("brand"));
 		assertEquals("refU", response.getPayload().getString("reference"));
 		assertEquals("OFFU", response.getPayload().getString("state"));
-		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
-		
+
 		//FIND
-		
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
-		
+
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/actuators/" + idActuator);
+
 		assertEquals(200, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("id"));
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
@@ -230,25 +219,22 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("brand"));
 		assertTrue(response.getPayload().containsKey("reference"));
 		assertTrue(response.getPayload().containsKey("state"));
-		assertTrue(response.getPayload().containsKey("unitData"));
-		
-		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
+
+		assertEquals(idActuator, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
 		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
 		assertEquals("brandU", response.getPayload().getString("brand"));
 		assertEquals("refU", response.getPayload().getString("reference"));
 		assertEquals("OFFU", response.getPayload().getString("state"));
-		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
-		
+
 		//DELETE
-		
-		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors/" + idSensor);
+
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/actuators/" + idActuator);
 		assertEquals(200, response.getResponseCode());
-		
+
 		//FIND
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/actuators/" + idActuator);
 		assertEquals(404, response.getResponseCode());
 	}
-
 }
