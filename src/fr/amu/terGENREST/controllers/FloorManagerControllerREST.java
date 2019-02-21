@@ -92,24 +92,36 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		if(floor.getFloorNumber() == 0) {
+		if(corridor.getNumberCorridor() == 0) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'FloorNumber' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "'NumberCorridor' property is missing"))
 					.build();
 		}
-
+		
+		Optional<Corridor> corridorSearch = floor.getCorridors()
+				.stream()
+				.filter(floorad -> floorad.getNumberCorridor() == corridor.getNumberCorridor())
+				.findFirst();
+		
+		if(corridorSearch.isPresent()) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "corridorNumber '" + corridor.getNumberCorridor() + "' already exist"))
+					.build();
+		}
+		
 		floor.addCorridor(corridor);
 		floorManager.updateFloor(floor);
 		
 		floor = floorManager.findById(floor.getId());
 		
-		Optional<Corridor> corridoeAdded = floor.getCorridors()
+		Optional<Corridor> corridorAdded = floor.getCorridors()
 				.stream()
 				.filter(floorCorridor -> (floorCorridor.getNumberCorridor()==(corridor.getNumberCorridor())))
 				.findFirst();
 
-		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridoeAdded.get().getId()).build();
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorAdded.get().getId()).build();
 
 		return Response.ok().entity(jsonResponse).build();
 	}
@@ -126,13 +138,26 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		if(floor.getFloorNumber() == 0) {
+		if(motherRoom.getNumberMotherRoom() == 0) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'FloorNumber' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "'NumberMotherRoom' property is missing"))
 					.build();
 		}
-
+		
+		Optional<MotherRoom> motherRoomSearch = floor.getBuildingMotherRoom()
+				.stream()
+				.filter(floorad -> floorad.getNumberMotherRoom() == motherRoom.getNumberMotherRoom())
+				.findFirst();
+		
+		if(motherRoomSearch.isPresent()) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "NumberMotherRoom '" + motherRoom.getNumberMotherRoom() + "' already exist"))
+					.build();
+		}
+		
+		
 		floor.addMotherRoom(motherRoom);
 		floorManager.updateFloor(floor);
 		
