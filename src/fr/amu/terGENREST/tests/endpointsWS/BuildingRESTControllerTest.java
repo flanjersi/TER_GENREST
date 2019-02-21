@@ -76,7 +76,6 @@ public class BuildingRESTControllerTest {
 		assertFalse(response.getPayload().containsKey("type"));
 		idBuilding = response.getPayload().getJsonNumber("id").longValue();
 
-		
 		//Update Building 
 		jsonPayloadRequest = Json.createObjectBuilder()
 				.add("type", "studetteUpdated")		
