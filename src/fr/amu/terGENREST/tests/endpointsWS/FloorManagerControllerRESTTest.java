@@ -42,7 +42,7 @@ public class FloorManagerControllerRESTTest {
 		assertEquals(201, response.getResponseCode());
 		idProject = response.getPayload().getJsonNumber("id").longValue();
 		//ADD BUILDING 
-		RequestsHelper.ResponseJsonObject response1 = RequestsHelper.httpPUT(URL_ROOT_BUILDING, PayloadDataRequestREST.jsonPayloadRequestBuilding());
+		RequestsHelper.ResponseJsonObject response1 = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/projects/"+ idProject + "/buildings", PayloadDataRequestREST.jsonPayloadRequestBuilding());
 		assertEquals(201, response1.getResponseCode());
 		idBuilding = response1.getPayload().getJsonNumber("id").longValue();
 	}
