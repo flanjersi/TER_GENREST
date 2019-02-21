@@ -170,7 +170,6 @@ public class SensorRESTControllerTest {
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
-		System.out.println(response.getPayload());
 		assertEquals(201, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
