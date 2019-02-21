@@ -2,6 +2,7 @@ package fr.amu.terGENREST.services.project;
 
 import java.util.List;
 import javax.ejb.Local;
+
 import fr.amu.terGENREST.entities.project.Project;
 
 /**

@@ -291,8 +291,8 @@ public class UserRESTControllerTest {
 	
 	@Test
 	public void testCreateProject() throws IOException {
-		// add user 
 		
+		// add user 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
 				.add("firstName", "Jean")
 				.add("lastName", "Marc")
@@ -300,14 +300,11 @@ public class UserRESTControllerTest {
 				.build();
 
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, jsonPayloadRequest);
-
 		long id = response.getPayload().getJsonNumber("id").longValue();
 		assertEquals(200, response.getResponseCode());
 		
-		// add Project
-		
+		// add Project		
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
-				.add("id", 4)
 				.build();
 				 
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
@@ -321,6 +318,16 @@ public class UserRESTControllerTest {
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id+"/projects/"+idProject);
 	}
 	
+	
+	@Test
+	public void testCreateProjectWithAFalseIdOfUser() throws IOException {
+		// add Project		
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
+				.build();		 
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER + 1 + "/projects/", jsonPayloadRequest2);		
+		assertEquals(404, response.getResponseCode());
+
+	}
 	
 	@Test
 	public void updateNothing() throws IOException {

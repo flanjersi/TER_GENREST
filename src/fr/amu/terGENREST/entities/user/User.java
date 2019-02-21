@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.apache.bval.constraints.Email;
+
 import fr.amu.terGENREST.entities.project.Project;
 
 

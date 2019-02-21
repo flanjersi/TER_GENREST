@@ -25,8 +25,8 @@ import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
 import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.RequestsHelper;
-import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 import fr.amu.terGENREST.tests.utils.Utils;
+import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 
 
 
