@@ -75,7 +75,7 @@ public class BuildingManagerControllerREST {
 		if(buildingFinded == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
+					.entity(Utils.makeErrorMessage(404, "Building with id" + idBuilding + "no exist"))
 					.build();
 		}
 	
@@ -87,7 +87,6 @@ public class BuildingManagerControllerREST {
 			buildingFinded.setAddress(building.getAddress());
 		}
 		
-		
 		buildingFinded = buildingManager.updateBuilding(buildingFinded);
 
 		return Response.ok().entity(buildingFinded).build();
@@ -97,19 +96,32 @@ public class BuildingManagerControllerREST {
 	@PUT
 	@Path("/{idBuilding:[0-9]+}/floors")
 	public Response createFloor(@PathParam("idBuilding") Long idBuilding, Floor floor) {
+		
 		Building building = buildingManager.findById(idBuilding );
 		
 		if(building == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Building with id '" + idBuilding + "' no exist"))
+					.entity(Utils.makeErrorMessage(404, "Building with id" + idBuilding + "no exist"))
 					.build();
 		}
 		
 		if(floor.getFloorNumber() == 0) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'FloorNumber' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "FloorNumber property is missing"))
+					.build();
+		}
+		
+		Optional<Floor> floorsearch = building.getBuildingFloor()
+				.stream()
+				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
+				.findFirst();
+		
+		if(floorsearch.isPresent()) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "floorNumber" + floor.getFloorNumber() + " already exist"))
 					.build();
 		}
 
@@ -125,7 +137,7 @@ public class BuildingManagerControllerREST {
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", floorAdded.get().getId()).build();
 
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();	
 	}
 	
 	@DELETE
@@ -136,7 +148,7 @@ public class BuildingManagerControllerREST {
 		if(building == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "building id '" + idBuilding + "' no exist"))
+					.entity(Utils.makeErrorMessage(404, "building id" + idBuilding + " no exist"))
 					.build();
 		}
 
@@ -147,7 +159,7 @@ public class BuildingManagerControllerREST {
 		if(!floorRemoved.isPresent()) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "floor with id '" + idFloor + "' not found"))
+					.entity(Utils.makeErrorMessage(404, "floor with id " + idFloor + " not found"))
 					.build();
 		}
 
