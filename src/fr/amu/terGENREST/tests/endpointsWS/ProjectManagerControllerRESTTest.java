@@ -70,6 +70,9 @@ public class ProjectManagerControllerRESTTest {
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+0);
 		assertEquals(404, response.getResponseCode());
 	}
+	
+	
+	
 
 }
 

@@ -29,15 +29,15 @@ import fr.amu.terGENREST.tests.utils.Utils;
 
 
 public class UserRESTControllerTest {
-	
+
 	private static final String URL_ROOT_USER = "http://localhost:8090/terGENREST/api/users/";
-	
+
 
 	@Before
 	public void setUp() throws Exception {
-		
+
 	}
-	
+
 	@Test
 	public void testCRUDUserRest() throws IOException {
 
@@ -62,11 +62,11 @@ public class UserRESTControllerTest {
 		assertFalse(responseObject.containsKey("password"));
 
 		long id = responseObject.getJsonNumber("id").longValue();
-		
+
 		// update user
 		HttpPost requestUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/" + id);
 
-		 jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
+		jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
 				.add("firstName", "JeanUpdate")
 				.add("lastName", "Marc")
 				.add("password", "zeoi")
@@ -88,16 +88,16 @@ public class UserRESTControllerTest {
 		assertTrue(responseObject.containsKey("firstName"));
 
 		assertEquals("JeanUpdate", responseObject.getString("firstName"));
-		
-		
+
+
 		// find user by id
 		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users/" + id);
-		
-		 response = HttpClientBuilder.create().build().execute( requestGetData );
+
+		response = HttpClientBuilder.create().build().execute( requestGetData );
 
 		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		 responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
+		responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
 
 		assertTrue(responseObject.containsKey("id"));
 		assertTrue(responseObject.containsKey("email"));
@@ -106,23 +106,23 @@ public class UserRESTControllerTest {
 		assertTrue(responseObject.containsKey("firstName"));
 
 		assertEquals("jmj@gmail.dez", responseObject.getString("email"));
-		
-		
+
+
 		//Delete user
 
 		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
-		
+
 	}
-	
+
 	@Test
 	public void testGetUserByEmailAndPassword() throws IOException {
-		
+
 		// add user
-		
+
 		User u = new User ("Jean","Marc","jmc84@gmail.fr","aerty105");
-		
+
 		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", u.getEmail())
@@ -142,22 +142,22 @@ public class UserRESTControllerTest {
 		assertFalse(responseObject.containsKey("email"));
 		assertFalse(responseObject.containsKey("password"));
 		long id = responseObject.getJsonNumber("id").longValue();
-		
+
 		// find by Email and Password
 
 		String email = u.getEmail();
 		String password = u.getPassword();
-		
+
 		HttpGet requestGetData = new HttpGet("http://localhost:8090/terGENREST/api/users?email="+email+"&password="+password);
-	
-		 response = HttpClientBuilder.create().build().execute( requestGetData );
 
-		 assertEquals(200, response.getStatusLine().getStatusCode());
-		
-		 JsonArray responseArray = Utils.stringToJsonArray(EntityUtils.toString(response.getEntity()));
+		response = HttpClientBuilder.create().build().execute( requestGetData );
 
-		 responseObject = responseArray.getJsonObject(0);
-		 
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+		JsonArray responseArray = Utils.stringToJsonArray(EntityUtils.toString(response.getEntity()));
+
+		responseObject = responseArray.getJsonObject(0);
+
 		assertTrue(responseObject.containsKey("id"));
 		assertTrue(responseObject.containsKey("email"));
 		assertTrue(responseObject.containsKey("password"));
@@ -165,26 +165,26 @@ public class UserRESTControllerTest {
 		assertTrue(responseObject.containsKey("firstName"));
 
 		assertEquals(email, responseObject.getString("email"));
-		
+
 		//Delete user
 
 		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
-	
+
 	@Test
 	public void getUserWithUnknowID() throws IOException {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_USER + "99999999");
 		assertEquals(404, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void deleteUserWithUnknowID() throws IOException {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_USER + "99999999");
 		assertEquals(404, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void UpdateUserWithUnknowID() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
@@ -212,13 +212,13 @@ public class UserRESTControllerTest {
 		response = RequestsHelper.httpPUT(URL_ROOT_USER, jsonPayloadRequest);
 
 		assertEquals(400, response.getResponseCode());
-		
+
 		//Delete user
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
 	}
-	
-	
+
+
 	@Test
 	public void testCreateUserWithNullEmail() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
@@ -232,8 +232,8 @@ public class UserRESTControllerTest {
 
 		assertEquals(400, response.getResponseCode());
 	}
-	
-	
+
+
 	@Test
 	public void testCreateUserWithNullFirstName() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
@@ -244,7 +244,7 @@ public class UserRESTControllerTest {
 
 		assertEquals(400, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void testCreateUserWithNullLastName() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
@@ -255,7 +255,7 @@ public class UserRESTControllerTest {
 
 		assertEquals(400, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void testCreateUserWithNullPassword() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
@@ -266,32 +266,32 @@ public class UserRESTControllerTest {
 
 		assertEquals(400, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void findAllUsers() throws IOException {
 		RequestsHelper.ResponseJsonArray response = RequestsHelper.httpGetJsonArray(URL_ROOT_USER);
 		assertEquals(200, response.getResponseCode());
 	}
-	
+
 	@Test
 	public void findAllProjects() throws IOException {
 		//ADD USER
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
 		long idUser = response.getPayload().getJsonNumber("id").longValue();
 		assertEquals(200, response.getResponseCode());
-		
+
 		RequestsHelper.ResponseJsonArray responseArray = RequestsHelper.httpGetJsonArray(URL_ROOT_USER+idUser+"/projects/");
 		long idProject = response.getPayload().getJsonNumber("id").longValue();
 		assertEquals(200, responseArray.getResponseCode());
-		
+
 		//Delete user and Project
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser);
 	}
-	
+
 	@Test
 	public void testCreateProject() throws IOException {
-		
+
 		// add user 
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
 				.add("firstName", "Jean")
@@ -302,36 +302,52 @@ public class UserRESTControllerTest {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, jsonPayloadRequest);
 		long id = response.getPayload().getJsonNumber("id").longValue();
 		assertEquals(200, response.getResponseCode());
-		
+
 		// add Project		
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
 				.build();
-				 
+
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
 		long idProject = response.getPayload().getJsonNumber("id").longValue();
-		
+
 		assertEquals(201, response.getResponseCode());
 
 		//Delete user and Project
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
-		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id+"/projects/"+idProject);
 	}
-	
-	
+
 	@Test
 	public void testCreateProjectWithAFalseIdOfUser() throws IOException {
+
 		// add Project		
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
 				.build();		 
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER + 1 + "/projects/", jsonPayloadRequest2);		
+		RequestsHelper.ResponseJsonObject  response = RequestsHelper.httpPUT(URL_ROOT_USER + 1 + "/projects/", jsonPayloadRequest2);		
 		assertEquals(404, response.getResponseCode());
 
 	}
 	
+	
+	@Test
+	public void testCreateProjectWithNullName() throws IOException {	
+		//ADD USER
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+		assertEquals(200, response.getResponseCode());
+		long id = response.getPayload().getJsonNumber("id").longValue();
+		// add Project		
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("", "Project")
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
+		assertEquals(400, response.getResponseCode());
+		//Delete user and Project
+		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
+
+	}
+
 	@Test
 	public void updateNothing() throws IOException {
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmj@gmail.dez")
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("email", "jmjs@gmail.dez")
 				.add("firstName", "Jean")
 				.add("lastName", "Marc")
 				.add("password", "zeoi")
@@ -346,14 +362,14 @@ public class UserRESTControllerTest {
 
 		response = RequestsHelper.httpPOST(URL_ROOT_USER + id, jsonPayloadRequest);
 		assertEquals(200, response.getResponseCode());
-		
+
 		assertTrue(response.getPayload().containsKey("email"));
 		assertTrue(response.getPayload().containsKey("password"));
 		assertTrue(response.getPayload().containsKey("lastName"));
 		assertTrue(response.getPayload().containsKey("firstName"));
 
 		assertEquals("Jean", response.getPayload().getString("firstName"));
-		
+
 		id = response.getPayload().getJsonNumber("id").longValue();
 
 		//Delete User
