@@ -56,9 +56,6 @@ public class MotherRoomManagerControllerREST {
 	@Path("/{id:[0-9]+}")
 	public Response updateMotherRoom(@PathParam("id") Long id, MotherRoom motherRoom) {
 
-		// TODO Changement vers la modification plus propre -> modification si != null
-		// (DONE)
-
 		MotherRoom motherRoomToFind = motherRoomManager.findById(id);
 
 		if (motherRoomToFind == null) {
@@ -78,7 +75,6 @@ public class MotherRoomManagerControllerREST {
 		return Response.ok().entity(motherRoomManager.findById(id)).build();
 	}
 
-	// TODO Cr�ation d'une m�thode d'ajout de room (DONE)
 
 	@PUT
 	@Path("/{idMotherroom:[0-9]+}/rooms/")
@@ -120,7 +116,6 @@ public class MotherRoomManagerControllerREST {
 
 	}
 
-	// TODO Cr�ation d'une m�thode d'ajout de corridor (DONE)
 	@PUT
 	@Path("/{idMotherroom:[0-9]+}/corridors/")
 	public Response addCorridor(@PathParam("idMotherroom") Long idMotherroom, Corridor corridor) {
@@ -157,7 +152,6 @@ public class MotherRoomManagerControllerREST {
 
 	}
 
-	// TODO Cr�ation d'une m�thode de suppression de room (DONE)
 	@DELETE
 	@Path("{idMotherroom:[0-9]+}/rooms/{idRoom:[0-9]+}")
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
@@ -182,7 +176,6 @@ public class MotherRoomManagerControllerREST {
 
 	}
 
-// TODO Cr�ation d'une m�thode de suppression de corridor (DONE)
 	@DELETE
 	@Path("{idMotherroom:[0-9]+}/corridors/{idCorridor:[0-9]+}")
 	public Response removeCorridor(@PathParam("idMotherroom") Long idMotherroom,

@@ -57,9 +57,6 @@ public class RoomManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateRoom(@PathParam("id") Long id, Room room) {
-
-		// TODO Changement vers la modification plus propre -> modification si != null (DONE)
-
 		Room roomTofind = roomManager.findRoom(room.getId());
 
 		if (roomTofind == null) {
@@ -76,8 +73,6 @@ public class RoomManagerControllerREST {
 		roomTofind = roomManager.updateRoom(roomTofind);
 		return Response.ok().entity(roomTofind).build();
 	}
-
-	// TODO Cr�ation d'une m�thode d'ajout de sensor (note � moi m�me) (DONE)
 
 	@PUT
 	@Path("{idRoom:[0-9]+}/sensors/")
@@ -137,7 +132,6 @@ public class RoomManagerControllerREST {
 
 	}
 
-	// TODO Cr�ation d'une m�thode d'ajout de actuator (DONE)
 	@PUT
 	@Path("/{idRoom:[0-9]+}/actuators/")
 	public Response addActuator(@PathParam("idRoom") Long idRoom, Actuator actuator) {
@@ -186,8 +180,6 @@ public class RoomManagerControllerREST {
 
 	}
 
-	// TODO Cr�ation d'une m�thode de suppression de sensor (note � moi m�me) (DONE)
-
 	@DELETE
 	@Path("{idRoom:[0-9]+}/sensors/{idSensor:[0-9]+}")
 	public Response removeSensor(@PathParam("idRoom") Long idRoom, @PathParam("idSensor") Long idSensor) {
@@ -211,8 +203,6 @@ public class RoomManagerControllerREST {
 		return Response.ok().build();
 		
 	}
-
-// TODO Cr�ation d'une m�thode de suppression de actuator (DONE)
 
 	@DELETE
 	@Path("{idRoom:[0-9]+}/actuators/{idActuator:[0-9]+}")
