@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -33,5 +34,16 @@ public class BuildingManagerImpl implements BuildingManager {
 	public List<Building> findAllBuilding() {
 		TypedQuery<Building> q = em.createNamedQuery("Building.findAllBuilding", Building.class);
 		return q.getResultList();
+	}
+
+	@Override
+	public Building findBuildingByFloorId(Long id) {
+		TypedQuery<Building> q = em.createNamedQuery("Building.findBuildingByFloorId", Building.class).setParameter("idFloor", id);
+		
+		try {
+			return q.getSingleResult();	
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }
