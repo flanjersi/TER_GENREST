@@ -19,10 +19,10 @@ import fr.amu.terGENREST.tests.endpointsWS.UserRESTControllerTest;
 	ProjectManagerControllerRESTTest.class,
 	BuildingRESTControllerTest.class,
 	//FloorTest
-	CorridorRESTControllerTest.class,
+	//CorridorRESTControllerTest.class,
 	//MotherRoomTest
 	//RoomTest
-	SensorRESTControllerTest.class,
+	//SensorRESTControllerTest.class,
 	//ActuatorTest
 	LanguageRESTControllerTest.class,
 	ConfigurationManagerControllerRESTTest.class,
