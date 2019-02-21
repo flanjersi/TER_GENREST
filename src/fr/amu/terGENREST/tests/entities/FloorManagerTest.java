@@ -79,7 +79,7 @@ public class FloorManagerTest {
 		//Add
 		buildingManager.updateBuilding(building);
 		Building buildUpdated = buildingManager.findById(building.getId());
-		assertTrue(buildUpdated.getBuildingFloor().size() == 1);	
+		assertTrue(buildUpdated.getFloors().size() == 1);	
 		
 		//Update
 		floor.setFloorNumber(17);

@@ -23,7 +23,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
 
-@Path("api/motherrooms")
+@Path("api/motherRooms")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class MotherRoomManagerControllerREST {
@@ -36,10 +36,10 @@ public class MotherRoomManagerControllerREST {
 	}
 
 	@GET
+	@Path("")
 	public Response getAllMotherRooms() {
-
-		List<MotherRoom> motherRoooms = motherRoomManager.findAllMotherRoom();
-		return Response.ok().entity(motherRoooms).build();
+		List<MotherRoom> motherRooms = motherRoomManager.findAllMotherRoom();
+		return Response.ok().entity(motherRooms).build();
 	}
 
 	@GET
@@ -77,8 +77,8 @@ public class MotherRoomManagerControllerREST {
 
 
 	@PUT
-	@Path("/{idMotherroom:[0-9]+}/rooms/")
-	public Response addRoom(@PathParam("idMotherroom") Long idMotherroom, Room room) {
+	@Path("/{idMotherRoom:[0-9]+}/rooms/")
+	public Response addRoom(@PathParam("idMotherRoom") Long idMotherroom, Room room) {
 
 		MotherRoom motherRoomToFind = motherRoomManager.findById(idMotherroom);
 
@@ -86,13 +86,13 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, " MotherRoom with id: " + idMotherroom + "not found")).build();
 		}
+		
 		if (room.getNumberRoom() == 0) {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, " 'NumberRoom' is missing")).build();
-
+			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'numberRoom' is missing")).build();
 		}
 
 		if (room.getType() == null) {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, " 'Type' is missing")).build();
+			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'type' is missing")).build();
 
 		}
 
@@ -104,16 +104,8 @@ public class MotherRoomManagerControllerREST {
 		Optional<Room> roomToadd = motherRoomToFind.getListRoom().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
 
-		if (roomToadd.isPresent()) {
-			JsonObject jsonResponse = Json.createObjectBuilder().add("id", roomToadd.get().getId()).build();
-			return Response.status(201).entity(jsonResponse).build();
-
-		}
-
-		else {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "Room added not found")).build();
-		}
-
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", roomToadd.get().getId()).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 
 	@PUT
@@ -128,7 +120,7 @@ public class MotherRoomManagerControllerREST {
 		}
 
 		if (corridor.getNumberCorridor() == 0) {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, " 'NumberCorrdidor' is missing")).build();
+			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'NumberCorrdidor' is missing")).build();
 
 		}
 
@@ -140,16 +132,8 @@ public class MotherRoomManagerControllerREST {
 		Optional<Corridor> corridorToadd = motherRoomToFind.getListCorridor().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
 
-		if (corridorToadd.isPresent()) {
-			JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorToadd.get().getId()).build();
-			return Response.status(201).entity(jsonResponse).build();
-
-		}
-
-		else {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "Added corridor not found")).build();
-		}
-
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorToadd.get().getId()).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 
 	@DELETE

@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
+import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 public class ProjectManagerControllerRESTTest {
@@ -31,50 +33,30 @@ public class ProjectManagerControllerRESTTest {
 
 	long idUser;
 	long idProject;
-
+	
 	@Before
 	public void setUp() throws Exception {
-		
-		// ADD USER
-				HttpPut requestUser = new HttpPut("http://localhost:8090/terGENREST/api/users/");
-				JsonObject jsonPayloadRequestUser = Json.createObjectBuilder().add("email", "veersionTest@versionTest.versionTest")
-						.add("firstName", "firstNameVersionTest")
-						.add("lastName", "lastNameVersionTest")
-						.add("password", "passwordVersionTest")
-						.build();
-				requestUser.setEntity(new StringEntity(jsonPayloadRequestUser.toString(), "UTF-8"));
-				requestUser.setHeader("Content-Type", "application/json");
-				HttpResponse responseUser = HttpClientBuilder.create().build().execute( requestUser );
-				assertEquals(200, responseUser.getStatusLine().getStatusCode());
-				JsonObject responseObjectUser = Utils.stringToJsonObject(EntityUtils.toString(responseUser.getEntity()));
-				assertTrue(responseObjectUser.containsKey("id"));
-				assertFalse(responseObjectUser.containsKey("email"));
-				assertFalse(responseObjectUser.containsKey("password"));
-				idUser = responseObjectUser.getJsonNumber("id").longValue();
-				
-		// ADD PROJECT	
-				HttpPut requestProject = new HttpPut("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects");
-				JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "MyFirstProject").build();
-				requestProject.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-				requestProject.setHeader("Content-Type", "application/json");
-				HttpResponse responseProject = HttpClientBuilder.create().build().execute( requestProject );
-				assertEquals(201, responseProject.getStatusLine().getStatusCode());
-				JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(responseProject.getEntity()));
-				assertTrue(responseObject.containsKey("id"));
-				assertFalse(responseObject.containsKey("projectName"));
-				idProject = responseObject.getJsonNumber("id").longValue();
+		//ADD USER
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/", PayloadDataRequestREST.jsonPayloadRequestUser());
+		assertEquals(200, response.getResponseCode());
+		idUser = response.getPayload().getJsonNumber("id").longValue();
+		//ADD PROJECT
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/" + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
+		assertEquals(201, response.getResponseCode());
+		idProject = response.getPayload().getJsonNumber("id").longValue();
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + idUser);
 		HttpResponse response = HttpClientBuilder.create().build().execute( requestDeleteData );
 		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
-	
+
 	@Test
 	public void testUpdateProject() throws IOException {
-		HttpPost requestProjectUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects");	
+
+		HttpPost requestProjectUpdate = new HttpPost("http://localhost:8090/terGENREST/api/projects/"+idProject);	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
 				.add("id", idProject)
 				.build();
@@ -88,12 +70,11 @@ public class ProjectManagerControllerRESTTest {
 		assertTrue(responseObject2.containsKey("projectName"));		
 		assertEquals("MySecondProject", responseObject2.getString("projectName"));		
 	}
-	
+
 	@Test
 	public void testRemoveProject() throws IOException {
-		HttpDelete requestDeleteProject = new HttpDelete("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+ idProject);
-		HttpResponse response2 = HttpClientBuilder.create().build().execute( requestDeleteProject );
-		assertEquals(200, response2.getStatusLine().getStatusCode());
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/"+idUser+"/projects/"+idProject);
+		assertEquals(200, response.getResponseCode());
 	}
 
 }

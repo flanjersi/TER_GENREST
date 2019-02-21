@@ -1,6 +1,5 @@
 package fr.amu.terGENREST.controllers;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +43,6 @@ public class BuildingManagerControllerREST {
 	@EJB
 	private UserManager userManager;
 
-
-
 	@GET
 	@Path("")
 	public Response getAllBuildings() {
@@ -68,7 +65,6 @@ public class BuildingManagerControllerREST {
 
 		return Response.ok().entity(building).build();
 	}
-
 
 	@POST
 	@Path("/{idBuilding:[0-9]+}")
@@ -101,7 +97,7 @@ public class BuildingManagerControllerREST {
 	@Path("/{idBuilding:[0-9]+}/floors")
 	public Response createFloor(@PathParam("idBuilding") Long idBuilding, Floor floor) {
 		
-		Building building = buildingManager.findById(idBuilding );
+		Building building = buildingManager.findById(idBuilding);
 		
 		if(building == null) {
 			return Response
@@ -117,7 +113,7 @@ public class BuildingManagerControllerREST {
 					.build();
 		}
 		
-		Optional<Floor> floorsearch = building.getBuildingFloor()
+		Optional<Floor> floorsearch = building.getFloors()
 				.stream()
 				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
 				.findFirst();
@@ -134,7 +130,7 @@ public class BuildingManagerControllerREST {
 		
 		building = buildingManager.findById(building.getId());
 		
-		Optional<Floor> floorAdded = building.getBuildingFloor()
+		Optional<Floor> floorAdded = building.getFloors()
 				.stream()
 				.filter(buildingFloor -> (buildingFloor.getFloorNumber()==(floor.getFloorNumber())))
 				.findFirst();
@@ -157,7 +153,7 @@ public class BuildingManagerControllerREST {
 		}
 
 
-		Optional<Floor> floorRemoved = building.getBuildingFloor()
+		Optional<Floor> floorRemoved = building.getFloors()
 				.stream().filter(c -> c.getId() == idFloor).findFirst();
 
 		if(!floorRemoved.isPresent()) {

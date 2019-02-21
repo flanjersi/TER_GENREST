@@ -145,9 +145,17 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		Optional<MotherRoom> motherRoomSearch = floor.getBuildingMotherRoom()
+		
+		if(motherRoom.getType() == null) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'type' property is missing"))
+					.build();
+		}
+		
+		Optional<MotherRoom> motherRoomSearch = floor.getMotherRooms()
 				.stream()
-				.filter(floorad -> floorad.getNumberMotherRoom() == motherRoom.getNumberMotherRoom())
+				.filter(motherRoomAdd -> motherRoomAdd.getNumberMotherRoom() == motherRoom.getNumberMotherRoom())
 				.findFirst();
 		
 		if(motherRoomSearch.isPresent()) {
@@ -163,10 +171,9 @@ public class FloorManagerControllerREST {
 		
 		floor = floorManager.findById(floor.getId());
 		
-		Optional<MotherRoom> motherRoomAdded = floor.getBuildingMotherRoom()
+		Optional<MotherRoom> motherRoomAdded = floor.getMotherRooms()
 				.stream()
-				.filter(floorMotherRoom -> (floorMotherRoom.getType().equals(motherRoom.getType())))
-				.findFirst();
+				.max((mr1, mr2) -> Long.compare(mr1.getId(), mr2.getId()));
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", motherRoomAdded.get().getId()).build();
 
@@ -213,7 +220,7 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 
-		Optional<MotherRoom> motherRoomRemoved = floor.getBuildingMotherRoom()
+		Optional<MotherRoom> motherRoomRemoved = floor.getMotherRooms()
 				.stream().filter(c -> c.getId() == idMotherRoom).findFirst();
 
 		if(!motherRoomRemoved.isPresent()) {

@@ -89,13 +89,13 @@ public class MotherRoomManagerTest {
 		//Add
 		floorManager.updateFloor(floor);
 		Floor floorUpdated = floorManager.findById(floor.getId());
-		assertTrue(floorUpdated.getBuildingMotherRoom().size() == 1);	
+		assertTrue(floorUpdated.getMotherRooms().size() == 1);	
 		
 		//Update
 		motherRoom.setType("studio");
 		floorManager.updateFloor(floorUpdated);		
 		userManager.updateUser(user);
-		assertEquals("studio", floorManager.findById(floor.getId()).getBuildingMotherRoom().get(0).getType());
+		assertEquals("studio", floorManager.findById(floor.getId()).getMotherRooms().get(0).getType());
 		
 		
 		//Delete

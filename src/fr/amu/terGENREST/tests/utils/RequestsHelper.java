@@ -140,7 +140,7 @@ public class RequestsHelper {
 		request.setHeader(NAMEHEADER, VALUEHEADER);
 
 		HttpResponse response = HttpClientBuilder.create().build().execute( request );
-
+		
 		JsonObject payloadResponse = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
 
 		long responseCode = response.getStatusLine().getStatusCode();

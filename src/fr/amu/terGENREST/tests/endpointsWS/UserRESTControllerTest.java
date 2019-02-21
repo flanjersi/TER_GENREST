@@ -283,7 +283,7 @@ public class UserRESTControllerTest {
 		//Delete user and Project
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser);
-		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser+"/projects/"+idProject);
+	//	response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser+"/projects/"+idProject);
 	}
 	
 	@Test

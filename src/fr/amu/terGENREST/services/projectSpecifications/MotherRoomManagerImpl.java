@@ -25,7 +25,7 @@ public class MotherRoomManagerImpl implements MotherRooomManager {
 
 	@Override
 	public List<MotherRoom> findAllMotherRoom() {
-		TypedQuery<MotherRoom> q = em.createNamedQuery("motherRoom.findAllmotherRoom", MotherRoom.class);
+		TypedQuery<MotherRoom> q = em.createNamedQuery("MotherRoom.findAllMotherRoom", MotherRoom.class);
 		return q.getResultList();
 	}
 }
