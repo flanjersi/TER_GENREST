@@ -23,91 +23,70 @@ import org.junit.Test;
 
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
+import fr.amu.terGENREST.tests.utils.RequestsHelper;
+import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 
 
 public class BuildingRESTControllerTest {
-
+	
+	private static final String URL_ROOT_USER = "http://localhost:8090/terGENREST/api/users/";
+	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
+	private static final String URL_ROOT_BUILDING = "http://localhost:8090/terGENREST/api/buildings/";
 
 		//Add data
-		long idUser;
-		long idProject;
-		long idBuilding;
-
-		@Before
-		public void setUp() throws Exception {
-			
-			// ADD USER
-					HttpPut requestUser = new HttpPut("http://localhost:8090/terGENREST/api/users/");
-					JsonObject jsonPayloadRequestUser = Json.createObjectBuilder().add("email", "veersionTest@versionTest.versionTest")
-							.add("firstName", "firstNameVersionTest")
-							.add("lastName", "lastNameVersionTest")
-							.add("password", "passwordVersionTest")
-							.build();
-					requestUser.setEntity(new StringEntity(jsonPayloadRequestUser.toString(), "UTF-8"));
-					requestUser.setHeader("Content-Type", "application/json");
-					HttpResponse responseUser = HttpClientBuilder.create().build().execute( requestUser );
-					assertEquals(200, responseUser.getStatusLine().getStatusCode());
-					JsonObject responseObjectUser = Utils.stringToJsonObject(EntityUtils.toString(responseUser.getEntity()));
-					assertTrue(responseObjectUser.containsKey("id"));
-					assertFalse(responseObjectUser.containsKey("email"));
-					assertFalse(responseObjectUser.containsKey("password"));
-					idUser = responseObjectUser.getJsonNumber("id").longValue();
-					
-			// ADD PROJECT	
-					HttpPut requestProject = new HttpPut("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects");
-					JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "MyFirstProject").build();
-					requestProject.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-					requestProject.setHeader("Content-Type", "application/json");
-					HttpResponse responseProject = HttpClientBuilder.create().build().execute( requestProject );
-					assertEquals(201, responseProject.getStatusLine().getStatusCode());
-					JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(responseProject.getEntity()));
-					assertTrue(responseObject.containsKey("id"));
-					assertFalse(responseObject.containsKey("projectName"));
-					idProject = responseObject.getJsonNumber("id").longValue();
-					
-			//ADD BUILDING
-					HttpPut requestBuilding = new HttpPut("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+ idProject+"/buildings");
-					JsonObject jsonPayloadRequestBuilding = Json.createObjectBuilder().add("type", "BusinesLocal").build();
-					requestBuilding.setEntity(new StringEntity(jsonPayloadRequestBuilding.toString(), "UTF-8"));
-					requestBuilding.setHeader("Content-Type", "application/json");
-					HttpResponse responseBuilding = HttpClientBuilder.create().build().execute( requestBuilding );
-					assertEquals(201, responseBuilding.getStatusLine().getStatusCode());
-					JsonObject responseObjectBuilding = Utils.stringToJsonObject(EntityUtils.toString(responseBuilding.getEntity()));
-					assertTrue(responseObjectBuilding.containsKey("id"));
-					assertFalse(responseObjectBuilding.containsKey("type"));
-					idBuilding = responseObjectBuilding.getJsonNumber("id").longValue();
-		}
+		private long idUser;
+		private long idProject;
+		private long idBuilding;
+		RequestsHelper.ResponseJsonObject response;
 		
+		
+//		@Before
+		public void setup() throws IOException {
+			
+			//aDD user
+			
+			 response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+				idUser = response.getPayload().getJsonNumber("id").longValue();
+				assertEquals(200, response.getResponseCode());
+				
+				
+				//ADD Project
+				
+				response = RequestsHelper.httpPUT(URL_ROOT_USER+ idUser +"/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
+				idProject = response.getPayload().getJsonNumber("id").longValue();
+				System.out.println("zzzzzzzzzzz"+idProject);
+			
+				assertEquals(201, response.getResponseCode());
+			
+
+		}
 		@After
 		public void tearDown() throws Exception {
-			HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + idUser);
-			HttpResponse response = HttpClientBuilder.create().build().execute( requestDeleteData );
-			assertEquals(200, response.getStatusLine().getStatusCode());
+			RequestsHelper.httpDELETE(URL_ROOT_USER + idUser);
 		}
+
 
 		@Test
-		public void testUpdateBuilding() throws IOException {
-			HttpPost requestProjectUpdate = new HttpPost("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+idProject+"/buildings");	
-			JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("type", "BusinessLocalUpdated")
-					.add("id", idBuilding)
-					.build();
-
-			requestProjectUpdate.setEntity(new StringEntity(jsonPayloadRequest2.toString(), "UTF-8"));
-			requestProjectUpdate.setHeader("Content-Type", "application/json");
-			HttpResponse responseProject2 = HttpClientBuilder.create().build().execute( requestProjectUpdate );
-			assertEquals(200, responseProject2.getStatusLine().getStatusCode());
-			JsonObject responseObject2 = Utils.stringToJsonObject(EntityUtils.toString(responseProject2.getEntity()));
-			assertTrue(responseObject2.containsKey("id"));
-			assertTrue(responseObject2.containsKey("type"));		
-			assertEquals("BusinessLocalUpdated", responseObject2.getString("type"));		
-		}
+		public void testAddBuilding() throws IOException {
+//			HttpPut requestProject = new HttpPut(URL_ROOT_USER+ idUser +"/projects/"+ idProject +"/buildings/");
+//			JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("type", "Myqfqdsbat").build();
+//			requestProject.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
+//			requestProject.setHeader("Content-Type", "application/json");
+//			HttpResponse responseProject = HttpClientBuilder.create().build().execute( requestProject );
+//			assertEquals(201, responseProject.getStatusLine().getStatusCode());
+//			JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(responseProject.getEntity()));
+//			assertTrue(responseObject.containsKey("id"));
+//			assertFalse(responseObject.containsKey("type"));
 		
-		@Test
-		public void testRemoveProject() throws IOException {
-			HttpDelete requestDeleteProject = new HttpDelete("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+ idProject+ "/buildings/"+idBuilding);
-			HttpResponse response2 = HttpClientBuilder.create().build().execute( requestDeleteProject );
-			assertEquals(200, response2.getStatusLine().getStatusCode());
 		}
+//		
+//		@Test
+//		public void testRemoveProject() throws IOException {
+//			HttpDelete requestDeleteProject = new HttpDelete("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+ idProject+ "/buildings/"+idBuilding);
+//			HttpResponse response2 = HttpClientBuilder.create().build().execute( requestDeleteProject );
+//			assertEquals(200, response2.getStatusLine().getStatusCode());
+//		}
 }
