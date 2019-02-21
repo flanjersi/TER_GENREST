@@ -81,7 +81,7 @@ public class RoomManagerControllerREST {
 
 	@PUT
 	@Path("{idRoom:[0-9]+}/sensors/")
-	public Response addSensor(@PathParam("id") Long idRoom, Sensor sensor) {
+	public Response addSensor(@PathParam("idRoom") Long idRoom, Sensor sensor) {
 
 		Room roomTofind = roomManager.findRoom(idRoom);
 
@@ -140,7 +140,7 @@ public class RoomManagerControllerREST {
 	// TODO Cr�ation d'une m�thode d'ajout de actuator (DONE)
 	@PUT
 	@Path("/{idRoom:[0-9]+}/actuators/")
-	public Response addActuator(@PathParam("id") Long idRoom, Actuator actuator) {
+	public Response addActuator(@PathParam("idRoom") Long idRoom, Actuator actuator) {
 
 		Room roomTofind = roomManager.findRoom(idRoom);
 
