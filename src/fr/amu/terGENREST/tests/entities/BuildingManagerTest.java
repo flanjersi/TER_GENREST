@@ -14,10 +14,11 @@ import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 import fr.amu.terGENREST.services.user.UserManager;
-import fr.amu.terGENREST.services.project.ProjectManager;
+
 import javax.transaction.Transactional;
 
 @Transactional
