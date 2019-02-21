@@ -3,7 +3,6 @@ package fr.amu.terGENREST.tests.suite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import fr.amu.terGENREST.controllers.MotherRoomManagerControllerREST;
 import fr.amu.terGENREST.tests.entities.ActuatorManagerTest;
 import fr.amu.terGENREST.tests.entities.BuildingManagerTest;
 import fr.amu.terGENREST.tests.entities.ConfigurationManagerTest;
