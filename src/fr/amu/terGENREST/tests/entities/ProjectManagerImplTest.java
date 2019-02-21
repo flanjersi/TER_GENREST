@@ -3,20 +3,17 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import org.apache.activemq.store.jdbc.adapter.PostgresqlJDBCAdapter;
-import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import fr.amu.terGENREST.services.project.ProjectManager;
-import fr.amu.terGENREST.services.user.UserManager;
+
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.project.ProjectManager;
+import fr.amu.terGENREST.services.user.UserManager;
 
 
 /**

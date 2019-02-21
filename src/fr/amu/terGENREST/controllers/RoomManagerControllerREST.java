@@ -190,7 +190,7 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		Optional<Sensor> sensorTofind = roomTofind.getSensors().stream().filter(s -> s.getId() == idSensor).findFirst();
+		Optional<Sensor> sensorTofind = roomTofind.getSensors().stream().filter(s -> s.getId().equals(idSensor)).findFirst();
 
 		if (!sensorTofind.isPresent()) {
 			return Response.status(404)
@@ -214,7 +214,7 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		Optional<Actuator> actuatorTofind = roomTofind.getActuators().stream().filter(a -> a.getId() == idActuator)
+		Optional<Actuator> actuatorTofind = roomTofind.getActuators().stream().filter(a -> a.getId().equals(idActuator))
 				.findFirst();
 		if (!actuatorTofind.isPresent()) {
 

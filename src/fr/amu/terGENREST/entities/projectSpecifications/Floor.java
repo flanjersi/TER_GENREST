@@ -1,5 +1,6 @@
 package fr.amu.terGENREST.entities.projectSpecifications;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,12 @@ import javax.persistence.Table;
 @Table(name = "Floor")
 @Entity
 @NamedQueries({ @NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"), })
-public class Floor {
+public class Floor implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5036343810149445657L;
+
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

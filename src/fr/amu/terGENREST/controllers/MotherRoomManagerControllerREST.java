@@ -143,7 +143,7 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))
 					.build();
 		}
-		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId() == idRoom)
+		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId().equals(idRoom))
 				.findFirst();
 
 		if (roomToremove.isPresent()) {
@@ -169,7 +169,7 @@ public class MotherRoomManagerControllerREST {
 					.build();
 		}
 		Optional<Corridor> corridorToremove = motehrRoomTofind.getCorridors().stream()
-				.filter(c -> c.getId() == idCorridor).findFirst();
+				.filter(c -> c.getId().equals(idCorridor)).findFirst();
 
 		if (corridorToremove.isPresent()) {
 			return Response.status(404)

@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
 
 @Stateless
