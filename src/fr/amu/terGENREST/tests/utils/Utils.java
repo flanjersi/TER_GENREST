@@ -27,6 +27,10 @@ public class Utils {
 	}
 	
 	public static JsonObject stringToJsonObject(String strJson) {
+		if(strJson == null || strJson.isEmpty()) {
+			return Json.createObjectBuilder().build();
+		}
+		
 		JsonReader jsonReader = Json.createReader(new StringReader(strJson));
 
 		JsonObject jsonObject = jsonReader.readObject();
@@ -37,6 +41,10 @@ public class Utils {
 	}
 	
 	public static JsonArray stringToJsonArray(String strJson) {
+		if(strJson == null || strJson.isEmpty()) {
+			return Json.createArrayBuilder().build();
+		}
+		
 		JsonReader jsonReader = Json.createReader(new StringReader(strJson));
 		
 		JsonArray jsonArray = jsonReader.readArray();
