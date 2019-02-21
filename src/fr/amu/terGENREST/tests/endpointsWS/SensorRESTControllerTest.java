@@ -11,6 +11,7 @@ import javax.json.JsonObject;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
@@ -57,7 +58,7 @@ public class SensorRESTControllerTest {
 
 	@After
 	public void tearDown() throws IOException {
-		RequestsHelper.httpDELETE("http://localhost:8090/api/users/" + idUser);
+		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
 	}
 
 	@Test
@@ -73,7 +74,7 @@ public class SensorRESTControllerTest {
 				.add("unitData", "Celsius")
 				.build();
 		
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/api/corridors/" + idCorridor + "/sensors", payload);
+		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 	
 		assertEquals(201, response.getResponseCode());
 		
@@ -100,7 +101,7 @@ public class SensorRESTControllerTest {
 				.add("unitData", "CelsiusU")
 				.build();
 		
-		response = RequestsHelper.httpPOST("http://localhost:8090/api/sensors/" + idSensor, payload);
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/sensors/" + idSensor, payload);
 		
 		assertEquals(200, response.getResponseCode());
 		
@@ -123,8 +124,7 @@ public class SensorRESTControllerTest {
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
 		
 		//FIND
-		
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/api/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
 		
 		assertEquals(200, response.getResponseCode());
 		
@@ -147,12 +147,11 @@ public class SensorRESTControllerTest {
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
 		
 		//DELETE
-		
-		response = RequestsHelper.httpDELETE("http://localhost:8090/api/corridors/" + idCorridor + "/sensors/" + idSensor);
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors/" + idSensor);
 		assertEquals(200, response.getResponseCode());
 		
 		//FIND
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/api/corridors/" + idCorridor + "/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
 		assertEquals(404, response.getResponseCode());
 	}
 	
@@ -169,8 +168,9 @@ public class SensorRESTControllerTest {
 				.add("unitData", "Celsius")
 				.build();
 		
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/api/rooms/" + idRoom + "/sensors", payload);
+		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 	
+		System.out.println(response.getPayload());
 		assertEquals(201, response.getResponseCode());
 		
 		assertTrue(response.getPayload().containsKey("id"));
@@ -196,7 +196,7 @@ public class SensorRESTControllerTest {
 				.add("unitData", "CelsiusU")
 				.build();
 		
-		response = RequestsHelper.httpPOST("http://localhost:8090/api/sensors/" + idSensor, payload);
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/sensors/" + idSensor, payload);
 		
 		assertEquals(200, response.getResponseCode());
 		
@@ -220,7 +220,7 @@ public class SensorRESTControllerTest {
 		
 		//FIND
 		
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/api/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
 		
 		assertEquals(200, response.getResponseCode());
 		
@@ -244,11 +244,11 @@ public class SensorRESTControllerTest {
 		
 		//DELETE
 		
-		response = RequestsHelper.httpDELETE("http://localhost:8090/api/rooms/" + idRoom + "/sensors/" + idSensor);
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors/" + idSensor);
 		assertEquals(200, response.getResponseCode());
 		
 		//FIND
-		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/api/sensors/" + idSensor);
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/sensors/" + idSensor);
 		assertEquals(404, response.getResponseCode());
 	}
 
