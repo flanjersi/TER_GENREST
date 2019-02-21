@@ -1,11 +1,11 @@
 package fr.amu.terGENREST.tests.entities;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,11 +16,10 @@ import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.user.User;
+import fr.amu.terGENREST.services.project.ProjectManager;
 import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 import fr.amu.terGENREST.services.user.UserManager;
-import fr.amu.terGENREST.services.project.ProjectManager;
-import javax.transaction.Transactional;
 
 @Transactional
 public class FloorManagerTest {
@@ -79,7 +78,7 @@ public class FloorManagerTest {
 		//Add
 		buildingManager.updateBuilding(building);
 		Building buildUpdated = buildingManager.findById(building.getId());
-		assertTrue(buildUpdated.getBuildingFloor().size() == 1);	
+		assertTrue(buildUpdated.getFloors().size() == 1);	
 		
 		//Update
 		floor.setFloorNumber(17);

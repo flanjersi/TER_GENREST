@@ -75,6 +75,7 @@ public class CorridorManagerTest {
 
 	@After
 	public void tearDown() throws Exception {
+		userManager.removeUser(user);
 		EJBContainer.createEJBContainer().close();
 	}
 

@@ -3,8 +3,6 @@ package fr.amu.terGENREST.tests.entities;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Comparator;
-
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -70,7 +68,9 @@ public class SensorManagerTest {
 
 		room = new Room(1, "bed room");
 		corridor = new Corridor(1);
+
 		motherRoom.addRoom(room);
+		motherRoom.addCorridor(corridor);
 
 		userManager.saveUser(user);
 	}

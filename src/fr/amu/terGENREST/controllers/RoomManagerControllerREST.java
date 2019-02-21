@@ -23,7 +23,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.entities.projectSpecifications.Sensor;
 import fr.amu.terGENREST.services.projectSpecifications.RoomManager;
 
-@Path("/rooms")
+@Path("/api/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RoomManagerControllerREST {
@@ -43,7 +43,7 @@ public class RoomManagerControllerREST {
 	}
 
 	@GET
-	@Path("/{id:[0-9]+}")
+	@Path("{id:[0-9]+}")
 	public Response getRoomById(@PathParam("id") Long id) {
 
 		Room room = roomManager.findRoom(id);
@@ -55,7 +55,7 @@ public class RoomManagerControllerREST {
 	}
 
 	@POST
-	@Path("/{id:[0-9]+}")
+	@Path("{id:[0-9]+}")
 	public Response updateRoom(@PathParam("id") Long id, Room room) {
 		Room roomTofind = roomManager.findRoom(room.getId());
 
@@ -87,14 +87,13 @@ public class RoomManagerControllerREST {
 		if (sensor.getBrand() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor brand is missing")).build();
 		}
+		
 		if (sensor.getLatitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor latitude is missing")).build();
-
 		}
 
 		if (sensor.getLongitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor longitude is missing")).build();
-
 		}
 
 		if (sensor.getModel() == null) {
@@ -102,38 +101,28 @@ public class RoomManagerControllerREST {
 		}
 		if (sensor.getReference() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor reference is missing")).build();
-
 		}
+		
 		if (sensor.getState() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor state is missing")).build();
-
 		}
 
 		if (sensor.getUnitData() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor unitdata is missing")).build();
-
 		}
 
 		roomTofind.addSensor(sensor);
-		roomManager.updateRoom(roomTofind);
-
-		roomTofind = roomManager.findRoom(roomTofind.getId());
+		roomTofind = roomManager.updateRoom(roomTofind);
 
 		Optional<Sensor> addedSensor = roomTofind.getSensors().stream()
 				.max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
 
-		if (addedSensor.isPresent()) {
-			JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedSensor.get().getId()).build();
-			return Response.status(201).entity(jsonResponse).build();
-		} else {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "Added sensor not found")).build();
-
-		}
-
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedSensor.get().getId()).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 
 	@PUT
-	@Path("/{idRoom:[0-9]+}/actuators/")
+	@Path("{idRoom:[0-9]+}/actuators/")
 	public Response addActuator(@PathParam("idRoom") Long idRoom, Actuator actuator) {
 
 		Room roomTofind = roomManager.findRoom(idRoom);
@@ -170,14 +159,9 @@ public class RoomManagerControllerREST {
 		Optional<Actuator> addedActuator = roomTofind.getActuators().stream()
 				.max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
 
-		if (addedActuator.isPresent()) {
-			JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedActuator.get().getId()).build();
+		JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedActuator.get().getId()).build();
 
-			return Response.status(201).entity(jsonResponse).build();
-		} else {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "Added actuator not found")).build();
-		}
-
+		return Response.status(201).entity(jsonResponse).build();
 	}
 
 	@DELETE
@@ -190,7 +174,7 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		Optional<Sensor> sensorTofind = roomTofind.getSensors().stream().filter(s -> s.getId() == idSensor).findFirst();
+		Optional<Sensor> sensorTofind = roomTofind.getSensors().stream().filter(s -> s.getId().equals(idSensor)).findFirst();
 
 		if (!sensorTofind.isPresent()) {
 			return Response.status(404)
@@ -214,7 +198,7 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		Optional<Actuator> actuatorTofind = roomTofind.getActuators().stream().filter(a -> a.getId() == idActuator)
+		Optional<Actuator> actuatorTofind = roomTofind.getActuators().stream().filter(a -> a.getId().equals(idActuator))
 				.findFirst();
 		if (!actuatorTofind.isPresent()) {
 

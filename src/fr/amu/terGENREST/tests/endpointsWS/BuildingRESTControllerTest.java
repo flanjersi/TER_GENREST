@@ -18,9 +18,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
 import org.junit.Before;
-
 import org.junit.Ignore;
-
 import org.junit.Test;
 
 import fr.amu.terGENREST.entities.project.Project;
@@ -31,66 +29,108 @@ import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 import fr.amu.terGENREST.tests.utils.Utils;
 
 
+
 public class BuildingRESTControllerTest {
-	
+
 	private static final String URL_ROOT_USER = "http://localhost:8090/terGENREST/api/users/";
 	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
 	private static final String URL_ROOT_BUILDING = "http://localhost:8090/terGENREST/api/buildings/";
 
-		//Add data
-		private long idUser;
-		private long idProject;
-		private long idBuilding;
-		RequestsHelper.ResponseJsonObject response;
+	//Add data
+	private long idUser;
+	private long idProject;
+	private long idBuilding;
+	RequestsHelper.ResponseJsonObject response;
+
+
+	@Before
+	public void setup() throws IOException {
+		//ADD User
+ 		response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+		idUser = response.getPayload().getJsonNumber("id").longValue();
+		assertEquals(200, response.getResponseCode());
+
+
+		//ADD Project
+		response = RequestsHelper.httpPUT(URL_ROOT_USER+ idUser +"/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
+		idProject = response.getPayload().getJsonNumber("id").longValue();
+
+		assertEquals(201, response.getResponseCode());
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		RequestsHelper.httpDELETE(URL_ROOT_USER + idUser);
+	}
+
+	@Test
+	public void testCRUD() throws IOException {
 		
+		//Add Building
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("type", "Batiment")
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings", jsonPayloadRequest);
+		assertEquals(201, response.getResponseCode());
+		assertTrue(response.getPayload().containsKey("id"));
+		assertFalse(response.getPayload().containsKey("type"));
+		idBuilding = response.getPayload().getJsonNumber("id").longValue();
+
+		//Update Building 
+		jsonPayloadRequest = Json.createObjectBuilder()
+				.add("type", "studetteUpdated")		
+				.build();
+
+		response = RequestsHelper.httpPOST(URL_ROOT_BUILDING + idBuilding, jsonPayloadRequest);
+
+		assertEquals(200, response.getResponseCode());
+
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("type"));
+
+		assertEquals("studetteUpdated", response.getPayload().getString("type"));
 		
-//		@Before
-		public void setup() throws IOException {
-			
-			//aDD user
-			
-			 response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
-				idUser = response.getPayload().getJsonNumber("id").longValue();
-				assertEquals(200, response.getResponseCode());
-				
-				
-				//ADD Project
-				
-				response = RequestsHelper.httpPUT(URL_ROOT_USER+ idUser +"/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
-				idProject = response.getPayload().getJsonNumber("id").longValue();
-				System.out.println("zzzzzzzzzzz"+idProject);
-			
-				assertEquals(201, response.getResponseCode());
-			
+		//Remove Building
+		response = RequestsHelper.httpDELETE(URL_ROOT_PROJECT + idProject + "/buildings/"+idBuilding);
+		assertEquals(200, response.getResponseCode());	
+	}
+	
+	@Test
+	public void getBuildingWithUnknowID() throws IOException {
+		response = RequestsHelper.httpGetJsonObject(URL_ROOT_BUILDING + "99999999");
 
-		}
-		@After
-		public void tearDown() throws Exception {
-			RequestsHelper.httpDELETE(URL_ROOT_USER + idUser);
-		}
+		assertEquals(404, response.getResponseCode());
+	}
+	@Test
+	public void createBuildingWithUnknowProjectID() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.add("type", "CommercialLocal")
+				.build();
 
+		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + 8796 + "/buildings", jsonPayloadRequest);
 
+		assertEquals(404, response.getResponseCode());
+	}
+	
+	@Test
+	public void createBuildingWithNoType() throws IOException {
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
+				.build();
 
-		@Test
-		public void testAddBuilding() throws IOException {
-//			HttpPut requestProject = new HttpPut(URL_ROOT_USER+ idUser +"/projects/"+ idProject +"/buildings/");
-//			JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("type", "Myqfqdsbat").build();
-//			requestProject.setEntity(new StringEntity(jsonPayloadRequest.toString(), "UTF-8"));
-//			requestProject.setHeader("Content-Type", "application/json");
-//			HttpResponse responseProject = HttpClientBuilder.create().build().execute( requestProject );
-//			assertEquals(201, responseProject.getStatusLine().getStatusCode());
-//			JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(responseProject.getEntity()));
-//			assertTrue(responseObject.containsKey("id"));
-//			assertFalse(responseObject.containsKey("type"));
-		
-		}
+		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings", jsonPayloadRequest);
 
-//		
-//		@Test
-//		public void testRemoveProject() throws IOException {
-//			HttpDelete requestDeleteProject = new HttpDelete("http://localhost:8090/terGENREST/api/users/"+ idUser + "/projects/"+ idProject+ "/buildings/"+idBuilding);
-//			HttpResponse response2 = HttpClientBuilder.create().build().execute( requestDeleteProject );
-//			assertEquals(200, response2.getStatusLine().getStatusCode());
-//		}
-
+		assertEquals(400, response.getResponseCode());
+	}
+	
+	@Test
+	public void deleteBuildingWithUnknowID() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_PROJECT + idProject + "/buildings/" + 99);
+		assertEquals(404, response.getResponseCode());
+	}
+	
+	@Test
+	public void deleteBuildingWithUnknowIDProject() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_PROJECT + 99 + "/buildings/" + idBuilding);
+		assertEquals(404, response.getResponseCode());
+	}
 }

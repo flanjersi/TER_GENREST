@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
-import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.entities.projectSpecifications.Sensor;
 import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 
@@ -145,7 +144,7 @@ public class CorridorManagerControllerREST {
 						.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not exist"))
 						.build();
 			}
-			Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId() == idActuator).findFirst();
+			Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId().equals(idActuator)).findFirst();
 
 			if(!actuator.isPresent()) {
 				return Response
@@ -222,8 +221,9 @@ public class CorridorManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No corridor with id : " + idCorridor)).build();
 		}
 
-		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId() == idSensor).findFirst();
-
+	
+		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId().equals(idSensor)).findFirst();
+		
 		if (!sensorTofind.isPresent()) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, "Sensor with id '" + idSensor + "' not found")).build();

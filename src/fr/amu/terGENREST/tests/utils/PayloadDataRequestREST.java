@@ -50,14 +50,14 @@ public class PayloadDataRequestREST {
 	}
 	
 	public static JsonObject jsonPayloadRequestMotherRoom(){
-		return Json.createObjectBuilder().add("numberRoom", 9)
+		return Json.createObjectBuilder().add("numberMotherRoom", 9)
 				.add("type", "kitchen")
 				.build();
 	}
 	
 	public static JsonObject jsonPayloadRequestRoom(){
 		return Json.createObjectBuilder().add("type", "house")
-				.add("numberMotherRoom", 4)
+				.add("numberRoom", 4)
 				.build();
 	}
 	

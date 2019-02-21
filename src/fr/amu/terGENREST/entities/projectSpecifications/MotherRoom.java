@@ -46,10 +46,10 @@ public class MotherRoom implements Serializable {
 	private int numberMotherRoom;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Room> listRoom = new ArrayList<Room>();
+	private List<Room> rooms = new ArrayList<Room>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Corridor> listCorridor = new ArrayList<Corridor>();
+	private List<Corridor> corridors = new ArrayList<Corridor>();
 
 	public MotherRoom() {
 		super();
@@ -62,22 +62,22 @@ public class MotherRoom implements Serializable {
 
 	
 	public void addRoom(Room r) {
-		listRoom.add(r);
+		rooms.add(r);
 
 	}
 
 	public void removeRoom(Room r) {
-		listRoom.remove(r);
+		rooms.remove(r);
 
 	}
 
 	public void addCorridor(Corridor c) {
-		listCorridor.add(c);
+		corridors.add(c);
 
 	}
 
 	public void removeCorridor(Corridor c) {
-		listCorridor.remove(c);
+		corridors.remove(c);
 	}
 
 	public String getType() {
@@ -101,20 +101,20 @@ public class MotherRoom implements Serializable {
 	}
 
 
-	public List<Room> getListRoom() {
-		return listRoom;
+	public List<Room> getRooms() {
+		return rooms;
 	}
 
-	public void setListRoom(List<Room> listRoom) {
-		this.listRoom = listRoom;
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
-	public List<Corridor> getListCorridor() {
-		return listCorridor;
+	public List<Corridor> getCorridors() {
+		return corridors;
 	}
 
-	public void setListCorridor(List<Corridor> listCorridor) {
-		this.listCorridor = listCorridor;
+	public void setCorridors(List<Corridor> corridors) {
+		this.corridors = corridors;
 	}
 
 	@Override

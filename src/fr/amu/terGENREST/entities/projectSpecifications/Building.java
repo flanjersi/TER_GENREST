@@ -47,7 +47,7 @@ public class Building implements Serializable {
 	private String type; 
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Floor> buildingFloor = new ArrayList<Floor>();
+	private List<Floor> floors = new ArrayList<Floor>();
 
 	public Building() {
 	}
@@ -59,12 +59,8 @@ public class Building implements Serializable {
 		this.address = address;
 	}
 	
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
@@ -76,20 +72,20 @@ public class Building implements Serializable {
 		this.type = type;
 	}
 
-	public List<Floor> getBuildingFloor() {
-		return buildingFloor;
+	public List<Floor> getFloors() {
+		return floors;
 	}
 
-	public void setBuildingFloor(List<Floor> buildingFloor) {
-		this.buildingFloor = buildingFloor;
+	public void setFloors(List<Floor> floors) {
+		this.floors = floors;
 	}
 
 	public void addFloor(Floor floor) {
-		buildingFloor.add(floor);
+		floors.add(floor);
 	}
 
 	public void removeFloor(Floor floor) {
-		buildingFloor.remove(floor);
+		floors.remove(floor);
 	}
 
 	public Address getAddress() {
@@ -100,9 +96,10 @@ public class Building implements Serializable {
 		this.address = address;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Building [id=" + id + ", address=" + address + ", buildingFloor=" + buildingFloor + "]";
+		return "Building [id=" + id + ", address=" + address + ", type=" + type + ", floors=" + floors + "]";
 	}
 
 	@Override

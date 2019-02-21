@@ -3,7 +3,7 @@ package fr.amu.terGENREST.tests.suite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import fr.amu.terGENREST.controllers.LanguagesManagerControllerREST;
+import fr.amu.terGENREST.tests.endpointsWS.ActuatorRESTControllerTEST;
 import fr.amu.terGENREST.tests.endpointsWS.BuildingRESTControllerTest;
 import fr.amu.terGENREST.tests.endpointsWS.ConfigurationManagerControllerRESTTest;
 import fr.amu.terGENREST.tests.endpointsWS.CorridorRESTControllerTest;
@@ -22,8 +22,8 @@ import fr.amu.terGENREST.tests.endpointsWS.UserRESTControllerTest;
 	//CorridorRESTControllerTest.class,
 	//MotherRoomTest
 	//RoomTest
-	//SensorRESTControllerTest.class,
-	//ActuatorTest
+	SensorRESTControllerTest.class,
+	ActuatorRESTControllerTEST.class,
 	LanguageRESTControllerTest.class,
 	ConfigurationManagerControllerRESTTest.class,
 	OperatingSystemRESTControllerTest.class	
