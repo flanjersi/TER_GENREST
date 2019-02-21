@@ -21,7 +21,7 @@ import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
-import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
+import fr.amu.terGENREST.services.projectSpecifications.MotherRoomManager;
 
 @Path("api/motherRooms")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ import fr.amu.terGENREST.services.projectSpecifications.MotherRooomManager;
 public class MotherRoomManagerControllerREST {
 
 	@EJB
-	private MotherRooomManager motherRoomManager;
+	private MotherRoomManager motherRoomManager;
 
 	public MotherRoomManagerControllerREST() {
 
@@ -80,8 +80,12 @@ public class MotherRoomManagerControllerREST {
 	@Path("/{idMotherRoom:[0-9]+}/rooms/")
 	public Response addRoom(@PathParam("idMotherRoom") Long idMotherroom, Room room) {
 		
+		System.out.println(idMotherroom);
+		
 		MotherRoom motherRoomToFind = motherRoomManager.findById(idMotherroom);
 
+		System.out.println(motherRoomToFind);
+		
 		if (motherRoomToFind == null) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, " MotherRoom with id: " + idMotherroom + "not found")).build();
@@ -96,9 +100,7 @@ public class MotherRoomManagerControllerREST {
 		}
 
 		motherRoomToFind.addRoom(room);
-		motherRoomManager.updateMotherRoom(motherRoomToFind);
-
-		motherRoomToFind = motherRoomManager.findById(motherRoomToFind.getId());
+		motherRoomToFind = motherRoomManager.updateMotherRoom(motherRoomToFind);
 
 		Optional<Room> roomToadd = motherRoomToFind.getRooms().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
