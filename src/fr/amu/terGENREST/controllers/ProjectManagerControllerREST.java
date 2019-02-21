@@ -88,8 +88,14 @@ public class ProjectManagerControllerREST {
 					.build();
 		}
 
-		//TODO Ajout vérification présence champs obligatoire pour l'ajout d'un batiment
 		
+		if(building.getType() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Building Type Required"))
+					.build();
+		}
+	
 		project.addBuilding(building);
 		projectManager.updateProject(project);
 
@@ -119,7 +125,9 @@ public class ProjectManagerControllerREST {
 
 
 		Optional<Building> building = project.getBuilding()
-				.stream().filter(c -> c.getId() == idBuilding).findFirst();
+				.stream()
+				.filter(c -> c.getId()==(idBuilding))
+				.findFirst();
 
 		if(!building.isPresent()) {
 			return Response
@@ -133,6 +141,4 @@ public class ProjectManagerControllerREST {
 
 		return Response.ok().build();
 	}
-
-
 }
