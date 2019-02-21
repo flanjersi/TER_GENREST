@@ -1,6 +1,6 @@
 package fr.amu.terGENREST.tests.entities;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
@@ -13,28 +13,28 @@ import org.junit.Test;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
-import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
+import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.entities.user.User;
-import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 import fr.amu.terGENREST.services.projectSpecifications.MotherRoomManager;
+import fr.amu.terGENREST.services.projectSpecifications.RoomManager;
 import fr.amu.terGENREST.services.user.UserManager;
 
 @Transactional
-public class CorridorManagerTest {
+public class RoomManagerTest {
 
 	@EJB
 	private MotherRoomManager motherRoomManager;
 
 	@EJB
-	private CorridorManager corridorManager;
+	private RoomManager roomManager;
 
 	@EJB
 	private UserManager userManager;
 
 	private MotherRoom motherRoom;
-	private Corridor corridor1, corridor2, corridor3;
+	private Room room1, room2, room3;
 	private Floor floor = new Floor(1);
 	private User user;
 
@@ -55,12 +55,12 @@ public class CorridorManagerTest {
 		motherRoom = new MotherRoom("Appartement", 1);
 		floor.addMotherRoom(motherRoom);
 
-		corridor1 = new Corridor(1);
-		corridor2 = new Corridor(2);
-		corridor3 = new Corridor(3);
-		motherRoom.addCorridor(corridor1);
-		motherRoom.addCorridor(corridor2);
-		motherRoom.addCorridor(corridor3);
+		room1 = new Room(1, "Chambre");
+		room2 = new Room(2, "Toilettes");
+		room3 = new Room(3, "Douche");
+		motherRoom.addRoom(room1);
+		motherRoom.addRoom(room2);
+		motherRoom.addRoom(room3);
 
 		userManager.saveUser(user);
 
@@ -77,37 +77,48 @@ public class CorridorManagerTest {
 
 		MotherRoom motherWaiting = motherRoomManager.updateMotherRoom(motherRoom);
 
-		assertEquals(3, motherWaiting.getCorridors().size());
+		assertEquals(3, motherWaiting.getRooms().size());
 
-		Corridor corridorWaiting = corridorManager.findCorridor(motherWaiting.getCorridors().get(0).getId());
-		assertEquals(1, corridorWaiting.getNumberCorridor());
+		Room RoomWaiting = roomManager.findRoom(motherWaiting.getRooms().get(0).getId());
+		assertEquals(1, RoomWaiting.getNumberRoom());
 
-		Corridor corridorWaiting1 = corridorManager.findCorridor(motherWaiting.getCorridors().get(1).getId());
-		assertEquals(2, corridorWaiting1.getNumberCorridor());
+		Room RoomWaiting1 = roomManager.findRoom(motherWaiting.getRooms().get(1).getId());
+		assertEquals("Toilettes", RoomWaiting1.getType());
 
-		Corridor corridorWaiting2 = corridorManager.findCorridor(motherWaiting.getCorridors().get(2).getId());
-		assertEquals(3, corridorWaiting2.getNumberCorridor());
+		Room RoomWaiting2 = roomManager.findRoom(motherWaiting.getRooms().get(2).getId());
+		assertEquals(3, RoomWaiting2.getNumberRoom());
+
 	}
 
 	@Test
 	public void testUpdateRoom() {
 
-
 		motherRoomManager.updateMotherRoom(motherRoom);
-		corridor1.setNumberCorridor(4);
-		corridorManager.updateCorridor(corridor1);
+		room1.setNumberRoom(4);
+		room1.setType("Cuisine");
+		roomManager.updateRoom(room1);
 		MotherRoom motherWaiting2 = motherRoomManager.updateMotherRoom(motherRoom);
 
-		assertEquals(4, motherWaiting2.getCorridors().get(0).getNumberCorridor());
-		assertEquals(2, motherWaiting2.getCorridors().get(1).getNumberCorridor());
+		assertEquals(4, motherWaiting2.getRooms().get(0).getNumberRoom());
+		assertEquals("Douche", motherWaiting2.getRooms().get(2).getType());
 
-		corridor2.setNumberCorridor(8);
-		corridorManager.updateCorridor(corridor2);
+		room2.setNumberRoom(7);
+		roomManager.updateRoom(room2);
+
 		MotherRoom motherWaiting3 = motherRoomManager.updateMotherRoom(motherRoom);
 
-		assertEquals(4, motherWaiting3.getCorridors().get(0).getNumberCorridor());
-		assertEquals(8, motherWaiting3.getCorridors().get(1).getNumberCorridor());
-		assertEquals(3, motherWaiting3.getCorridors().get(2).getNumberCorridor());
+		assertEquals(7, motherWaiting3.getRooms().get(1).getNumberRoom());
+		assertEquals("Douche", motherWaiting3.getRooms().get(2).getType());
+
+		room2.setNumberRoom(11);
+		room2.setType("Dortoir");
+		roomManager.updateRoom(room2);
+
+		MotherRoom motherWaiting4 = motherRoomManager.updateMotherRoom(motherRoom);
+
+		assertEquals("Dortoir", motherWaiting4.getRooms().get(1).getType());
+		assertEquals("Douche", motherWaiting3.getRooms().get(2).getType());
 
 	}
+
 }
