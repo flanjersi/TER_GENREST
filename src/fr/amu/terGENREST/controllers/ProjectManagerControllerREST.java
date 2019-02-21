@@ -126,7 +126,7 @@ public class ProjectManagerControllerREST {
 
 		Optional<Building> building = project.getBuilding()
 				.stream()
-				.filter(c -> c.getId()==(idBuilding))
+				.filter(c -> c.getId().equals(idBuilding))
 				.findFirst();
 
 		if(!building.isPresent()) {

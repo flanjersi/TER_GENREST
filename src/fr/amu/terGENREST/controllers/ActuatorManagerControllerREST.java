@@ -64,12 +64,12 @@ public class ActuatorManagerControllerREST {
 		}
 
 		if (actuator.getLongitude() != 0) {
-			actuatortoFind.setLatitude(actuator.getLongitude());
+			actuatortoFind.setLongitude(actuator.getLongitude());
 
 		}
 
 		if (actuator.getReference() != null) {
-			actuatortoFind.setReference(actuator.getModel());
+			actuatortoFind.setReference(actuator.getReference());
 
 		}
 		if (actuator.getModel() != null) {
