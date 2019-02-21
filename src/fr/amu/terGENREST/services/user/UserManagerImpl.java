@@ -30,7 +30,6 @@ public class UserManagerImpl implements UserManager {
 	public void saveUser(User user) {
 		try {
 			em.persist(user);
-			System.out.println(user);
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
