@@ -30,51 +30,44 @@ import fr.amu.terGENREST.tests.utils.Utils;
 
 public class ProjectManagerControllerRESTTest {
 
-
+	private static final String URL_ROOT_USER = "http://localhost:8090/terGENREST/api/users/";
+	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
 	long idUser;
 	long idProject;
 	
 	@Before
 	public void setUp() throws Exception {
 		//ADD USER
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/", PayloadDataRequestREST.jsonPayloadRequestUser());
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
 		assertEquals(200, response.getResponseCode());
 		idUser = response.getPayload().getJsonNumber("id").longValue();
 		//ADD PROJECT
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/" + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
 		assertEquals(201, response.getResponseCode());
 		idProject = response.getPayload().getJsonNumber("id").longValue();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
+		RequestsHelper.httpDELETE(URL_ROOT_USER + idUser);
 	}
 
 	@Test
-	public void testUpdateProject() throws IOException {
-
-		HttpPost requestProjectUpdate = new HttpPost("http://localhost:8090/terGENREST/api/projects/"+idProject);	
+	public void testUpdateProject() throws IOException {	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
 				.add("id", idProject)
 				.build();
-
-		requestProjectUpdate.setEntity(new StringEntity(jsonPayloadRequest2.toString(), "UTF-8"));
-		requestProjectUpdate.setHeader("Content-Type", "application/json");
-		HttpResponse responseProject2 = HttpClientBuilder.create().build().execute( requestProjectUpdate );
-		assertEquals(200, responseProject2.getStatusLine().getStatusCode());
-		JsonObject responseObject2 = Utils.stringToJsonObject(EntityUtils.toString(responseProject2.getEntity()));
-		assertTrue(responseObject2.containsKey("id"));
-		assertTrue(responseObject2.containsKey("projectName"));		
-		assertEquals("MySecondProject", responseObject2.getString("projectName"));		
+		
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+idProject,jsonPayloadRequest2);
+		assertEquals(200, response.getResponseCode());	
+		assertEquals("MySecondProject", response.getPayload().getString("projectName"));		
 	}
 
 	@Test
 	public void testRemoveProject() throws IOException {
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/"+idUser+"/projects/"+idProject);
-		assertEquals(200, response.getResponseCode());
-		
-		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/"+idUser+"/projects/"+0);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+idProject);
+		assertEquals(200, response.getResponseCode());	
+		response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+0);
 		assertEquals(404, response.getResponseCode());
 	}
 
