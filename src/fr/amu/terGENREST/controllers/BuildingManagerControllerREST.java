@@ -91,7 +91,6 @@ public class BuildingManagerControllerREST {
 			buildingFinded.setAddress(building.getAddress());
 		}
 		
-		
 		buildingFinded = buildingManager.updateBuilding(buildingFinded);
 
 		return Response.ok().entity(buildingFinded).build();
