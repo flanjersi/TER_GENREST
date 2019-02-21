@@ -8,7 +8,7 @@ node_modules/
 jaxws/jaxws-client/src/main/
 jaxws/jaxws-endpoint/src/main/webapp/WEB-INF/wsdl/
 .scannerwork
-
+sonar-project.properties
 
 # OS Files #
 .DS_Store

@@ -29,7 +29,11 @@ import javax.validation.constraints.Size;
  */
 @Table(name = "Building")
 @Entity
-@NamedQueries({ @NamedQuery(name = "Building.findAllBuilding", query = "SELECT Bld FROM Building Bld") })
+@NamedQueries({ 
+	@NamedQuery(name = "Building.findAllBuilding", query = "SELECT Bld FROM Building Bld"),
+	@NamedQuery(name = "Building.findBuildingByFloorId", query = "SELECT bld FROM Building bld join bld.floors fl WHERE fl.id = :idFloor"
+), 	
+})
 public class Building implements Serializable {
 
 	private static final long serialVersionUID = 10000L;

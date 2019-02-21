@@ -19,7 +19,10 @@ import javax.persistence.Table;
 
 @Table(name = "Floor")
 @Entity
-@NamedQueries({ @NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl"), })
+@NamedQueries({ 
+	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl")
+})
+
 public class Floor implements Serializable{
 	/**
 	 * 
