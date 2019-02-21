@@ -109,17 +109,18 @@ public class UserManagerControllerREST {
 		}
 		
 			// Email 
-		if(!user.getEmail().equals(findedUser.getEmail()) )
-		{	if( userManager.findUserByEmail(user.getEmail()) == null  ) {
-					findedUser.setEmail(user.getEmail());
-				}else {
-					return Response
-							.status(403)
-							.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
-							.build();
+		if( user.getEmail() != null) {
+			if(!user.getEmail().equals(findedUser.getEmail()) )
+			{	if( userManager.findUserByEmail(user.getEmail()) == null  ) {
+						findedUser.setEmail(user.getEmail());
+					}else {
+						return Response
+								.status(403)
+								.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
+								.build();
+					}
 				}
-			}
-		
+		}
 		if( user.getFirstName() != null) {
 			findedUser.setFirstName(user.getFirstName());
 		}
