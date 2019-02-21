@@ -1,6 +1,5 @@
 package fr.amu.terGENREST.controllers;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +43,6 @@ public class BuildingManagerControllerREST {
 	@EJB
 	private UserManager userManager;
 
-
-
 	@GET
 	@Path("")
 	public Response getAllBuildings() {
@@ -68,7 +65,6 @@ public class BuildingManagerControllerREST {
 
 		return Response.ok().entity(building).build();
 	}
-
 
 	@POST
 	@Path("/{idBuilding:[0-9]+}")

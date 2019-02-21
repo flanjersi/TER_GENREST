@@ -18,7 +18,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
 import org.junit.Before;
+
 import org.junit.Ignore;
+
 import org.junit.Test;
 
 import fr.amu.terGENREST.entities.project.Project;
@@ -27,7 +29,6 @@ import fr.amu.terGENREST.tests.utils.PayloadDataRequestREST;
 import fr.amu.terGENREST.tests.utils.RequestsHelper;
 import fr.amu.terGENREST.tests.utils.RequestsHelper.ResponseJsonObject;
 import fr.amu.terGENREST.tests.utils.Utils;
-
 
 
 public class BuildingRESTControllerTest {
@@ -69,6 +70,7 @@ public class BuildingRESTControllerTest {
 		}
 
 
+
 		@Test
 		public void testAddBuilding() throws IOException {
 //			HttpPut requestProject = new HttpPut(URL_ROOT_USER+ idUser +"/projects/"+ idProject +"/buildings/");
@@ -82,6 +84,7 @@ public class BuildingRESTControllerTest {
 //			assertFalse(responseObject.containsKey("type"));
 		
 		}
+
 //		
 //		@Test
 //		public void testRemoveProject() throws IOException {
@@ -89,4 +92,5 @@ public class BuildingRESTControllerTest {
 //			HttpResponse response2 = HttpClientBuilder.create().build().execute( requestDeleteProject );
 //			assertEquals(200, response2.getStatusLine().getStatusCode());
 //		}
+
 }
