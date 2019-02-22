@@ -55,12 +55,20 @@ public class ProjectManagerControllerRESTTest {
 	@Test
 	public void testUpdateProject() throws IOException {	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
-				.add("id", idProject)
 				.build();
 		
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+idProject,jsonPayloadRequest2);
 		assertEquals(200, response.getResponseCode());	
 		assertEquals("MySecondProject", response.getPayload().getString("projectName"));		
+	}
+	
+	@Test
+	public void testUpdateOfExistingProject() throws IOException {	
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
+				.build();
+		
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+0,jsonPayloadRequest2);
+		assertEquals(404, response.getResponseCode());		
 	}
 
 	@Test
