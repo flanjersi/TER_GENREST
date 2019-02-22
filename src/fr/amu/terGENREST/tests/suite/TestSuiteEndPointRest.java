@@ -7,6 +7,7 @@ import fr.amu.terGENREST.tests.endpointsWS.ActuatorRESTControllerTEST;
 import fr.amu.terGENREST.tests.endpointsWS.BuildingRESTControllerTest;
 import fr.amu.terGENREST.tests.endpointsWS.ConfigurationManagerControllerRESTTest;
 import fr.amu.terGENREST.tests.endpointsWS.CorridorRESTControllerTest;
+import fr.amu.terGENREST.tests.endpointsWS.FloorManagerControllerRESTTest;
 import fr.amu.terGENREST.tests.endpointsWS.LanguageRESTControllerTest;
 import fr.amu.terGENREST.tests.endpointsWS.OperatingSystemRESTControllerTest;
 import fr.amu.terGENREST.tests.endpointsWS.ProjectManagerControllerRESTTest;
@@ -18,7 +19,7 @@ import fr.amu.terGENREST.tests.endpointsWS.UserRESTControllerTest;
 	UserRESTControllerTest.class,
 	ProjectManagerControllerRESTTest.class,
 	BuildingRESTControllerTest.class,
-	//FloorTest
+	FloorManagerControllerRESTTest.class,
 	CorridorRESTControllerTest.class,
 	//MotherRoomTest
 	//RoomTest
