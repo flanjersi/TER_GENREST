@@ -235,7 +235,7 @@ public class FloorManagerControllerREST {
 	}
 	
 	@DELETE
-	@Path("/{idFloor:[0-9]+}/corridors/{id:[0-9]+}")
+	@Path("/{idFloor:[0-9]+}/motherRooms/{id:[0-9]+}")
 	public Response deleteMotherRoom(@PathParam("idFloor") Long idFloor, @PathParam("id") Long idMotherRoom) {
 		Floor floor = floorManager.findById(idFloor );
 
