@@ -62,6 +62,7 @@ public class ActuatorRESTControllerTEST {
 		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
 	}
 
+	
 	@Test
 	public void testCRUDCorridors() throws IOException { 
 		//ADD

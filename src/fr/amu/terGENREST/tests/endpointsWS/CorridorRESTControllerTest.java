@@ -46,6 +46,8 @@ public class CorridorRESTControllerTest {
 		//ADD MOTHER ROOM
 		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
 		 idMotherRoom = response.getPayload().getJsonNumber("id").longValue();
+		 
+		 
 	}
 	
 	@After
