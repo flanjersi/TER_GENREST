@@ -67,9 +67,14 @@ public class ProjectManagerControllerRESTTest {
 	public void testRemoveProject() throws IOException {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+idProject);
 		assertEquals(200, response.getResponseCode());	
-		response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+0);
+	}
+	
+	@Test
+	public void testRemoveProjectWithInexistentUser() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_USER +idUser+"/projects/"+0);
 		assertEquals(404, response.getResponseCode());
 	}
+	
 	
 	
 	
