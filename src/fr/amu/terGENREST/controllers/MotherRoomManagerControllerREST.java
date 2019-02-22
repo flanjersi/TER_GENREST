@@ -135,6 +135,7 @@ public class MotherRoomManagerControllerREST {
 
 	@DELETE
 	@Path("{idMotherroom:[0-9]+}/rooms/{idRoom:[0-9]+}")
+
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
 
 		MotherRoom motehrRoomTofind = motherRoomManager.findById(idRoom);
@@ -146,13 +147,10 @@ public class MotherRoomManagerControllerREST {
 		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId().equals(idRoom))
 				.findFirst();
 
-		if (roomToremove.isPresent()) {
+		if (!roomToremove.isPresent()) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "Room with id '" + idRoom + "' not found"))
 					.build();
 		}
-
-		motehrRoomTofind.removeRoom(roomToremove.get());
-		motherRoomManager.updateMotherRoom(motehrRoomTofind);
 		return Response.ok().build();
 
 	}

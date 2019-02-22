@@ -86,11 +86,8 @@ public class RoomRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("numberRoom"));
 		assertEquals(6, response.getPayload().getInt("numberRoom"));
 		
-//		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
-//		assertEquals(200, response.getResponseCode());
-////		
-//		// find
-//		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/rooms/"+idRoom);
-//		assertEquals(404, response.getResponseCode());
+		//Remove Room
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
+		assertEquals(200, response.getResponseCode());
 }
 }
