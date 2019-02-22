@@ -139,20 +139,24 @@ public class MotherRoomManagerControllerREST {
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
 
 		MotherRoom motehrRoomTofind = motherRoomManager.findById(idRoom);
-
+		
 		if (motehrRoomTofind == null) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))
 					.build();
 		}
+		
 		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId().equals(idRoom))
 				.findFirst();
 
 		if (!roomToremove.isPresent()) {
-			return Response.status(404).entity(Utils.makeErrorMessage(404, "Room with id '" + idRoom + "' not found"))
-					.build();
+			return Response.status(404)
+					.entity(Utils.makeErrorMessage(404, "Room with id '" + idRoom + "' not found")).build();
 		}
-		return Response.ok().build();
+		
+		motehrRoomTofind.removeRoom(roomToremove.get());
+		motherRoomManager.updateMotherRoom(motehrRoomTofind);
 
+		return Response.ok().build();
 	}
 
 	@DELETE
@@ -178,7 +182,5 @@ public class MotherRoomManagerControllerREST {
 		motherRoomManager.updateMotherRoom(motehrRoomTofind);
 
 		return Response.ok().build();
-
 	}
-
 }
