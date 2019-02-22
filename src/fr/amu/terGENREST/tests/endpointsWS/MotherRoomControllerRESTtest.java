@@ -2,6 +2,7 @@ package fr.amu.terGENREST.tests.endpointsWS;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -64,7 +65,7 @@ public class MotherRoomControllerRESTtest {
 		assertFalse(response.getPayload().containsKey("numberMotherRoom"));
 		long idMotherRoomToFind = response.getPayload().getJsonNumber("id").longValue();
 
-		// ADD MOTHER ROOM WITHOUT Type
+		// ADD MOTHER ROOM WITHOUT numberMotherRoom
 
 		payloadMotherRoom = Json.createObjectBuilder().add("type", "Chambre").build();
 		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms",
@@ -88,6 +89,20 @@ public class MotherRoomControllerRESTtest {
 
 		assertEquals(405, response.getResponseCode());
 
+		// UPDATE MOTHER ROOM
+		
+
+		payloadMotherRoom = Json.createObjectBuilder().add("type", "Sallon").add("numberMotherRoom", 18).build();
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind,
+				payloadMotherRoom);
+
+		assertEquals(200, response.getResponseCode());
+
+		assertTrue(response.getPayload().containsKey("type"));
+		assertTrue(response.getPayload().containsKey("numberMotherRoom"));
+		assertEquals("Sallon", response.getPayload().getString("type"));
+		
+
 		// FIND MOTHER ROOM
 		response = RequestsHelper
 				.httpGetJsonObject("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind);
@@ -97,8 +112,8 @@ public class MotherRoomControllerRESTtest {
 
 		JsonObject payloadMotherRoomToRemove = Json.createObjectBuilder().add("type", "Box").add("numberMotherRoom", 8)
 				.build();
-		ResponseJsonObject responseMotherRoom = RequestsHelper
-				.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", payloadMotherRoomToRemove);
+		ResponseJsonObject responseMotherRoom = RequestsHelper.httpPUT(
+				"http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", payloadMotherRoomToRemove);
 
 		long idMotherRoomToRemove = responseMotherRoom.getPayload().getJsonNumber("id").longValue();
 
@@ -106,7 +121,7 @@ public class MotherRoomControllerRESTtest {
 		response = RequestsHelper.httpDELETE(
 				"http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms/" + idMotherRoomToRemove);
 
-		 assertEquals(200, response.getResponseCode());
+		assertEquals(200, response.getResponseCode());
 
 	}
 

@@ -71,7 +71,7 @@ public class MotherRoomManagerControllerREST {
 
 		}
 
-		motherRoomManager.updateMotherRoom(motherRoom);
+		motherRoomToFind = motherRoomManager.updateMotherRoom(motherRoomToFind);
 		return Response.ok().entity(motherRoomManager.findById(id)).build();
 	}
 
