@@ -19,11 +19,12 @@ import javax.ws.rs.core.Response;
 
 import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Actuator;
+import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.entities.projectSpecifications.Sensor;
 import fr.amu.terGENREST.services.projectSpecifications.RoomManager;
 
-@Path("/api/rooms")
+@Path("/api/rooms/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RoomManagerControllerREST {
@@ -57,7 +58,7 @@ public class RoomManagerControllerREST {
 	@POST
 	@Path("{id:[0-9]+}")
 	public Response updateRoom(@PathParam("id") Long id, Room room) {
-		Room roomTofind = roomManager.findRoom(room.getId());
+		Room roomTofind = roomManager.findRoom(id);
 
 		if (roomTofind == null) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, " Room with" + id + "not found")).build();
@@ -72,6 +73,7 @@ public class RoomManagerControllerREST {
 		}
 		roomTofind = roomManager.updateRoom(roomTofind);
 		return Response.ok().entity(roomTofind).build();
+	
 	}
 
 	@PUT

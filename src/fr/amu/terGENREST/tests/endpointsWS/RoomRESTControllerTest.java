@@ -19,7 +19,7 @@ import fr.amu.terGENREST.tests.utils.RequestsHelper;
 
 public class RoomRESTControllerTest {
 
-	private static final String URL_ROOT_USER = "http://localhost:8090/terGENREST/api/users/";
+	private static final String URL_ROOT_ROOM = "http://localhost:8090/terGENREST/api/rooms/";
 	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
 	long idUser;
 	private long idFloor;
@@ -71,16 +71,14 @@ public class RoomRESTControllerTest {
 		
 //		// update Room
 //		
-//		jsonPayloadRequestRoom = Json.createObjectBuilder().add("type", "Ssalon").add("numberRoom", 7).build();
-//		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/rooms/"+ idRoom, jsonPayloadRequestRoom);
-//		assertEquals(200, response.getResponseCode()); 
-//		
-//		assertTrue(response.getPayload().containsKey("id"));
-//		assertFalse(response.getPayload().containsKey("numberRoom"));
-//		assertFalse(response.getPayload().containsKey("type"));
-//		
-//		assertEquals("Ssalon", response.getPayload().getInt("type"));  
-//				 
+		jsonPayloadRequestRoom = Json.createObjectBuilder().add("type", "BathRoom").build();
+		response = RequestsHelper.httpPOST(URL_ROOT_ROOM+ idRoom , jsonPayloadRequestRoom);
+		assertEquals(200, response.getResponseCode()); 
+		
+		assertTrue(response.getPayload().containsKey("id"));
+		assertTrue(response.getPayload().containsKey("type"));
+		
+		assertEquals("BathRoom", response.getPayload().getString("type"));  
 		// find RoomById
 		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/rooms/"+idRoom);
 
@@ -90,7 +88,7 @@ public class RoomRESTControllerTest {
 		
 //		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
 //		assertEquals(200, response.getResponseCode());
-//		
+////		
 //		// find
 //		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/rooms/"+idRoom);
 //		assertEquals(404, response.getResponseCode());
