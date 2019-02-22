@@ -51,7 +51,13 @@ public class ProjectManagerControllerRESTTest {
 	public void tearDown() throws Exception {
 		RequestsHelper.httpDELETE(URL_ROOT_USER + idUser);
 	}
-
+	
+	@Test
+	public void testFindProjectByUnknowID() throws IOException {	
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_PROJECT + 0);
+		assertEquals(404, response.getResponseCode());		
+	}
+	
 	@Test
 	public void testUpdateProject() throws IOException {	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
@@ -65,8 +71,7 @@ public class ProjectManagerControllerRESTTest {
 	@Test
 	public void testUpdateOfExistingProject() throws IOException {	
 		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
-				.build();
-		
+				.build();		
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+0,jsonPayloadRequest2);
 		assertEquals(404, response.getResponseCode());		
 	}
