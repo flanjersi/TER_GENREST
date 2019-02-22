@@ -17,11 +17,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import fr.amu.terGENREST.controllers.utils.Utils;
+import fr.amu.terGENREST.entities.projectSpecifications.Building;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
+import fr.amu.terGENREST.services.projectSpecifications.BuildingManager;
 import fr.amu.terGENREST.services.projectSpecifications.FloorManager;
 
 
@@ -32,6 +33,8 @@ public class FloorManagerControllerREST {
 
 	@EJB
 	private FloorManager floorManager;
+	@EJB
+	private BuildingManager buildingManager;
 
 	public FloorManagerControllerREST() {}
 
@@ -60,7 +63,30 @@ public class FloorManagerControllerREST {
 	@POST
 	@Path("/{idFloor:[0-9]+}")
 	public Response updateFloor(@PathParam("idFloor") Long idFloor, Floor floor) {
+		
+		Building buildingFinded = buildingManager.findBuildingByFloorId(idFloor);
+		
+		if(buildingFinded ==  null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(400, "buildingFinded "+idFloor+" not exist"))
+					.build();
+		}
+		
+		Optional<Floor> floorsearch = buildingFinded.getFloors()
+				.stream()
+				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
+				.findFirst();
+		
 
+		
+		if(floorsearch.isPresent()) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "floorNumber" + floor.getFloorNumber() + " already exist"))
+					.build();
+		}
+		
 		Floor floorFinded = floorManager.findById(idFloor);
 		
 		if(floorFinded == null) {
@@ -74,7 +100,7 @@ public class FloorManagerControllerREST {
 			floorFinded.setFloorNumber(floor.getFloorNumber());
 		}
 		
-		
+
 		floorFinded = floorManager.updateFloor(floorFinded);
 
 		return Response.ok().entity(floorFinded).build();
