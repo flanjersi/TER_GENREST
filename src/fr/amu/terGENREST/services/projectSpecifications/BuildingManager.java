@@ -20,4 +20,6 @@ public interface BuildingManager {
 
 	public List<Building> findAllBuilding();
 
+	public Building findBuildingByFloorId(Long id);
+	
 }

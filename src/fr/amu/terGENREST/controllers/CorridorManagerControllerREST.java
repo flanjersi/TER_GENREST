@@ -55,7 +55,7 @@ public class CorridorManagerControllerREST {
 		}
 		return Response.ok().entity(corridor).build();
 	}	
-	
+
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateCorridor(@PathParam("id") Long id, Corridor corridor) {
@@ -160,20 +160,7 @@ public class CorridorManagerControllerREST {
 			return Response.ok().build();
 	}
 	
-	@GET
-	@Path("/{idCorridor:[0-9]+}/projects")
-	public Response getAllActuators(@PathParam("idCorridor") Long idCorridor) {
-		Corridor corridor = corridorManager.findCorridor(idCorridor);
-		
-		if(corridor == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "corridor with id '" + idCorridor + "' not found"))
-					.build();
-		}
-		
-		return Response.ok().entity(corridor.getActuators()).build();
-	}
+	
 	
 
 	@PUT

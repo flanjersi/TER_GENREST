@@ -171,7 +171,7 @@ public class MotherRoomManagerControllerREST {
 		Optional<Corridor> corridorToremove = motehrRoomTofind.getCorridors().stream()
 				.filter(c -> c.getId().equals(idCorridor)).findFirst();
 
-		if (corridorToremove.isPresent()) {
+		if (!corridorToremove.isPresent()) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not found")).build();
 		}

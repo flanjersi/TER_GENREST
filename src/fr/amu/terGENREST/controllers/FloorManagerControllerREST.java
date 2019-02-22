@@ -17,8 +17,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import fr.amu.terGENREST.controllers.utils.Utils;
 
+import fr.amu.terGENREST.controllers.utils.Utils;
 import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.Floor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
