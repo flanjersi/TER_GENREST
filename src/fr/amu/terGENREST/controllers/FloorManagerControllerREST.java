@@ -193,7 +193,7 @@ public class FloorManagerControllerREST {
 		}
 
 		Optional<Corridor> motherRoomRemoved = floor.getCorridors()
-				.stream().filter(c -> c.getId() == idCorridor).findFirst();
+				.stream().filter(c -> c.getId().equals(idCorridor)).findFirst();
 
 		if(!motherRoomRemoved.isPresent()) {
 			return Response
@@ -221,7 +221,7 @@ public class FloorManagerControllerREST {
 		}
 
 		Optional<MotherRoom> motherRoomRemoved = floor.getMotherRooms()
-				.stream().filter(c -> c.getId() == idMotherRoom).findFirst();
+				.stream().filter(c -> c.getId().equals(idMotherRoom)).findFirst();
 
 		if(!motherRoomRemoved.isPresent()) {
 			return Response

@@ -6,6 +6,10 @@
     JdbcDriver org.hsqldb.jdbcDriver
   <!-- JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase  --> 
     JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db
+   <!--  JdbcUrl jdbc:hsqldb:file:/GENREST_DB/db--> 
+  	<!--   JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase--> 
+  	
+  	 JdbcUrl jdbc:hsqldb:mem:inMemoryDatabase
     UserName sa
     Password
     jtaManaged true

@@ -111,8 +111,7 @@ public class UserRESTControllerTest {
 
 		HttpDelete requestDeleteData = new HttpDelete("http://localhost:8090/terGENREST/api/users/" + id);
 		response = HttpClientBuilder.create().build().execute( requestDeleteData );
-		assertEquals(200, response.getStatusLine().getStatusCode());
-		
+		assertEquals(200, response.getStatusLine().getStatusCode());	
 	}
 	
 	@Test
@@ -277,13 +276,11 @@ public class UserRESTControllerTest {
 		assertEquals(200, response.getResponseCode());
 		
 		RequestsHelper.ResponseJsonArray responseArray = RequestsHelper.httpGetJsonArray(URL_ROOT_USER+idUser+"/projects/");
-		long idProject = response.getPayload().getJsonNumber("id").longValue();
 		assertEquals(200, responseArray.getResponseCode());
 		
 		//Delete user and Project
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser);
-	//	response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + idUser+"/projects/"+idProject);
 	}
 	
 	@Test
@@ -315,7 +312,6 @@ public class UserRESTControllerTest {
 		//Delete user and Project
 
 		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
-		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id+"/projects/"+idProject);
 	}
 	
 	

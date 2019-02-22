@@ -16,8 +16,8 @@ public class MotherRoomManagerImpl implements MotherRoomManager {
     private EntityManager em;
 	
 	@Override
-	public MotherRoom updateMotherRoom(MotherRoom MotherRoom) {
-		return em.merge(MotherRoom);
+	public MotherRoom updateMotherRoom(MotherRoom motherRoom) {
+		return em.merge(motherRoom);
 	}
 
 	@Override
