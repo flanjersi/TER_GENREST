@@ -65,6 +65,14 @@ public class MotherRoomControllerRESTtest {
 		assertFalse(response.getPayload().containsKey("numberMotherRoom"));
 		long idMotherRoomToFind = response.getPayload().getJsonNumber("id").longValue();
 
+		// ADD MOTHER ROOM WITHOUT FLOOR
+
+		payloadMotherRoom = Json.createObjectBuilder().add("type", "Chambre").build();
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + 888 + "/motherRooms",
+				payloadMotherRoom);
+
+		assertEquals(404, response.getResponseCode());
+
 		// ADD MOTHER ROOM WITHOUT numberMotherRoom
 
 		payloadMotherRoom = Json.createObjectBuilder().add("type", "Chambre").build();
@@ -81,6 +89,14 @@ public class MotherRoomControllerRESTtest {
 
 		assertEquals(400, response.getResponseCode());
 
+		// ADD MOTHER ROOM WITHOUT IdFloor
+
+		payloadMotherRoom = Json.createObjectBuilder().add("type", "Chambre").add("numberMotherRoom", 12).build();
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + 20000 + "/motherRooms",
+				payloadMotherRoom);
+
+		assertEquals(404, response.getResponseCode());
+
 		// UPDATE MOTHER ROOM WITHOUT numberMotherRoom
 
 		payloadMotherRoom = Json.createObjectBuilder().add("type", "Sallon").build();
@@ -90,7 +106,6 @@ public class MotherRoomControllerRESTtest {
 		assertEquals(405, response.getResponseCode());
 
 		// UPDATE MOTHER ROOM
-		
 
 		payloadMotherRoom = Json.createObjectBuilder().add("type", "Sallon").add("numberMotherRoom", 18).build();
 		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind,
@@ -101,12 +116,15 @@ public class MotherRoomControllerRESTtest {
 		assertTrue(response.getPayload().containsKey("type"));
 		assertTrue(response.getPayload().containsKey("numberMotherRoom"));
 		assertEquals("Sallon", response.getPayload().getString("type"));
-		
 
 		// FIND MOTHER ROOM
 		response = RequestsHelper
 				.httpGetJsonObject("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind);
 		assertEquals(200, response.getResponseCode());
+
+		// FIND MOTHER ROOM WITHOUT FALSE ID
+		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/motherRooms/" + 7777);
+		assertEquals(404, response.getResponseCode());
 
 		// REMOVE MOTHER ROOM
 
@@ -123,6 +141,11 @@ public class MotherRoomControllerRESTtest {
 
 		assertEquals(200, response.getResponseCode());
 
+		// REMOVE MOTHER ROOM WITHOUT Floor id
+		response = RequestsHelper.httpDELETE(
+				"http://localhost:8090/terGENREST/api/floors/" + 888 + "/motherRooms/" + idMotherRoomToRemove);
+
+		assertEquals(404, response.getResponseCode());
 	}
 
 	@Test

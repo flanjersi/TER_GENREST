@@ -504,7 +504,7 @@ public class SensorRESTControllerTest {
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idRoom + "/sensors", payload);
 
-		assertEquals(400, response.getResponseCode());
+		assertEquals(404, response.getResponseCode());
 	}
 
 	@Test
