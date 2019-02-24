@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.terGENREST.entities.environmentTechnical.Configuration;
 import fr.amu.terGENREST.entities.project.Project;
 import fr.amu.terGENREST.entities.projectSpecifications.Address;
 import fr.amu.terGENREST.entities.projectSpecifications.Building;
@@ -69,7 +70,7 @@ public class FloorManagerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		userManager.removeUser(user);
+		userManager.removeUser(userManager.findUser(user.getId()));
 		EJBContainer.createEJBContainer().close();
 	}
 
@@ -79,17 +80,19 @@ public class FloorManagerTest {
 		buildingManager.updateBuilding(building);
 		Building buildUpdated = buildingManager.findById(building.getId());
 		assertTrue(buildUpdated.getFloors().size() == 1);	
-		
-		//Update
-		floor.setFloorNumber(17);
-		buildingManager.updateBuilding(buildUpdated);
-		userManager.updateUser(user);
-		assertEquals(17, floorManager.findById(floor.getId()).getFloorNumber());
-//		
-//		//Delete
-//		buildUpdated.removeFloor(floor);
-//		buildingManager.updateBuilding(buildUpdated);
-//		assertEquals(0, buildingManager.findById(buildUpdated.getId()).getBuildingFloor().size());
 
+		//Update
+		floor.setFloorNumber(55);
+		floorManager.updateFloor(floor);
+		Building buildFinded = buildingManager.findById(building.getId());
+		Floor floorUpdate = buildFinded.getFloors().get(0);
+		assertEquals(55, floorUpdate.getFloorNumber());
+
+		//delete
+		buildFinded.removeFloor(floor);;
+		buildingManager.updateBuilding(buildFinded);
+		buildFinded = buildingManager.findById(building.getId());
+		assertEquals(0, buildFinded.getFloors().size());
+	
 	}
 }
