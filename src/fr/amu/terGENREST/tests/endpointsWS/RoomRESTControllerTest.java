@@ -87,7 +87,9 @@ public class RoomRESTControllerTest {
 		
 		assertEquals(6, response.getPayload().getInt("numberRoom"));
 		
+
 		//Remove Room
+
 		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
 		assertEquals(200, response.getResponseCode());
 	}

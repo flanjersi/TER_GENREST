@@ -76,6 +76,7 @@ public class FloorManagerTest {
 
 	@Test
 	public void testCRUDFloor() {
+		
 		//Add
 		buildingManager.updateBuilding(building);
 		Building buildUpdated = buildingManager.findById(building.getId());
@@ -89,9 +90,8 @@ public class FloorManagerTest {
 		assertEquals(55, floorUpdate.getFloorNumber());
 
 		//delete
-		buildFinded.removeFloor(floor);;
+		buildFinded.removeFloor(floor);
 		buildingManager.updateBuilding(buildFinded);
-		buildFinded = buildingManager.findById(building.getId());
 		assertEquals(0, buildFinded.getFloors().size());
 
 	}

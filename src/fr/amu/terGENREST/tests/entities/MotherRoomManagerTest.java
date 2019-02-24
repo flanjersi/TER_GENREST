@@ -86,6 +86,7 @@ public class MotherRoomManagerTest {
 
 	@Test
 	public void testCRUDMotherRoom() {
+		
 		//Add
 		floorManager.updateFloor(floor);
 		Floor floorUpdated = floorManager.findById(floor.getId());
@@ -93,15 +94,16 @@ public class MotherRoomManagerTest {
 		
 		//Update
 		motherRoom.setType("studio");
-		floorManager.updateFloor(floorUpdated);		
-		userManager.updateUser(user);
-		assertEquals("studio", floorManager.findById(floor.getId()).getMotherRooms().get(0).getType());
+		buildingManager.updateBuilding(building);		
+		Floor floorFinded = floorManager.findById(floor.getId());
+		MotherRoom motherRoomU = floorFinded.getMotherRooms().get(0);
+		assertEquals("studio", motherRoomU.getType());
 		
-		
+
 		//Delete
-//		floorUpdated.removeMotherRoom(motherRoom);
-//		floorManager.updateFloor(floorUpdated);
-//		assertEquals(0, floorManager.findById(floorUpdated.getId()).getBuildingMotherRoom().size());
+		floorFinded.removeMotherRoom(motherRoom);
+		floorManager.updateFloor(floorFinded);
+		assertEquals(0,floorFinded.getMotherRooms().size());
 
 	}
 }
