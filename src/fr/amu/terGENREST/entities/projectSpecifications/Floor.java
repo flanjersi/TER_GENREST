@@ -34,7 +34,7 @@ public class Floor implements Serializable{
 	private Long id;
 
 	@Basic(optional = false)
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private int floorNumber;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,

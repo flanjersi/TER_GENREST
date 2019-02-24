@@ -42,7 +42,7 @@ public class MotherRoom implements Serializable {
 	@Size(min = 1, max = 200)
 	private String type;
 
-	@Column(name = "numberMotherRoom", nullable = false, unique = true)
+	@Column(name = "numberMotherRoom", nullable = false)
 	private int numberMotherRoom;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

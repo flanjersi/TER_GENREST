@@ -36,7 +36,7 @@ public class Corridor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
-	@Column(name = "numberCorridor", nullable = false, unique = true)
+	@Column(name = "numberCorridor", nullable = false)
 	private int numberCorridor;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
