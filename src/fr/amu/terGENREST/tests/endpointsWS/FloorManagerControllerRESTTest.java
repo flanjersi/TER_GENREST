@@ -145,7 +145,7 @@ public class FloorManagerControllerRESTTest {
 
 		response = RequestsHelper.httpPUT(URL_ROOT_BUILDING + idBuilding + "/floors", jsonPayloadRequest);
 	
-		assertEquals(400, response.getResponseCode());
+		assertEquals(403, response.getResponseCode());
 	}
 	
 	@Test
