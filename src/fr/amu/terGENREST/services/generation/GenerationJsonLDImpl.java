@@ -27,14 +27,31 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	public JsonObject generateJsonLDDataFile(Project project) {
 
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
+		
+		jsonbuilder.add("@context", generateContext());
+		
+		jsonbuilder.add("@id", "Project" + project.getId());
+		
+		jsonbuilder.add("@type", "sch:Project");
+		
+		jsonbuilder.add("sch:name", project.getProjectName());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("projectName", project.getProjectName());
-
-		//TODO ONTOLOGY
-		jsonbuilder.add("buildings", createJsonArrayBuildings(project.getBuilding()));
+		jsonbuilder.add("bot:hasBuilding", createJsonArrayBuildings(project.getBuilding()));
 
 		return jsonbuilder.build();
+	}
+	
+	public JsonObject generateContext() {
+		JsonObjectBuilder jsonContextObjectBuilder = Json.createObjectBuilder();
+		
+		
+		jsonContextObjectBuilder.add("sch", "http://schema.org/");
+		jsonContextObjectBuilder.add("bot", "https://w3id.org/bot#");
+		jsonContextObjectBuilder.add("sosa", "http://www.w3.org/ns/sosa/");
+		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
+		
+		
+		return jsonContextObjectBuilder.build();
 	}
 
 	private JsonArray createJsonArrayBuildings(List<Building> buildings) {
@@ -51,14 +68,15 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("type", building.getType());
+		jsonbuilder.add("@type", "bot:Building");
+		
+		jsonbuilder.add("@id", "Building" + building.getId());
+		
+		jsonbuilder.add("sch:name", building.getType());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("address", createJsonObjectAddress(building.getAddress()));
+		jsonbuilder.add("sch:address", createJsonObjectAddress(building.getAddress()));
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("storey", createJsonArrayStorey(building.getFloors()));
+		jsonbuilder.add("bot:hasStorey", createJsonArrayStorey(building.getFloors()));
 
 		return jsonbuilder.build();
 	}
@@ -77,14 +95,16 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
+		jsonbuilder.add("@type", "bot:Storey");
+
+		jsonbuilder.add("@id", "Storey" + floor.getId());
+		
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", floor.getFloorNumber());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("corridors", createJsonArrayCorridors(floor.getCorridors()));
+		jsonbuilder.add("bot:hasSpace", createJsonArrayCorridors(floor.getCorridors()));
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("motherRooms", createJsonArrayMotherRooms(floor.getMotherRooms()));
+		jsonbuilder.add("bot:hasZone", createJsonArrayMotherRooms(floor.getMotherRooms()));
 
 		return jsonbuilder.build();
 	}
@@ -102,16 +122,20 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonObject createJsonObjectMotherRoom(MotherRoom motherRoom) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
+		jsonbuilder.add("@type", "bot:Zone");
+
+		jsonbuilder.add("@id", "Zone" + motherRoom.getId());
+	
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("type", motherRoom.getType());
+		jsonbuilder.add("sch:name", motherRoom.getType());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("corridors", createJsonArrayCorridors(motherRoom.getCorridors()));
-
-		jsonbuilder.add("rooms", createJsonArrayRooms(motherRoom.getRooms()));
+		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
+				createJsonArrayCorridors(motherRoom.getCorridors()),
+				createJsonArrayRooms(motherRoom.getRooms())
+			)
+		);
 
 		return jsonbuilder.build();
 	}
@@ -129,13 +153,64 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonObject createJsonObjectRoom(Room room) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
+		jsonbuilder.add("@type", "bot:Space");
+
+		jsonbuilder.add("@id", "Room" + room.getId());
+		
+		//TODO ONTOLOGY
 		jsonbuilder.add("number", room.getNumberRoom());
-		jsonbuilder.add("type", room.getType());
+		
+		jsonbuilder.add("sch:name", room.getType());
+		
+		jsonbuilder.add("bot:hasElement", mergeJsonArray(
+				createJsonArraySensors(room.getSensors()),
+				createJsonArrayActuators(room.getActuators())
+			)
+		);
 
-		jsonbuilder.add("sensors", createJsonArraySensors(room.getSensors()));
+		return jsonbuilder.build();
+	}
+	
+	private JsonArray createJsonArrayCorridors(List<Corridor> corridors) {
+		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		jsonbuilder.add("actuators", createJsonArrayActuators(room.getActuators()));
+		for(Corridor corridor : corridors) {
+			jsonArrayBuilder.add(createJsonObjectCorridor(corridor));
+		}
 
+		return jsonArrayBuilder.build();
+	}
+
+	private JsonObject createJsonObjectCorridor(Corridor corridor) {		
+		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
+
+		jsonbuilder.add("@type", "bot:Space");
+		
+		jsonbuilder.add("@id", "Corridor" + corridor.getId());
+		
+		jsonbuilder.add("sch:name", "Corridor");
+		
+		
+		//TODO ONTOLOGY
+		jsonbuilder.add("number", corridor.getNumberCorridor());
+		
+		jsonbuilder.add("bot:hasElement", mergeJsonArray(
+				createJsonArraySensors(corridor.getSensors()),
+				createJsonArrayActuators(corridor.getActuators())
+			)
+		);
+
+		return jsonbuilder.build();
+	}
+
+	private JsonObject createJsonObjectAddress(Address address) {
+		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
+
+		jsonbuilder.add("@type", "sch:PostalAddress");
+		
+		jsonbuilder.add("sch:addressCountry", address.getCountry());
+		jsonbuilder.add("sch:addressLocality", address.getCity());
+		jsonbuilder.add("sch:streetAddress", address.getStreet());
 
 		return jsonbuilder.build();
 	}
@@ -153,20 +228,20 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonValue createJsonObjectActuator(Actuator actuator) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("latitude", actuator.getLatitude());
+		jsonbuilder.add("@type", "sosa:Actuator");
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("longitude", actuator.getLongitude());
+		jsonbuilder.add("@id", "Actuator" + actuator.getId());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("brand", actuator.getBrand());
+		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
+				.add("sch:latitude", actuator.getLatitude())
+				.add("sch:longitude", actuator.getLatitude()).build());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("model", actuator.getModel());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("reference", actuator.getReference());
+		jsonbuilder.add("sch:brand", actuator.getBrand());
+		
+		jsonbuilder.add("sch:model", actuator.getModel());
+		
+		jsonbuilder.add("sch:gtin" + actuator.getReference().length(), actuator.getReference());
 
 		return jsonbuilder.build();
 	}
@@ -183,65 +258,44 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonObject createJsonObjectSensor(Sensor sensor) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("latitude", sensor.getLatitude());
+		jsonbuilder.add("@type", "sosa:Sensor");
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("longitude", sensor.getLongitude());
+		jsonbuilder.add("@id", "Sensor" + sensor.getId());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("brand", sensor.getBrand());
+		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
+				.add("sch:latitude", sensor.getLatitude())
+				.add("sch:longitude", sensor.getLatitude()).build());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("model", sensor.getModel());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("reference", sensor.getReference());
+		//TODO A ajouter type
+		//jsonbuilder.add("qu:QuantityKind", sensor.getType());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("unitData", sensor.getUnitData());
+		jsonbuilder.add("sch:brand", sensor.getBrand());
+		
+		jsonbuilder.add("sch:model", sensor.getModel());
+		
+		jsonbuilder.add("sch:gtin" + sensor.getReference().length(), sensor.getReference());
+
+		
+		jsonbuilder.add("qu:Unit", sensor.getUnitData());
 
 		return jsonbuilder.build();
 	}
-
-	private JsonArray createJsonArrayCorridors(List<Corridor> corridors) {
+	
+	private JsonArray mergeJsonArray(JsonArray jsonArray1, JsonArray jsonArray2) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
-
-		for(Corridor corridor : corridors) {
-			jsonArrayBuilder.add(createJsonObjectCorridor(corridor));
+		
+		for(JsonValue jsonValue : jsonArray1) {
+			jsonArrayBuilder.add(jsonValue);
 		}
-
+		
+		for(JsonValue jsonValue : jsonArray2) {
+			jsonArrayBuilder.add(jsonValue);
+		}
+		
 		return jsonArrayBuilder.build();
-	}
-
-	private JsonObject createJsonObjectCorridor(Corridor corridor) {		
-		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
-
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", corridor.getNumberCorridor());
 		
-		//TODO ONTOLOGY
-		jsonbuilder.add("actuators", createJsonArrayActuators(corridor.getActuators()));
-		
-		//TODO ONTOLOGY
-		jsonbuilder.add("sensors", createJsonArraySensors(corridor.getSensors()));
-
-		return jsonbuilder.build();
 	}
-
-	private JsonObject createJsonObjectAddress(Address address) {
-		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
-
-		jsonbuilder.add("@context", "https://schema.org/");
-		jsonbuilder.add("@type", "PostalAddress");
-		
-		jsonbuilder.add("addressCountry", address.getCountry());
-		jsonbuilder.add("addressLocality", address.getCity());
-		jsonbuilder.add("streetAddress", address.getStreet());
-
-		return jsonbuilder.build();
-	}
-
 
 
 }
