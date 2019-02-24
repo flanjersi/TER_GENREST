@@ -20,7 +20,12 @@ import javax.validation.constraints.Size;
  *
  */
 
-@NamedQueries({ @NamedQuery(name = "Actuator.findAll", query = "select a from Actuator a"), })
+@NamedQueries({ 
+	@NamedQuery(
+			name = "Actuator.findAll", 
+			query = "select a from Actuator a"), 
+	})
+
 @Entity
 @Table(name = "Actuator")
 public class Actuator implements Serializable {
@@ -64,7 +69,6 @@ public class Actuator implements Serializable {
 
 	public Actuator() {	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -179,9 +183,5 @@ public class Actuator implements Serializable {
 		} else if (!state.equals(other.state))
 			return false;
 		return true;
-	}	
-	
-	
-	
-	
+	}		
 }

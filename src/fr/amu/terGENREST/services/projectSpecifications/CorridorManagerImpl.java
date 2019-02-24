@@ -17,13 +17,10 @@ public class CorridorManagerImpl implements CorridorManager {
 	@PersistenceContext(unitName = "database")
 	private EntityManager em;
 
-
 	@Override
 	public Corridor findCorridor(Long id) {
 		return em.find(Corridor.class, id);
 	}
-
-
 
 	@Override
 	public Corridor updateCorridor(Corridor corridor) {

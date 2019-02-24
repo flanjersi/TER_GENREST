@@ -8,7 +8,7 @@ import fr.amu.terGENREST.entities.environmentTechnical.Language;
 
 /**
  * DAO interface to manipulate ORM Languages data
- * @author Jérémy
+ * @author Jeremy
  *
  */
 @Local
@@ -25,4 +25,5 @@ public interface LanguagesManager {
 	public List<Language> findAllLanguages();
 	
 	public Language findByName(String name);
+	
 }

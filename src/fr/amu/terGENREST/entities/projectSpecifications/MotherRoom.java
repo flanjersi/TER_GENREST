@@ -20,18 +20,21 @@ import javax.validation.constraints.Size;
 /**
  * 
  * MotherRoom contains a id, type,
- * 
  * @author tsila
  *
  */
-@Table(name = "MotherRoom")
+
+
+@NamedQueries({ 
+	@NamedQuery(
+			name = "MotherRoom.findAllMotherRoom", 
+			query = "SELECT m FROM MotherRoom m")
+})
+
 @Entity
-@NamedQueries({ @NamedQuery(name = "MotherRoom.findAllMotherRoom", query = "SELECT m FROM MotherRoom m") })
+@Table(name = "MotherRoom")
 public class MotherRoom implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id()
@@ -52,7 +55,6 @@ public class MotherRoom implements Serializable {
 	private List<Corridor> corridors = new ArrayList<Corridor>();
 
 	public MotherRoom() {
-		super();
 	}
 	
 	public MotherRoom(String type, int numberMotherRoom) {
@@ -60,20 +62,16 @@ public class MotherRoom implements Serializable {
 		this.numberMotherRoom = numberMotherRoom;
 	}
 
-	
 	public void addRoom(Room r) {
 		rooms.add(r);
-
 	}
 
 	public void removeRoom(Room r) {
 		rooms.remove(r);
-
 	}
 
 	public void addCorridor(Corridor c) {
 		corridors.add(c);
-
 	}
 
 	public void removeCorridor(Corridor c) {
@@ -149,8 +147,5 @@ public class MotherRoom implements Serializable {
 		} else if (!type.equals(other.type))
 			return false;
 		return true;
-	}
-
-	
-	
+	}	
 }

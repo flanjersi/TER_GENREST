@@ -29,20 +29,20 @@ import fr.amu.terGENREST.services.projectSpecifications.CorridorManager;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CorridorManagerControllerREST {
-	
+
 	@EJB
 	private CorridorManager corridorManager;
-	
+
 	public CorridorManagerControllerREST() {
-		
+
 	}
-	
+
 	@GET
 	public Response getAllCorridors() {
 		List<Corridor> corridors = corridorManager.findAllCorridor();
 		return Response.ok().entity(corridors).build();
 	}
-	
+
 	@GET
 	@Path("/{id:[0-9]+}")
 	public Response getCorridorById(@PathParam("id") Long id) {	
@@ -59,44 +59,51 @@ public class CorridorManagerControllerREST {
 	@POST
 	@Path("/{id:[0-9]+}")
 	public Response updateCorridor(@PathParam("id") Long id, Corridor corridor) {
-	    Corridor findedCorridor = corridorManager.findCorridor(id);
-	    
+
+		Corridor findedCorridor = corridorManager.findCorridor(id);
+
+		if(findedCorridor == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Corridor with id '" + id + "' no exist"))
+					.build();
+		}
+
 		if( corridor.getNumberCorridor() != 0 ) {
 			findedCorridor.setNumberCorridor(corridor.getNumberCorridor());
 		}
-					
 
 		corridorManager.updateCorridor(findedCorridor);
 		return Response.ok().entity(corridorManager.findCorridor(id)).build();
 	}
-	
+
 	@PUT
 	@Path("/{idCorridor:[0-9]+}/actuators/")
 	public Response createActuator(@PathParam("idCorridor") Long idCorridor, Actuator actuator) {
-		
+
 		Corridor corridor = corridorManager.findCorridor(idCorridor);
-		
+
 		if(corridor == null){
 			return  Response
 					.status(404)
 					.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not exist"))
 					.build();
 		}
-					
+
 		if(actuator.getBrand() == null) {
 			return  Response
 					.status(400)
 					.entity(Utils.makeErrorMessage(400, "'Brand' property is missing"))
 					.build();
 		}
-		
+
 		if(actuator.getModel() == null) {
 			return  Response
 					.status(400)
 					.entity(Utils.makeErrorMessage(400, "'Model' property is missing"))
 					.build();
 		}
-		
+
 		if(actuator.getReference() == null) {
 			return  Response
 					.status(400)
@@ -124,44 +131,41 @@ public class CorridorManagerControllerREST {
 
 		corridor.addActuator(actuator);
 		corridorManager.updateCorridor(corridor);
-		
+
 		corridor = corridorManager.findCorridor(corridor.getId());
 		Optional<Actuator> addedActuator =  corridor.getActuators().stream().max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", addedActuator.get().getId()).build();
-		
+
 		return Response.status(201).entity(jsonResponse).build();
 	}
-	
+
 	@DELETE
 	@Path("{idCorridor:[0-9]+}/actuators/{idActuator:[0-9]+}")
-	public Response deleteActuator( @PathParam("idCorridor") Long idCorridor, 
-										@PathParam("idActuator") Long idActuator) {
-			Corridor corridor = corridorManager.findCorridor(idCorridor);
-			
-			if(corridor == null){
-				return  Response
-						.status(404)
-						.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not exist"))
-						.build();
-			}
-			Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId().equals(idActuator)).findFirst();
+	public Response deleteActuator( @PathParam("idCorridor") Long idCorridor, @PathParam("idActuator") Long idActuator) {
+		Corridor corridor = corridorManager.findCorridor(idCorridor);
 
-			if(!actuator.isPresent()) {
-				return Response
-						.status(404)
-						.entity(Utils.makeErrorMessage(404, "Actuator with id '" + idActuator + "' not found"))
-						.build();
-			}
-			
-			corridor.removeActuator(actuator.get());
-			corridorManager.updateCorridor(corridor);
+		if(corridor == null){
+			return  Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Corridor with id '" + idCorridor + "' not exist"))
+					.build();
+		}
 
-			return Response.ok().build();
+		Optional<Actuator> actuator =  corridor.getActuators().stream().filter(a -> a.getId().equals(idActuator)).findFirst();
+
+		if(!actuator.isPresent()) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Actuator with id '" + idActuator + "' not found"))
+					.build();
+		}
+
+		corridor.removeActuator(actuator.get());
+		corridorManager.updateCorridor(corridor);
+
+		return Response.ok().build();
 	}
-	
-	
-	
 
 	@PUT
 	@Path("{idCorridor:[0-9]+}/sensors/")
@@ -178,29 +182,26 @@ public class CorridorManagerControllerREST {
 		}
 		if (sensor.getLatitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor latitude is missing")).build();
-
 		}
 
 		if (sensor.getLongitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor longitude is missing")).build();
-
 		}
 
 		if (sensor.getModel() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor model is missing")).build();
 		}
+
 		if (sensor.getReference() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor reference is missing")).build();
-
 		}
+
 		if (sensor.getState() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor state is missing")).build();
-
 		}
 
 		if (sensor.getUnitData() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor unitdata is missing")).build();
-
 		}
 
 		corridorFinded.addSensor(sensor);
@@ -213,7 +214,7 @@ public class CorridorManagerControllerREST {
 
 		return Response.status(201).entity(jsonResponse).build();
 	}
-	
+
 	@DELETE
 	@Path("{idCorridor:[0-9]+}/sensors/{idSensor:[0-9]+}")
 	public Response removeSensor(@PathParam("idCorridor") Long idCorridor, @PathParam("idSensor") Long idSensor) {
@@ -224,9 +225,9 @@ public class CorridorManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No corridor with id : " + idCorridor)).build();
 		}
 
-	
+
 		Optional<Sensor> sensorTofind = corridorFinded.getSensors().stream().filter(s -> s.getId().equals(idSensor)).findFirst();
-		
+
 		if (!sensorTofind.isPresent()) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, "Sensor with id '" + idSensor + "' not found")).build();

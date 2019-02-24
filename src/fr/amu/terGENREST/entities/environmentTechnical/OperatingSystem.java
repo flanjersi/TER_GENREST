@@ -13,19 +13,24 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-@Table(name = "OperatingSystem")
-@Entity
+
 @NamedQueries ({
-	@NamedQuery(name = "OperatingSystem.findAllOperatingSystems", query = "SELECT op FROM OperatingSystem op"),
-	@NamedQuery(name = "OperatingSystem.findByName", query = "SELECT op FROM OperatingSystem op WHERE name = :name" ),
-	@NamedQuery(name = "OperatingSystem.findByPathFolder", query = "SELECT op FROM OperatingSystem op WHERE nameFolder = :nameFolder" )
+	@NamedQuery(
+			name = "OperatingSystem.findAllOperatingSystems", 
+			query = "SELECT op FROM OperatingSystem op"),
+	@NamedQuery(
+			name = "OperatingSystem.findByName", 
+			query = "SELECT op FROM OperatingSystem op WHERE name = :name" ),
+	@NamedQuery(
+			name = "OperatingSystem.findByPathFolder", 
+			query = "SELECT op FROM OperatingSystem op WHERE nameFolder = :nameFolder" )
 	
 })
+
+@Entity
+@Table(name = "OperatingSystem")
 public class OperatingSystem implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2636092421781516359L;
 
 	@Id()
@@ -43,8 +48,7 @@ public class OperatingSystem implements Serializable {
 	@Column(nullable = false, length = 200, unique = true)
 	private String nameFolder;
 	
-	public OperatingSystem() {
-		
+	public OperatingSystem() {	
 	}
 	
 	public OperatingSystem(String name, String namefolder) {
@@ -55,7 +59,6 @@ public class OperatingSystem implements Serializable {
 	public long getId() {
 		return id;
 	}
-
 
 	public String getName() {
 		return name;
@@ -73,8 +76,6 @@ public class OperatingSystem implements Serializable {
 		this.nameFolder = nameFolder;
 	}
 
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

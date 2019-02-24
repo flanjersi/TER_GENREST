@@ -33,13 +33,10 @@ public class BuildingManagerControllerREST {
 
 	@EJB
 	private BuildingManager buildingManager;
-
 	@EJB
 	private FloorManager floorManager;
-
 	@EJB
 	private ProjectManager projectManager;
-
 	@EJB
 	private UserManager userManager;
 
@@ -49,7 +46,6 @@ public class BuildingManagerControllerREST {
 		List<Building> buildings = buildingManager.findAllBuilding();
 		return Response.ok().entity(buildings).build();
 	}
-
 
 	@GET
 	@Path("/{id:[0-9]+}")
@@ -92,7 +88,6 @@ public class BuildingManagerControllerREST {
 		return Response.ok().entity(buildingFinded).build();
 	}
 	
-
 	@PUT
 	@Path("/{idBuilding:[0-9]+}/floors")
 	public Response createFloor(@PathParam("idBuilding") Long idBuilding, Floor floor) {
@@ -120,7 +115,7 @@ public class BuildingManagerControllerREST {
 		
 		if(floorsearch.isPresent()) {
 			return Response
-					.status(400)
+					.status(403)
 					.entity(Utils.makeErrorMessage(400, "floorNumber" + floor.getFloorNumber() + " already exist"))
 					.build();
 		}

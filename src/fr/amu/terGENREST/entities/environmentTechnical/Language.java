@@ -18,19 +18,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size; 
 
-@Entity
-@Table(name = "Language")
-@NamedQueries ({
 
+@NamedQueries ({
 	@NamedQuery(name = "Language.findAllLanguages", query = "FROM Language"),
 	@NamedQuery(name = "Language.findByName", query = "FROM Language WHERE name = :name")
 
 })
+
+@Entity
+@Table(name = "Language")
 public class Language implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1437856201827260331L;
 
 	@Id()
@@ -44,8 +42,7 @@ public class Language implements Serializable{
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
 	private List<Configuration> configurationsAvailable = new ArrayList<Configuration>();
 	
-	public Language() {
-		
+	public Language() {	
 	}
 	
 	public Language(String name) {
@@ -55,7 +52,6 @@ public class Language implements Serializable{
 	public long getId() {
 		return id;
 	}
-
 
 	public String getName() {
 		return name;
@@ -80,8 +76,6 @@ public class Language implements Serializable{
 	public void removeConfiguration(Configuration configuration) {
 		configurationsAvailable.remove(configuration);
 	}
-
-	
 	
 	@Override
 	public int hashCode() {

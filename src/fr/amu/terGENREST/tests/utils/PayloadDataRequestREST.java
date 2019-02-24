@@ -13,15 +13,15 @@ public class PayloadDataRequestREST {
 				.add("password", "leoa121")
 				.build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestProject(){
 		return  Json.createObjectBuilder().add("projectName", "firstProject").build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestLanguage(){
 		return  Json.createObjectBuilder().add("name", "JavaTest").build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestConfiguration(){
 		return  Json.createObjectBuilder()
 				.add("name", "node-js-express")
@@ -29,38 +29,37 @@ public class PayloadDataRequestREST {
 				.add("description", "description")
 				.build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestOperatingSystem(){
 		return Json.createObjectBuilder().add("name", "Ubuntu")
 				.add("nameFolder", "ubuntu")
 				.build();
 	}
-	
-	 
+
 	public static JsonObject jsonPayloadRequestBuilding(){
 		return Json.createObjectBuilder().add("type", "studio").build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestFloor(){
 		return  Json.createObjectBuilder().add("floorNumber", 5).build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestCorridor(){
 		return Json.createObjectBuilder().add("numberCorridor", 6).build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestMotherRoom(){
 		return Json.createObjectBuilder().add("numberMotherRoom", 9)
 				.add("type", "kitchen")
 				.build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestRoom(){
 		return Json.createObjectBuilder().add("type", "house")
 				.add("numberRoom", 4)
 				.build();
 	}
-	
+
 	public static JsonObject jsonPayloadRequestActuator(){
 		double longitude = 18.3;
 		double lattitude = 20.0 ;
@@ -72,7 +71,7 @@ public class PayloadDataRequestREST {
 				.add("state", "ON")
 				.build();
 	}   
-	
+
 	public static JsonObject jsonPayloadRequestSensor(){
 		double longitude = 120.3;
 		double lattitude = 95.0 ;
@@ -85,5 +84,4 @@ public class PayloadDataRequestREST {
 				.add("unitData", "Celsius")
 				.build();
 	}
-	
 }

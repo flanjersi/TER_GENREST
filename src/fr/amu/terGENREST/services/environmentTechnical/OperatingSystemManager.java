@@ -8,7 +8,7 @@ import fr.amu.terGENREST.entities.environmentTechnical.OperatingSystem;
 
 /**
  * DAO interface to manipulate ORM OperatingSystem data
- * @author Jérémy
+ * @author Jeremy
  *
  */
 @Local

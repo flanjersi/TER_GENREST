@@ -16,18 +16,17 @@ import fr.amu.terGENREST.entities.user.User;
 public interface UserManager {
 
 	public void saveUser(User user);
-	
+
 	public void updateUser(User user);
-	
+
 	public void removeUser(User user);
-		
+
 	public User findUser(Long id);
-	
+
 	public User findUserByEmail(String email);
-	
+
 	public List<User> findAllUser();
-	
+
 	public User authentification(String email, String password);
-	
 
 }

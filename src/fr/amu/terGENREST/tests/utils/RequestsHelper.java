@@ -25,8 +25,8 @@ public class RequestsHelper {
 	private final static String ENCODING = "UTF-8"; 
 	private final static String NAMEHEADER = "Content-Type";
 	private final static String VALUEHEADER = "application/json";
-	
-	
+
+
 	/**
 	 * POJO to get the response of request with JsonObject response payload
 	 * @author Jeremy
@@ -35,7 +35,6 @@ public class RequestsHelper {
 	public static class ResponseJsonObject {
 
 		private long responseCode;
-
 		private JsonObject payload;
 
 		public ResponseJsonObject(long responseCode, JsonObject payload) {
@@ -101,7 +100,7 @@ public class RequestsHelper {
 		JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
 
 		long responseCode = response.getStatusLine().getStatusCode();
-		
+
 		return new ResponseJsonObject(responseCode, responseObject);
 	}
 
@@ -113,10 +112,10 @@ public class RequestsHelper {
 		JsonArray responseArray = Utils.stringToJsonArray(EntityUtils.toString(response.getEntity()));
 
 		long responseCode = response.getStatusLine().getStatusCode();
-		
+
 		return new ResponseJsonArray(responseCode, responseArray);
 	}
-	
+
 	public static ResponseJsonObject httpPOST(String url, JsonObject payload) throws IOException {
 
 		HttpPost requestUpdate = new HttpPost(url);
@@ -125,7 +124,6 @@ public class RequestsHelper {
 		requestUpdate.setHeader(NAMEHEADER, VALUEHEADER);
 
 		HttpResponse response = HttpClientBuilder.create().build().execute( requestUpdate );
-
 
 		long responseCode = response.getStatusLine().getStatusCode();
 		JsonObject responseObject = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
@@ -140,7 +138,7 @@ public class RequestsHelper {
 		request.setHeader(NAMEHEADER, VALUEHEADER);
 
 		HttpResponse response = HttpClientBuilder.create().build().execute( request );
-		
+
 		JsonObject payloadResponse = Utils.stringToJsonObject(EntityUtils.toString(response.getEntity()));
 
 		long responseCode = response.getStatusLine().getStatusCode();
@@ -152,10 +150,9 @@ public class RequestsHelper {
 
 		HttpDelete requestDeleteData = new HttpDelete(url);
 		HttpResponse response = HttpClientBuilder.create().build().execute( requestDeleteData );
-		
+
 		long responseCode = response.getStatusLine().getStatusCode();
-				
+
 		return new ResponseJsonObject(responseCode, null);
 	}
-
 }

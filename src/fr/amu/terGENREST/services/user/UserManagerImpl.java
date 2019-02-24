@@ -15,7 +15,6 @@ import fr.amu.terGENREST.services.DBException;
 public class UserManagerImpl implements UserManager {
 	/**
 	 * DAO Implements to manipulate ORM User data
-	 * 
 	 * @author Mohamed
 	 *
 	 */
@@ -38,7 +37,7 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public void updateUser(User user) {
 		try {
-			 em.merge(user);
+			em.merge(user);
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
@@ -48,7 +47,7 @@ public class UserManagerImpl implements UserManager {
 	public void removeUser(User user) {
 		try {
 			em.remove(em.contains(user) ? user : em.merge(user));	
-	} catch (Exception e) {
+		} catch (Exception e) {
 			throw new DBException(e);
 		}
 	}
@@ -101,7 +100,4 @@ public class UserManagerImpl implements UserManager {
 			throw new DBException(e);
 		}
 	}
-	
-	
-
 }

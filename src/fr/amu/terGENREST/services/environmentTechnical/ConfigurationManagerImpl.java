@@ -28,19 +28,16 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
 	@Override
 	public Configuration findByName(String name) {
 		TypedQuery<Configuration> q = em.createNamedQuery("Configuration.findByName", Configuration.class).setParameter("name", name);
-
 		try {
 			return q.getSingleResult();
 		} catch(NoResultException e) {
 			return null;
 		}
-
 	}
 
 	@Override
 	public Configuration findByPathFolder(String pathFolder) {
 		TypedQuery<Configuration> q = em.createNamedQuery("Configuration.findByPathFolder", Configuration.class).setParameter("pathFolder", pathFolder);
-
 		try {
 			return q.getSingleResult();
 		} catch(NoResultException e) {

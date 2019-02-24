@@ -26,7 +26,6 @@ public class ActuatorManagerControllerREST {
 	private ActuatorManager actuatorManager;
 
 	public ActuatorManagerControllerREST() {
-
 	}
 
 	@GET
@@ -56,7 +55,6 @@ public class ActuatorManagerControllerREST {
 
 		if (actuator.getBrand() != null) {
 			actuatortoFind.setBrand(actuator.getBrand());
-
 		}
 
 		if (actuator.getLatitude() != 0) {
@@ -65,24 +63,21 @@ public class ActuatorManagerControllerREST {
 
 		if (actuator.getLongitude() != 0) {
 			actuatortoFind.setLongitude(actuator.getLongitude());
-
 		}
 
 		if (actuator.getReference() != null) {
 			actuatortoFind.setReference(actuator.getReference());
-
 		}
+
 		if (actuator.getModel() != null) {
 			actuatortoFind.setModel(actuator.getModel());
-
 		}
 		if (actuator.getState() != null) {
 			actuatortoFind.setState(actuator.getState());
-
 		}
-		
+
 		actuatortoFind = actuatorManager.updateActuator(actuatortoFind);
-		
+
 		return Response.ok().entity(actuatortoFind).build();
 
 	}

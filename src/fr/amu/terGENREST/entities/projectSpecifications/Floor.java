@@ -17,16 +17,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Table(name = "Floor")
-@Entity
+
 @NamedQueries({ 
 	@NamedQuery(name = "floor.findAllFloor", query = "SELECT fl FROM Floor fl")
 })
 
+@Table(name = "Floor")
+@Entity
 public class Floor implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 5036343810149445657L;
 
 	@Id()
@@ -49,13 +48,11 @@ public class Floor implements Serializable{
 	}
 
 	public Floor(int floorNumber) {
-		super();
 		this.floorNumber = floorNumber;
 	}
 	
 	public void addMotherRoom(MotherRoom m) {
 		motherRooms.add(m);
-
 	}
 
 	public void removeMotherRoom(MotherRoom m) {
@@ -98,8 +95,6 @@ public class Floor implements Serializable{
 		this.corridors = corridors;
 	}
 
-	
-
 	@Override
 	public String toString() {
 		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", motherRooms=" + motherRooms + ", corridors="
@@ -133,7 +128,5 @@ public class Floor implements Serializable{
 			return false;
 		return true;
 	}
-
-	
 	
 }

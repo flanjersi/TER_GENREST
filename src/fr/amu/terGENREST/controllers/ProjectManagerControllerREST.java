@@ -31,13 +31,10 @@ public class ProjectManagerControllerREST {
 
 	@EJB
 	private UserManager userManager;
-
 	@EJB
 	private ProjectManager projectManager;
-
 	@EJB
 	private BuildingManager buildingManager;
-
 
 	public ProjectManagerControllerREST() {}
 
@@ -72,7 +69,6 @@ public class ProjectManagerControllerREST {
 		}
 		
 		projectFinded = projectManager.updateProject(project);
-
 		return Response.status(200).entity(projectFinded).build();
 	}
 
@@ -87,7 +83,6 @@ public class ProjectManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "Project with id '" + idProject + "' no exist"))
 					.build();
 		}
-
 		
 		if(building.getType() == null) {
 			return Response
@@ -98,16 +93,13 @@ public class ProjectManagerControllerREST {
 	
 		project.addBuilding(building);
 		projectManager.updateProject(project);
-
 		project = projectManager.findProject(project.getId());
 
 		Optional<Building> buildingAdded = project.getBuilding()
 				.stream()
 				.max((b1, b2) -> Long.compare(b1.getId(), b2.getId()));
 
-
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", buildingAdded.get().getId()).build();
-
 		return Response.status(201).entity(jsonResponse).build();
 	}
 	
@@ -122,7 +114,6 @@ public class ProjectManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "project with id '" + idProject + "' no exist"))
 					.build();
 		}
-
 
 		Optional<Building> building = project.getBuilding()
 				.stream()

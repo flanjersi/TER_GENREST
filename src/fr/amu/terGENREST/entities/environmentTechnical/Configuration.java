@@ -13,17 +13,20 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+
+@NamedQueries({
+		@NamedQuery(
+				name = "Configuration.findByName", 
+				query = "SELECT c FROM Configuration c WHERE name = :name"),
+		@NamedQuery(
+				name = "Configuration.findByPathFolder", 
+				query = "SELECT c FROM Configuration c WHERE pathFolder = :pathFolder") 
+})
+
 @Entity
 @Table
-@NamedQueries({
-		@NamedQuery(name = "Configuration.findByName", query = "SELECT c FROM Configuration c WHERE name = :name"),
-		@NamedQuery(name = "Configuration.findByPathFolder", query = "SELECT c FROM Configuration c WHERE pathFolder = :pathFolder") })
 public class Configuration implements Serializable {
 
-	/**
-	 * 
-	 * 
-	 */
 	private static final long serialVersionUID = 6321329799125743622L;
 
 	@Id()
@@ -49,7 +52,6 @@ public class Configuration implements Serializable {
 	private String pathFolder;
 
 	public Configuration() {
-
 	}
 
 	public Configuration(String name, String description, String pathFolder) {
@@ -61,7 +63,6 @@ public class Configuration implements Serializable {
 	public long getId() {
 		return id;
 	}
-
 
 	public String getName() {
 		return name;

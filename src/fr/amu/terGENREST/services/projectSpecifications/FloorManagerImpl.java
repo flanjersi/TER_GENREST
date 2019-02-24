@@ -15,7 +15,6 @@ public class FloorManagerImpl implements FloorManager{
 	@PersistenceContext(unitName = "database")
     private EntityManager em;
 	
-
 	@Override
 	public Floor updateFloor(Floor floor) {
 		return em.merge(floor);

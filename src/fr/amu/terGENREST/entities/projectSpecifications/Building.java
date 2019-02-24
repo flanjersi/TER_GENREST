@@ -27,13 +27,18 @@ import javax.validation.constraints.Size;
  * and Corridor->Apartment->Room->Sensors and Actuators.
  *
  */
+
+@NamedQueries({ 
+	@NamedQuery(
+			name = "Building.findAllBuilding", 
+			query = "SELECT Bld FROM Building Bld"),
+	@NamedQuery(
+			name = "Building.findBuildingByFloorId", 
+			query = "SELECT bld FROM Building bld join bld.floors fl WHERE fl.id = :idFloor"), 	
+})
+
 @Table(name = "Building")
 @Entity
-@NamedQueries({ 
-	@NamedQuery(name = "Building.findAllBuilding", query = "SELECT Bld FROM Building Bld"),
-	@NamedQuery(name = "Building.findBuildingByFloorId", query = "SELECT bld FROM Building bld join bld.floors fl WHERE fl.id = :idFloor"
-), 	
-})
 public class Building implements Serializable {
 
 	private static final long serialVersionUID = 10000L;
@@ -56,13 +61,10 @@ public class Building implements Serializable {
 	public Building() {
 	}
 
-	
-
 	public Building(String type,Address address) {
 		this.type = type;
 		this.address = address;
 	}
-	
 
 	public Long getId() {
 		return id;
@@ -85,11 +87,11 @@ public class Building implements Serializable {
 	}
 
 	public void addFloor(Floor floor) {
-		floors.add(floor);
+		this.floors.add(floor);
 	}
 
 	public void removeFloor(Floor floor) {
-		floors.remove(floor);
+		this.floors.remove(floor);
 	}
 
 	public Address getAddress() {
@@ -99,7 +101,6 @@ public class Building implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-
 
 	@Override
 	public String toString() {
