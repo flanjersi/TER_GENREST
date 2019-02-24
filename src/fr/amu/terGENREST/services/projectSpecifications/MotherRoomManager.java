@@ -14,4 +14,5 @@ public interface MotherRoomManager {
 	public MotherRoom findById (Long id);
 
 	public List<MotherRoom> findAllMotherRoom();
+	
 }

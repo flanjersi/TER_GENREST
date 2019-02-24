@@ -23,23 +23,21 @@ import fr.amu.terGENREST.entities.project.Project;
 
 
 @NamedQueries({
-    @NamedQuery(
-        name="User.findAll",
-        query="select u from User u"),
-    @NamedQuery(
-        name="User.Authentication",
-        query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
-    @NamedQuery(
-            name="User.findUserByEmail",
-            query="SELECT u FROM User u WHERE u.email = :email")
+	@NamedQuery(
+			name="User.findAll",
+			query="select u from User u"),
+	@NamedQuery(
+			name="User.Authentication",
+			query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
+	@NamedQuery(
+			name="User.findUserByEmail",
+			query="SELECT u FROM User u WHERE u.email = :email")
 })
+
 @Entity
 @Table(name = "Users")
 public class User implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -53,24 +51,22 @@ public class User implements Serializable{
 	@Column(name = "last_Name", nullable = false)
 	@Size(min = 1, max = 200)
 	private String lastName;
-	
+
 	@Column(name = "email",  nullable = false, unique = true)
 	@Email(message = "email is not valid")
 	@Size(min=1, max = 200)
 	private String email;
-	
+
 	@Column(name = "password",  nullable = false)
 	@Size(min=1, max = 200)
 	private String password;
-	
 
 	@OneToMany(fetch=FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Project> projects;
 
 	public User() {	}
-	
+
 	public User(String firstName, String lastName, String email, String password) {
-		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -84,7 +80,7 @@ public class User implements Serializable{
 	public void setId(Long id) {
 		this.id=id;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -129,11 +125,10 @@ public class User implements Serializable{
 		if(this.projects == null) {
 			this.projects = new ArrayList<>();
 		}
-		
 		this.projects.add(project);
 	}
-	
-	
+
+
 	public void removeProject(Project project) {
 		this.projects.remove(project);
 	}
@@ -192,9 +187,4 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}	
-	
-	
-	
-	
-	
 }

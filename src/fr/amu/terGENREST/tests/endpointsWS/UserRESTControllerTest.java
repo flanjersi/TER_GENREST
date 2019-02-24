@@ -119,7 +119,7 @@ public class UserRESTControllerTest {
 
 		// add user
 
-		User u = new User ("Jean","Marc","jmc84@gmail.fr","aerty105");
+		User u = new User ("Jean","Marc","jm@gmail.fr","aerty105");
 
 		HttpPut request = new HttpPut("http://localhost:8090/terGENREST/api/users/");
 
@@ -209,7 +209,7 @@ public class UserRESTControllerTest {
 
 		response = RequestsHelper.httpPUT(URL_ROOT_USER, jsonPayloadRequest);
 
-		assertEquals(400, response.getResponseCode());
+		assertEquals(403, response.getResponseCode());
 
 		//Delete user
 

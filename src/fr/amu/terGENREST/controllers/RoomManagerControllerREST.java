@@ -40,7 +40,6 @@ public class RoomManagerControllerREST {
 	public Response getAllRooms() {
 		List<Room> rooms = roomManager.findAllRooms();
 		return Response.ok().entity(rooms).build();
-
 	}
 
 	@GET
@@ -203,7 +202,6 @@ public class RoomManagerControllerREST {
 		Optional<Actuator> actuatorTofind = roomTofind.getActuators().stream().filter(a -> a.getId().equals(idActuator))
 				.findFirst();
 		if (!actuatorTofind.isPresent()) {
-
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "Added Actuator not found")).build();
 		}
 

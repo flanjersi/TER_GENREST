@@ -20,4 +20,5 @@ public interface FloorManager {
 	public Floor findById (Long id);
 
 	public List<Floor> findAllFloor();
+	
 }

@@ -78,8 +78,6 @@ public class FloorManagerControllerREST {
 				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
 				.findFirst();
 		
-
-		
 		if(floorsearch.isPresent()) {
 			return Response
 					.status(400)
@@ -186,23 +184,19 @@ public class FloorManagerControllerREST {
 		
 		if(motherRoomSearch.isPresent()) {
 			return Response
-					.status(400)
+					.status(403)
 					.entity(Utils.makeErrorMessage(400, "NumberMotherRoom '" + motherRoom.getNumberMotherRoom() + "' already exist"))
 					.build();
-		}
-		
+		}		
 		
 		floor.addMotherRoom(motherRoom);
 		floorManager.updateFloor(floor);
-		
-		floor = floorManager.findById(floor.getId());
-		
+		floor = floorManager.findById(floor.getId());	
 		Optional<MotherRoom> motherRoomAdded = floor.getMotherRooms()
 				.stream()
 				.max((mr1, mr2) -> Long.compare(mr1.getId(), mr2.getId()));
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", motherRoomAdded.get().getId()).build();
-
 		return Response.ok().entity(jsonResponse).build();
 	}
 	

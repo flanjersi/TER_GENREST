@@ -22,7 +22,6 @@ public class ConfigurationManagerControllerREST {
 
 	@EJB
 	private LanguagesManager languagesManager;
-
 	@EJB
 	private ConfigurationManager configurationManager;
 
@@ -59,36 +58,33 @@ public class ConfigurationManagerControllerREST {
 		}
 
 		if(configurationUpdate.getName() != null) {
-		
+
 			if(configurationManager.findByName(configurationUpdate.getName()) != null) {
 				return Response
 						.status(400)
 						.entity(Utils.makeErrorMessage(400, "Configuration '" + configuration.getName() + "' already use"))
 						.build();
 			}
-			
+
 			configuration.setName(configurationUpdate.getName());
-		}
-		
-		
-		
+		}		
+
 		if(configurationUpdate.getDescription() != null) {
 			configuration.setDescription(configurationUpdate.getDescription());
 		}
-		
+
 		if(configurationUpdate.getPathFolder() != null) {
-		
+
 			if(configurationManager.findByPathFolder(configurationUpdate.getPathFolder()) != null) {
 				return Response
 						.status(400)
 						.entity(Utils.makeErrorMessage(400, "Path folder '" + configuration.getPathFolder() + "' already use"))
 						.build();
 			}
-			
+
 			configuration.setPathFolder(configurationUpdate.getPathFolder());
 		}
-		
-		
+
 		configuration = configurationManager.updateConfiguration(configuration);
 
 		return Response.ok().entity(configuration).build();

@@ -26,7 +26,12 @@ import javax.validation.constraints.Size;
  *
  */
 
-@NamedQueries({ @NamedQuery(name = "Room.findAll", query = "select r from Room r"), })
+@NamedQueries({ 
+	@NamedQuery(
+			name = "Room.findAll", 
+			query = "select r from Room r"), 
+})
+
 @Entity
 @Table(name = "Room")
 public class Room implements Serializable {
@@ -44,32 +49,26 @@ public class Room implements Serializable {
 	@Size(min = 1, max = 200)
 	private String type;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Sensor> sensors = new ArrayList<Sensor>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Actuator> actuators = new ArrayList<Actuator>();
 
 	public Room() {
-		super();
 	}
 	
 	public Room(int numberRoom, String type) {
-		super();
 		this.numberRoom = numberRoom;
 		this.type = type;
 	}
 
-	
 	public void addSensor(Sensor s) {
 		sensors.add(s);
 	}
 
 	public void removeSensor(Sensor s) {
 		sensors.remove(s);
-
 	}
 
 	public void addActuator(Actuator a) {
@@ -155,9 +154,4 @@ public class Room implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-	
-
-	
 }

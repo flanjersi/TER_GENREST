@@ -20,7 +20,6 @@ import javax.validation.constraints.Size;
 
 import fr.amu.terGENREST.entities.projectSpecifications.Building; 
 
-
 /**
  * 
  * @author Youcef 
@@ -30,14 +29,17 @@ import fr.amu.terGENREST.entities.projectSpecifications.Building;
  */
 
 @NamedQueries({ 
-	@NamedQuery( name="Project.findAll",query="SELECT p from Project p"),
-	@NamedQuery( name="Project.findByName",query="SELECT p from Project p where p.projectName = :projectName")
+	@NamedQuery( 
+			name="Project.findAll",
+			query="SELECT p from Project p"),
+	@NamedQuery( 
+			name="Project.findByName",
+			query="SELECT p from Project p where p.projectName = :projectName")
 }) 
 
 @Entity
 @Table(name = "Project") 
 public class Project implements Serializable{ 
-
 
 	private static final long serialVersionUID = 1L; 
  
@@ -53,13 +55,11 @@ public class Project implements Serializable{
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST })
 	private List<Building> buildings = new ArrayList<>();
 
-
 	public Project() {
 		
 	}
 	
 	public Project(String projectName) {
-		super();
 		this.projectName = projectName;
 	}
 
@@ -70,7 +70,6 @@ public class Project implements Serializable{
 	public String getProjectName() {
 		return projectName;
 	}
-
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
@@ -89,8 +88,7 @@ public class Project implements Serializable{
 	public void addBuilding(Building building) {
 		if(this.buildings == null) {
 			this.buildings = new ArrayList<>();
-		}
-		
+		}		
 		this.buildings.add(building);
 	}
 

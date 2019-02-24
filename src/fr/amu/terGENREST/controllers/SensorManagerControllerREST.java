@@ -21,7 +21,7 @@ public class SensorManagerControllerREST {
 
 	@EJB
 	private SensorManager sensorManager;
-	
+
 	@GET
 	@Path("{id:[0-9]+}")
 	public Response getSensorById(@PathParam("id") Long id) {
@@ -33,18 +33,15 @@ public class SensorManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "Sensor with id '" + id + "' not found"))
 					.build();
 		}
-
 		return Response.ok().entity(sensor).build();
 	}
-
-
 
 	@POST
 	@Path("{id:[0-9]+}")
 	public Response updateSensor(@PathParam("id") Long id, Sensor sensor) {
-		
+
 		Sensor sensorFinded = sensorManager.findSensor(id);
-		
+
 		if(sensorFinded == null) {
 			return Response
 					.status(404)
@@ -55,37 +52,33 @@ public class SensorManagerControllerREST {
 		if(sensor.getLatitude() != 0) {
 			sensorFinded.setLatitude(sensor.getLatitude());
 		}
-		
+
 		if(sensor.getLongitude() != 0) {
 			sensorFinded.setLongitude(sensor.getLongitude());
 		}
-		
+
 		if(sensor.getUnitData() != null) {
 			sensorFinded.setUnitData(sensor.getUnitData());
 		}
-		
+
 		if(sensor.getState() != null) {
 			sensorFinded.setState(sensor.getState());
 		}
-		
+
 		if(sensor.getReference() != null) {
 			sensorFinded.setReference(sensor.getReference());
 		}
-		
+
 		if(sensor.getBrand() != null) {
 			sensorFinded.setBrand(sensor.getBrand());
 		}
-		
+
 		if(sensor.getModel() != null) {
 			sensorFinded.setModel(sensor.getModel());
 		}
-		
+
 		sensorFinded = sensorManager.updateSensor(sensorFinded);
 
 		return Response.ok().entity(sensorFinded).build();
 	}
-	
-	
-	
-	
 }

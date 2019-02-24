@@ -20,14 +20,16 @@ import javax.validation.constraints.Size;
  *
  */
 
-@NamedQueries({ @NamedQuery(name = "Sensor.findAll", query = "select s from Sensor s"), })
+@NamedQueries({ 
+	@NamedQuery(
+			name = "Sensor.findAll", 
+			query = "select s from Sensor s"),
+})
+
 @Entity
 @Table(name = "Sensor")
 public class Sensor implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -73,10 +75,8 @@ public class Sensor implements Serializable {
 	}
 
 	public Sensor() {
-		super();
 	}
 	
-
 	public Long getId() {
 		return id;
 	}
@@ -140,7 +140,6 @@ public class Sensor implements Serializable {
 	public void setUnitData(String unitData) {
 		this.unitData = unitData;
 	}
-
 
 	@Override
 	public String toString() {
@@ -212,8 +211,4 @@ public class Sensor implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-
-	
 }

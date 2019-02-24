@@ -82,14 +82,10 @@ public class BuildingRESTControllerTest {
 				.build();
 
 		response = RequestsHelper.httpPOST(URL_ROOT_BUILDING + idBuilding, jsonPayloadRequest);
-
 		assertEquals(200, response.getResponseCode());
-
 		assertTrue(response.getPayload().containsKey("id"));
 		assertTrue(response.getPayload().containsKey("type"));
-
 		assertEquals("studetteUpdated", response.getPayload().getString("type"));
-		
 		//Remove Building
 		response = RequestsHelper.httpDELETE(URL_ROOT_PROJECT + idProject + "/buildings/"+idBuilding);
 		assertEquals(200, response.getResponseCode());	
@@ -98,27 +94,24 @@ public class BuildingRESTControllerTest {
 	@Test
 	public void getBuildingWithUnknowID() throws IOException {
 		response = RequestsHelper.httpGetJsonObject(URL_ROOT_BUILDING + "99999999");
-
 		assertEquals(404, response.getResponseCode());
 	}
+	
 	@Test
 	public void createBuildingWithUnknowProjectID() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.add("type", "CommercialLocal")
 				.build();
-
 		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + 8796 + "/buildings", jsonPayloadRequest);
-
 		assertEquals(404, response.getResponseCode());
+	
 	}
 	
 	@Test
 	public void createBuildingWithNoType() throws IOException {
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.build();
-
 		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings", jsonPayloadRequest);
-
 		assertEquals(400, response.getResponseCode());
 	}
 	

@@ -22,6 +22,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.services.projectSpecifications.MotherRoomManager;
+import fr.amu.terGENREST.services.projectSpecifications.RoomManager;
 
 @Path("api/motherRooms")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +33,6 @@ public class MotherRoomManagerControllerREST {
 	private MotherRoomManager motherRoomManager;
 
 	public MotherRoomManagerControllerREST() {
-
 	}
 
 	@GET
@@ -66,27 +66,26 @@ public class MotherRoomManagerControllerREST {
 		if (motherRoom.getType() != null) {
 			motherRoomToFind.setType(motherRoom.getType());
 		}
+
 		if (motherRoom.getNumberMotherRoom() != 0) {
 			motherRoomToFind.setNumberMotherRoom(motherRoom.getNumberMotherRoom());
-
 		}
 
 		motherRoomToFind = motherRoomManager.updateMotherRoom(motherRoomToFind);
 		return Response.ok().entity(motherRoomManager.findById(id)).build();
 	}
 
-
 	@PUT
 	@Path("/{idMotherRoom:[0-9]+}/rooms/")
 	public Response addRoom(@PathParam("idMotherRoom") Long idMotherroom, Room room) {
-		
+
 		MotherRoom motherRoomToFind = motherRoomManager.findById(idMotherroom);
 
 		if (motherRoomToFind == null) {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, " MotherRoom with id: " + idMotherroom + "not found")).build();
 		}
-		
+
 		if (room.getNumberRoom() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'numberRoom' is missing")).build();
 		}
@@ -118,14 +117,12 @@ public class MotherRoomManagerControllerREST {
 
 		if (corridor.getNumberCorridor() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'NumberCorrdidor' is missing")).build();
-
 		}
 
 		motherRoomToFind.addCorridor(corridor);
 		motherRoomManager.updateMotherRoom(motherRoomToFind);
 
 		motherRoomToFind = motherRoomManager.findById(motherRoomToFind.getId());
-
 		Optional<Corridor> corridorToadd = motherRoomToFind.getCorridors().stream()
 				.max((r1, r2) -> Long.compare(r1.getId(), r2.getId()));
 
@@ -135,16 +132,15 @@ public class MotherRoomManagerControllerREST {
 
 	@DELETE
 	@Path("{idMotherroom:[0-9]+}/rooms/{idRoom:[0-9]+}")
-
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
 
 		MotherRoom motehrRoomTofind = motherRoomManager.findById(idMotherroom);
-		
+
 		if (motehrRoomTofind == null) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))
 					.build();
 		}
-		
+
 		Optional<Room> roomToremove = motehrRoomTofind.getRooms().stream().filter(r -> r.getId().equals(idRoom))
 				.findFirst();
 
@@ -152,7 +148,7 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404)
 					.entity(Utils.makeErrorMessage(404, "Room with id '" + idRoom + "' not found")).build();
 		}
-		
+
 		motehrRoomTofind.removeRoom(roomToremove.get());
 		motherRoomManager.updateMotherRoom(motehrRoomTofind);
 
@@ -170,6 +166,7 @@ public class MotherRoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idCorridor))
 					.build();
 		}
+
 		Optional<Corridor> corridorToremove = motehrRoomTofind.getCorridors().stream()
 				.filter(c -> c.getId().equals(idCorridor)).findFirst();
 

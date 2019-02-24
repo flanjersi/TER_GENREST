@@ -25,9 +25,14 @@ import javax.persistence.Table;
  *
  */
 
+@NamedQueries({ 
+	@NamedQuery(
+			name = "Corridor.findAllCorridor", 
+			query = "select c from Corridor c") 
+})
+
 @Entity
 @Table(name = "Corridor")
-@NamedQueries({ @NamedQuery(name = "Corridor.findAllCorridor", query = "select c from Corridor c") })
 public class Corridor implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,21 +44,16 @@ public class Corridor implements Serializable {
 	@Column(name = "numberCorridor", nullable = false)
 	private int numberCorridor;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Sensor> sensors = new ArrayList<Sensor>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE }, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, orphanRemoval = true)
 	private List<Actuator> actuators = new ArrayList<Actuator>();
 
-
 	public Corridor() {
-		super();
 	}
 	
 	public Corridor(int numberCorridor) {
-		super();
 		this.numberCorridor = numberCorridor;
 	}
 	
@@ -67,12 +67,10 @@ public class Corridor implements Serializable {
 
 	public void addActuator(Actuator a) {
 		actuators.add(a);
-
 	}
 
 	public void removeActuator(Actuator a) {
 		actuators.remove(a);
-
 	}
 
 	public List<Sensor> getSensors() {
@@ -83,11 +81,9 @@ public class Corridor implements Serializable {
 		this.sensors = sensors;
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public int getNumberCorridor() {
 		return numberCorridor;
@@ -137,9 +133,5 @@ public class Corridor implements Serializable {
 		if (numberCorridor != other.numberCorridor)
 			return false;
 		return true;
-	}
-
-
-	
-	
+	}	
 }

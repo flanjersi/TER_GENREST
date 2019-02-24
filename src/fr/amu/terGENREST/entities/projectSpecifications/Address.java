@@ -97,6 +97,4 @@ public class Address implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 }

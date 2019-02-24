@@ -12,6 +12,7 @@ import fr.amu.terGENREST.tests.entities.LanguagesManagerTest;
 import fr.amu.terGENREST.tests.entities.MotherRoomManagerTest;
 import fr.amu.terGENREST.tests.entities.OperatingSystemManagerTest;
 import fr.amu.terGENREST.tests.entities.ProjectManagerImplTest;
+import fr.amu.terGENREST.tests.entities.RoomManagerTest;
 import fr.amu.terGENREST.tests.entities.SensorManagerTest;
 import fr.amu.terGENREST.tests.entities.UserManagerTest;
 
@@ -26,7 +27,7 @@ import fr.amu.terGENREST.tests.entities.UserManagerTest;
 	FloorManagerTest.class,
 	MotherRoomManagerTest.class,
 	CorridorManagerTest.class,
-	//Room
+	RoomManagerTest.class,
 	SensorManagerTest.class,
 	ActuatorManagerTest.class
 })

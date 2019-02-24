@@ -42,7 +42,4 @@ public class ProjectManagerImpl  implements ProjectManager{
 	public List<Project> findAllProject() {
 		return em.createNamedQuery("Project.findAll", Project.class).getResultList();
 	}
-	
-
-
 }
