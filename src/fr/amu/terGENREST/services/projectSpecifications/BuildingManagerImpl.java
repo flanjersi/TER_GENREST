@@ -21,9 +21,6 @@ public class BuildingManagerImpl implements BuildingManager {
 		return em.merge(building);
 	}
 
-	public void removeBuilding(Building building) {
-		em.remove(em.contains(building) ? building : em.merge(building));
-	}
 
 	@Override
 	public Building findById(Long id){
