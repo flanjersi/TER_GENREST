@@ -1,0 +1,136 @@
+package fr.amu.ter_genrest.tests.entities;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.ejb.EJB;
+import javax.ejb.EJBException;
+import javax.ejb.embeddable.EJBContainer;
+import javax.transaction.Transactional;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
+import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
+
+@Transactional
+public class OperatingSystemManagerTest {
+	
+	@EJB
+	private OperatingSystemManager operatingSystemManager;
+	
+	@Before
+    public void setUp() throws Exception {
+        EJBContainer.createEJBContainer().getContext().bind("inject", this);
+	}
+
+    @After
+    public void tearDown() throws Exception {
+    	EJBContainer.createEJBContainer().close();
+    }
+    
+    @Test
+    public void testCRUD() {
+    	
+    	OperatingSystem operatingSystem = new OperatingSystem("Raspbian", "test");
+    	
+    	operatingSystemManager.addOperatingSystem(operatingSystem);
+    	
+    	OperatingSystem operatingSystemFinded = operatingSystemManager.findById(operatingSystem.getId());
+    	
+    	assertTrue(operatingSystem.getName().equals(operatingSystemFinded.getName()));
+    
+    	operatingSystemFinded.setName("Raspbian update");
+    	
+    	operatingSystemManager.updateOperatingSystem(operatingSystemFinded);
+    	
+    	operatingSystemFinded = operatingSystemManager.findById(operatingSystemFinded.getId());
+    	
+    	assertTrue(operatingSystemFinded.getName().equals("Raspbian update"));
+
+    	long id = operatingSystemFinded.getId();
+    	
+    	operatingSystemManager.removeOperatingSystem(operatingSystemFinded);
+    	
+    	OperatingSystem operatingSystemRemoved = operatingSystemManager.findById(id);
+    	
+    	assertNull(operatingSystemRemoved);
+    }
+    
+    @Test
+    public void testFindByName() {
+    	OperatingSystem operatingSystem = new OperatingSystem("UbuntuFound", "path");
+
+		operatingSystemManager.addOperatingSystem(operatingSystem);
+		
+		OperatingSystem operatingSystemFound = operatingSystemManager.findByName("UbuntuFound");
+		
+		assertNotNull(operatingSystemFound);
+		
+		operatingSystemFound = operatingSystemManager.findByName("UbuntuNotFound");
+		assertNull(operatingSystemFound);
+		
+		operatingSystemManager.removeOperatingSystem(operatingSystem);
+    }
+    
+    @Test
+    public void testFindByNameFolder() {
+    	OperatingSystem operatingSystem = new OperatingSystem("UbuntuFound", "path");
+
+		operatingSystemManager.addOperatingSystem(operatingSystem);
+		
+		OperatingSystem operatingSystemFound = operatingSystemManager.findByPathFolder("path");
+		
+		assertNotNull(operatingSystemFound);
+		
+		operatingSystemFound = operatingSystemManager.findByPathFolder("pathNotFound");
+		assertNull(operatingSystemFound);
+		
+		operatingSystemManager.removeOperatingSystem(operatingSystem);
+    }
+    
+    @Test
+    public void testUniqueNameConstraint() {
+    	OperatingSystem operatingSystem = new OperatingSystem("Ubuntu", "path");
+
+		operatingSystemManager.addOperatingSystem(operatingSystem);
+
+		OperatingSystem operatingSystemError = new OperatingSystem("Ubuntu", "otherPath");
+		
+		try {
+			operatingSystemManager.addOperatingSystem(operatingSystemError);
+			
+			Assert.fail("Should have throw EJBException");
+		}
+		catch (EJBException e) {
+			assertTrue(true);
+		}
+		
+		operatingSystemManager.removeOperatingSystem(operatingSystem);
+    	
+    }
+    
+    @Test
+    public void testUniquePathFolderConstraint() {
+    	OperatingSystem operatingSystem = new OperatingSystem("Ubuntu", "path");
+
+		operatingSystemManager.addOperatingSystem(operatingSystem);
+
+		OperatingSystem operatingSystemError = new OperatingSystem("Ubuntu16", "path");
+		
+		try {
+			operatingSystemManager.addOperatingSystem(operatingSystemError);
+			
+			Assert.fail("Should have throw EJBException");
+		}
+		catch (EJBException e) {
+			assertTrue(true);
+		}
+		
+		operatingSystemManager.removeOperatingSystem(operatingSystem);
+    }
+}
