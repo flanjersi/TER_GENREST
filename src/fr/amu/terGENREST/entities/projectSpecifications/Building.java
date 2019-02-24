@@ -85,15 +85,11 @@ public class Building implements Serializable {
 	}
 
 	public void addFloor(Floor floor) {
-		if(this.floors == null) {
-			this.floors = new ArrayList<>();
-		}
-		
-		this.floors.add(floor);
+		floors.add(floor);
 	}
 
 	public void removeFloor(Floor floor) {
-		this.floors.remove(floor);
+		floors.remove(floor);
 	}
 
 	public Address getAddress() {
