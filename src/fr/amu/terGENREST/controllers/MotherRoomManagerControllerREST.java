@@ -22,6 +22,7 @@ import fr.amu.terGENREST.entities.projectSpecifications.Corridor;
 import fr.amu.terGENREST.entities.projectSpecifications.MotherRoom;
 import fr.amu.terGENREST.entities.projectSpecifications.Room;
 import fr.amu.terGENREST.services.projectSpecifications.MotherRoomManager;
+import fr.amu.terGENREST.services.projectSpecifications.RoomManager;
 
 @Path("api/motherRooms")
 @Produces(MediaType.APPLICATION_JSON)
@@ -133,7 +134,7 @@ public class MotherRoomManagerControllerREST {
 	@Path("{idMotherroom:[0-9]+}/rooms/{idRoom:[0-9]+}")
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
 
-		MotherRoom motehrRoomTofind = motherRoomManager.findById(idRoom);
+		MotherRoom motehrRoomTofind = motherRoomManager.findById(idMotherroom);
 
 		if (motehrRoomTofind == null) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))

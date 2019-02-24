@@ -87,15 +87,14 @@ public class RoomRESTControllerTest {
 		
 		assertEquals(6, response.getPayload().getInt("numberRoom"));
 		
-//		//Remove Room
-//		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
-//		assertEquals(200, response.getResponseCode());
+		//Remove Room
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
+		assertEquals(200, response.getResponseCode());
 	}
 	
 	@Test
 	public void getRoomWithUnknowID() throws IOException {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpGetJsonObject(URL_ROOT_ROOM+ 99);
-
 		assertEquals(404, response.getResponseCode());
 	}
 	

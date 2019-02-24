@@ -80,24 +80,7 @@ public class FloorManagerTest {
 		buildingManager.updateBuilding(building);
 		Building buildUpdated = buildingManager.findById(building.getId());
 		assertTrue(buildUpdated.getFloors().size() == 1);	
-		
-		System.out.println(buildingManager.findById(buildUpdated.getId()).getFloors().size());
-		System.out.println(buildingManager.findById(buildUpdated.getId()));
-		
-		//Update
-		floor.setFloorNumber(17);
-		buildingManager.updateBuilding(buildUpdated);
-		userManager.updateUser(user);
-		assertEquals(17, floorManager.findById(floor.getId()).getFloorNumber());
-		
-		System.out.println(buildingManager.findById(buildUpdated.getId()).getFloors().size());
-		System.out.println(buildingManager.findById(buildUpdated.getId()));
-		
-		//Delete
-		buildUpdated.removeFloor(floor);
-		buildingManager.updateBuilding(buildUpdated);
-		assertEquals(1, buildingManager.findById(buildUpdated.getId()).getFloors().size());
-
+	
 		//Update
 		floor.setFloorNumber(55);
 		floorManager.updateFloor(floor);
