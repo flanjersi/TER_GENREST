@@ -138,7 +138,7 @@ public class MotherRoomManagerControllerREST {
 
 	public Response removeRoom(@PathParam("idMotherroom") Long idMotherroom, @PathParam("idRoom") Long idRoom) {
 
-		MotherRoom motehrRoomTofind = motherRoomManager.findById(idRoom);
+		MotherRoom motehrRoomTofind = motherRoomManager.findById(idMotherroom);
 		
 		if (motehrRoomTofind == null) {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No MotherRoom with id : " + idRoom))
