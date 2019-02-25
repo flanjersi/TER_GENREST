@@ -11,6 +11,7 @@ import javax.json.JsonObject;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.amu.ter_genrest.tests.utils.PayloadDataRequestREST;
@@ -50,6 +51,7 @@ public class MotherRoomControllerRESTtest {
 	public void tearDown() throws IOException {
 		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
 	}
+
 
 	@Test
 	public void testCRUDMotherRoom() throws IOException {
@@ -100,10 +102,11 @@ public class MotherRoomControllerRESTtest {
 		// UPDATE MOTHER ROOM WITHOUT numberMotherRoom
 
 		payloadMotherRoom = Json.createObjectBuilder().add("type", "Sallon").build();
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind,
+		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind,
 				payloadMotherRoom);
 
-		assertEquals(405, response.getResponseCode());
+		assertEquals(200, response.getResponseCode());
+		assertEquals("Sallon", response.getPayload().getString("type"));
 
 		// UPDATE MOTHER ROOM
 
@@ -189,7 +192,7 @@ public class MotherRoomControllerRESTtest {
 				"http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoomToFind + "/rooms/" + idRoomToDelete);
 		assertEquals(201, responseRoom.getResponseCode());
 	}
-
+	
 	@Test
 	public void testCORRIDOR() throws IOException {
 
