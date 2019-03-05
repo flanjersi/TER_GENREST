@@ -1,7 +1,9 @@
 package fr.amu.ter_genrest.tests.generation;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
+import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 
@@ -9,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.ter_genrest.services.zip.ZipFolder;
 import fr.amu.ter_genrest.tests.utils.PayloadDataRequestREST;
 import fr.amu.ter_genrest.tests.utils.RequestsHelper;
 
@@ -26,7 +29,10 @@ public class WebServiceGeneratorTest {
 	private long idLanguage;
 	
 	private long idOperatingSystem;
-
+	
+	@EJB
+	ZipFolder zipFolder;
+	
 	@Before
 	public void setUp() throws IOException {
 		//ADD USER
@@ -96,6 +102,27 @@ public class WebServiceGeneratorTest {
 	public void testGenerateWS() throws IOException {
 		RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/deploiement?project="+idProject+"&language="+idLanguage+"&configuration="+idConfiguration+"&operatingSystem="+idOperatingSystem);
 		//idUser = response.getPayload().getJsonNumber("id").longValue();
+		
+		// ZIP
+		String path = System.getProperty("user.dir");
+	     System.out.println("Zip in progress ...");
+	     // Use the following paths for windows
+	     String folderToZip = "C:\\Users\\moham\\eclipse\\jee-2018-09\\eclipse\\Generated";
+	     String zipName = "C:\\Users\\moham\\eclipse\\jee-2018-09\\eclipse\\Generated.zip";
+	     
+	     // Linux/mac paths
+//	     String folderToZip = "/Users/jj/test";
+//	     String zipName = "/Users/jj/test.zip";
+	     //zf.zipFolder(Paths.get(folderToZip), Paths.get(zipName));
+	     
+	     try {
+			zipFolder.zipFolder(Paths.get(folderToZip), Paths.get(zipName));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     
+	     System.out.println("Zip done !");
 	}
 
 }
