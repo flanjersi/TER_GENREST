@@ -152,14 +152,29 @@ public class UserManagerControllerREST {
 	}
 
 	@GET
-	@Path("/query")
+	@Path("/authentification")
 	public Response getUserByEmailAndPassword(@QueryParam("email") String email, @QueryParam("password") String password) {			
 
 		User user = userManager.authentification(email, password);
 		if(user == null) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "No user with : " + email+" "+ password))
+					.entity(Utils.makeErrorMessage(404, "No user with email : " + email + " and password : " + password))
+					.build();
+		}
+		return Response.ok().entity(user).build();
+	}
+	
+	@GET
+	@Path("/query")
+	public Response getUserByEmailAndPassword(@QueryParam("email") String email) {			
+
+		User user = userManager.findUserByEmail(email);
+		
+		if(user == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "No user with email : " + email))
 					.build();
 		}
 		return Response.ok().entity(user).build();
