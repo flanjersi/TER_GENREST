@@ -90,6 +90,34 @@ public class ProjectManagerControllerREST {
 					.entity(Utils.makeErrorMessage(400, "Building Type Required"))
 					.build();
 		}
+		
+		if(building.getAddress() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Building address required"))
+					.build();			
+		}
+		
+		if(building.getAddress().getCity() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Building address not completed : city is missing"))
+					.build();			
+		}
+		
+		if(building.getAddress().getCountry() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Building address not completed : country is missing"))
+					.build();			
+		}
+		
+		if(building.getAddress().getStreet() == null) {
+			return Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "Building address not completed : street is missing"))
+					.build();			
+		}
 	
 		project.addBuilding(building);
 		projectManager.updateProject(project);

@@ -69,6 +69,12 @@ public class BuildingRESTControllerTest {
 		//Add Building
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.add("type", "Batiment")
+				.add("address", 
+						Json.createObjectBuilder()
+							.add("city", "Marseille")
+							.add("street", "street")
+							.add("country", "France")
+							.build())
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_PROJECT + idProject + "/buildings", jsonPayloadRequest);
 		assertEquals(201, response.getResponseCode());

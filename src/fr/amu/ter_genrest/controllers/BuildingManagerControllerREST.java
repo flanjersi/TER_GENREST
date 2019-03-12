@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import fr.amu.ter_genrest.controllers.utils.Utils;
+import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
 import fr.amu.ter_genrest.services.project.ProjectManager;
@@ -80,7 +81,21 @@ public class BuildingManagerControllerREST {
 		}
 		
 		if(building.getAddress() != null) {
-			buildingFinded.setAddress(building.getAddress());
+			if(buildingFinded.getAddress() == null)
+				buildingFinded.setAddress(new Address());
+			
+			if(building.getAddress().getCity() != null) {
+				buildingFinded.getAddress().setCity(building.getAddress().getCity());
+			}
+			
+			if(building.getAddress().getCountry() != null) {
+				buildingFinded.getAddress().setCountry(building.getAddress().getCountry());
+			}
+			
+			if(building.getAddress().getStreet() != null) {
+				buildingFinded.getAddress().setStreet(building.getAddress().getStreet());
+			}
+			
 		}
 		
 		buildingFinded = buildingManager.updateBuilding(buildingFinded);
