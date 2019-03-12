@@ -49,7 +49,16 @@ public class WebServiceGeneratorTest {
 		idProject = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD BUILDING
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/projects/" + idProject + "/buildings", PayloadDataRequestREST.jsonPayloadRequestBuilding());
+		JsonObject jsonPay= Json.createObjectBuilder()
+				.add("type", "Batiment")
+				.add("address", 
+						Json.createObjectBuilder()
+							.add("city", "Marseille")
+							.add("street", "street")
+							.add("country", "France")
+							.build())
+				.build();
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/projects/" + idProject + "/buildings", jsonPay);
 		long idBuilding = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD FLOOR
