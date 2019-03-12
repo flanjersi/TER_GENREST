@@ -1,11 +1,15 @@
 package fr.amu.ter_genrest.controllers;
 
+import java.io.FileNotFoundException;
+
 import javax.ejb.EJB;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,16 +18,23 @@ import fr.amu.ter_genrest.entities.environment_technical.Configuration;
 import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
+import fr.amu.ter_genrest.entities.user.User;
+import fr.amu.ter_genrest.services.DirectoryManager;
+import fr.amu.ter_genrest.services.SendMail;
 import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
 import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
 import fr.amu.ter_genrest.services.generation.WebServiceGenerator;
 import fr.amu.ter_genrest.services.project.ProjectManager;
+import fr.amu.ter_genrest.services.user.UserManager;
 
 @Path("api/deploiement")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class WebServiceGeneratorREST {
+	
+	@EJB
+	private UserManager userManager;
 	
 	@EJB
 	private ProjectManager projectManager;
@@ -40,9 +51,18 @@ public class WebServiceGeneratorREST {
 	@EJB
 	private WebServiceGenerator webServiceGenerator;
 	
+	@Context 
+	ServletContext servletContext;
+
+	@EJB
+	DirectoryManager directoryManager;
+	
+	@EJB
+	SendMail sendMail;
+	
 	@GET
 	@Path("/") // http://localhost:8090/terGENREST/api/deploiement?project=5&language=2&configuration=1&operatingSystem=1
-	public Response generateAPI(@QueryParam("project") Long idProject, @QueryParam("language") Long idLanguage,
+	public Response generateAPI( @QueryParam("project") Long idProject, @QueryParam("language") Long idLanguage,
 			@QueryParam("configuration") Long idConfiguration, @QueryParam("operatingSystem") Long idOperatingSystem) {
 		
 		Project project = projectManager.findProject(idProject);
@@ -76,9 +96,25 @@ public class WebServiceGeneratorREST {
 					.entity(Utils.makeErrorMessage(404, "No operatingSystem has been found"))
 					.build();
 		}
-		System.out.println("Project="+project.getProjectName()+" language="+language.getName()+" configuration="+configuration.getName()+" operatingSystem="+idOperatingSystem);
-		webServiceGenerator.engine( project, language, configuration, operatingSystem);
 
+		String generatedDirectoryPath = webServiceGenerator.engine( project, language, configuration, operatingSystem);
+		
+		 // ZIP
+		String generatedZipDirectoryPath = directoryManager.zipDirectory(generatedDirectoryPath);
+
+		// DELETE
+		try {
+			// delete folder
+			directoryManager.deleteFolder(generatedDirectoryPath);
+			
+			// delete zip
+			// directoryManager.deleteFolder(generatedZipDirectoryPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		return Response.ok().build();
 	}
+	
+	
 }

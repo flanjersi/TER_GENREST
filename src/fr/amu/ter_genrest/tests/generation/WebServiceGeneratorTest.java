@@ -9,11 +9,12 @@ import javax.json.JsonObject;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import fr.amu.ter_genrest.services.zip.ZipFolder;
 import fr.amu.ter_genrest.tests.utils.PayloadDataRequestREST;
 import fr.amu.ter_genrest.tests.utils.RequestsHelper;
+import fr.amu.ter_genrest.tests.utils.RequestsHelper.ResponseJsonObject;
 
 public class WebServiceGeneratorTest {
 
@@ -29,18 +30,22 @@ public class WebServiceGeneratorTest {
 	private long idLanguage;
 	
 	private long idOperatingSystem;
-	
-	@EJB
-	ZipFolder zipFolder;
-	
+
+
 	@Before
 	public void setUp() throws IOException {
 		//ADD USER
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users", PayloadDataRequestREST.jsonPayloadRequestUser());
-		idUser = response.getPayload().getJsonNumber("id").longValue();
+		JsonObject payloadRequest = Json.createObjectBuilder().add("email", "medem4991@gmail.com")
+		.add("firstName", "leo")
+		.add("lastName", "michel")
+		.add("password", "leoa121")
+		.build();
+		
+		ResponseJsonObject resp = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users", payloadRequest);
+		idUser = resp.getPayload().getJsonNumber("id").longValue();
 
 		//ADD PROJECT
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/" + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/users/" + idUser + "/projects", PayloadDataRequestREST.jsonPayloadRequestProject());
 		idProject = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD BUILDING
@@ -63,18 +68,40 @@ public class WebServiceGeneratorTest {
 		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/corridors", PayloadDataRequestREST.jsonPayloadRequestCorridor());
 		Long idCorridor = response.getPayload().getJsonNumber("id").longValue();
 		
+		// ADD actuator to corridor
+		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
+				.add("longitude", 12L)
+				.add("model", "model")
+				.add("brand", "brand")
+				.add("reference", "ref")
+				.add("state", "OFF")
+				.build();
+
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/actuators", payload);
+
+		// ADD sensor to corridor
+		 payload =  Json.createObjectBuilder().add("latitude", 13L)
+				.add("longitude", 12L)
+				.add("model", "model")
+				.add("brand", "brand")
+				.add("reference", "ref")
+				.add("state", "OFF")
+				.add("unitData", "Celsius")
+				.build();
+
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 		
 		// ADD LANGUAGE
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "Javascript")
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
-
+ 
 		idLanguage = response.getPayload().getJsonNumber("id").longValue();
 		
 		 jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "nodejs-express")
-				.add("pathFolder", "path")
+				.add("pathFolder", "/resources/templates/expressjs")
 				.add("description", "description")
 				.build();
 
@@ -103,26 +130,6 @@ public class WebServiceGeneratorTest {
 		RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/deploiement?project="+idProject+"&language="+idLanguage+"&configuration="+idConfiguration+"&operatingSystem="+idOperatingSystem);
 		//idUser = response.getPayload().getJsonNumber("id").longValue();
 		
-		// ZIP
-		String path = System.getProperty("user.dir");
-	     System.out.println("Zip in progress ...");
-	     // Use the following paths for windows
-	     String folderToZip = "C:\\Users\\moham\\eclipse\\jee-2018-09\\eclipse\\Generated";
-	     String zipName = "C:\\Users\\moham\\eclipse\\jee-2018-09\\eclipse\\Generated.zip";
-	     
-	     // Linux/mac paths
-//	     String folderToZip = "/Users/jj/test";
-//	     String zipName = "/Users/jj/test.zip";
-	     //zf.zipFolder(Paths.get(folderToZip), Paths.get(zipName));
-	     
-	     try {
-			zipFolder.zipFolder(Paths.get(folderToZip), Paths.get(zipName));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	     
-	     System.out.println("Zip done !");
 	}
 
 }

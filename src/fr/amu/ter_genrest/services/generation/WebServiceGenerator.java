@@ -10,6 +10,6 @@ import fr.amu.ter_genrest.entities.project.Project;
 @Local
 public interface WebServiceGenerator {
 	
-	public void engine(Project project, Language language, 
+	public String engine(Project project, Language language, 
 			Configuration configuration, OperatingSystem operatingSystem);
 }
