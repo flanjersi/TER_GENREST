@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.user.User;
@@ -28,7 +29,7 @@ public class ProjectManagerImpl  implements ProjectManager{
 	}
 
 	@Override
-	public Project updateProject(Project project) {
+	public Project updateProject(Project project) {	
 		return em.merge(project);
 	}
 

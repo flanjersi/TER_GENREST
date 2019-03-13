@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import fr.amu.ter_genrest.controllers.utils.Utils;
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
+import fr.amu.ter_genrest.entities.user.User;
 import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.project_specifications.BuildingManager;
 import fr.amu.ter_genrest.services.user.UserManager;
@@ -49,27 +50,6 @@ public class ProjectManagerControllerREST {
 					.build();
 		}
 		return Response.ok().entity(project).build();
-	}
-
-	@POST
-	@Path("/{idProject:[0-9]+}")
-	public Response updateProject(@PathParam("idProject") Long id, Project project) {
-
-		Project projectFinded = projectManager.findProject(id);
-		
-		if(projectFinded == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
-					.build();
-		}
-
-		if(project.getProjectName() != null) {
-			projectFinded.setProjectName(project.getProjectName());
-		}
-		
-		projectFinded = projectManager.updateProject(project);
-		return Response.status(200).entity(projectFinded).build();
 	}
 
 	@PUT

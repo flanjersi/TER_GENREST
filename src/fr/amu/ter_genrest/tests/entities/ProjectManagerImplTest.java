@@ -72,11 +72,10 @@ public class ProjectManagerImplTest {
 	}
 	
 	@Test
-	public void testFindPojectByProjectName() {	
+	public void testFindProjectByProjectName() {	
 		List<Project> projects = projectManager.findByProjectName(project.getProjectName());
 		long nbProject = projects.stream().filter(projectFinded -> projectFinded.equals(project)).count();
 		Assert.assertTrue(nbProject != 0);
-		
 	}
 
 
