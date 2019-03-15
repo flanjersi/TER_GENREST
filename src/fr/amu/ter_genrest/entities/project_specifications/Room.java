@@ -1,8 +1,8 @@
 package fr.amu.ter_genrest.entities.project_specifications;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,8 +19,8 @@ import javax.validation.constraints.Size;
 
 /***
  * Room identified by id (auto-generated),numberRoom (null),type (not
- * null)sensors : List<Sensor> (initialise to empty) actuators :
- * List<Actuator>(initialise to empty)
+ * null)sensors : Set<Sensor> (initialise to empty) actuators :
+ * Set<Actuator>(initialise to empty)
  * 
  * @author tsila
  *
@@ -50,10 +50,10 @@ public class Room implements Serializable {
 	private String type;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Sensor> sensors = new ArrayList<Sensor>();
+	private Set<Sensor> sensors = new HashSet<Sensor>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Actuator> actuators = new ArrayList<Actuator>();
+	private Set<Actuator> actuators = new HashSet<Actuator>();
 
 	public Room() {
 	}
@@ -95,11 +95,11 @@ public class Room implements Serializable {
 		this.type = type;
 	}
 
-	public List<Sensor> getSensors() {
+	public Set<Sensor> getSensors() {
 		return sensors;
 	}
 
-	public void setSensors(List<Sensor> sensors) {
+	public void setSensors(Set<Sensor> sensors) {
 		this.sensors = sensors;
 	}
 
@@ -107,11 +107,11 @@ public class Room implements Serializable {
 		return id;
 	}
 
-	public List<Actuator> getActuators() {
+	public Set<Actuator> getActuators() {
 		return actuators;
 	}
 
-	public void setActuators(List<Actuator> actuators) {
+	public void setActuators(Set<Actuator> actuators) {
 		this.actuators = actuators;
 	}
 

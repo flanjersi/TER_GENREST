@@ -2,7 +2,9 @@ package fr.amu.ter_genrest.entities.project_specifications;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -56,7 +58,7 @@ public class Building implements Serializable {
 	private String type; 
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST }, orphanRemoval=true)
-	private List<Floor> floors = new ArrayList<Floor>();
+	private Set<Floor> floors = new HashSet<>();
 
 	public Building() {
 	}
@@ -78,11 +80,11 @@ public class Building implements Serializable {
 		this.type = type;
 	}
 
-	public List<Floor> getFloors() {
+	public Set<Floor> getFloors() {
 		return floors;
 	}
 
-	public void setFloors(List<Floor> floors) {
+	public void setFloors(Set<Floor> floors) {
 		this.floors = floors;
 	}
 

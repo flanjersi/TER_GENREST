@@ -96,7 +96,7 @@ public class MotherRoomManagerTest {
 		motherRoom.setType("studio");
 		buildingManager.updateBuilding(building);		
 		Floor floorFinded = floorManager.findById(floor.getId());
-		MotherRoom motherRoomU = floorFinded.getMotherRooms().get(0);
+		MotherRoom motherRoomU = floorFinded.getMotherRooms().stream().findFirst().get();
 		assertEquals("studio", motherRoomU.getType());
 		
 

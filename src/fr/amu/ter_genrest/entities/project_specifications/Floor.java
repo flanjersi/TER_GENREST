@@ -2,7 +2,9 @@ package fr.amu.ter_genrest.entities.project_specifications;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -38,11 +40,11 @@ public class Floor implements Serializable{
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
 			CascadeType.PERSIST }, orphanRemoval = true)
-	private List<MotherRoom> motherRooms = new ArrayList<MotherRoom>();
+	private Set<MotherRoom> motherRooms = new HashSet<MotherRoom>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
 			CascadeType.PERSIST }, orphanRemoval = true)
-	private List<Corridor> corridors = new ArrayList<Corridor>();
+	private Set<Corridor> corridors = new HashSet<Corridor>();
 
 	public Floor() {
 	}
@@ -79,19 +81,19 @@ public class Floor implements Serializable{
 		this.floorNumber = floorNumber;
 	}
 	
-	public List<MotherRoom> getMotherRooms() {
+	public Set<MotherRoom> getMotherRooms() {
 		return motherRooms;
 	}
 
-	public void setMotherRooms(List<MotherRoom> motherRooms) {
+	public void setMotherRooms(Set<MotherRoom> motherRooms) {
 		this.motherRooms = motherRooms;
 	}
 
-	public List<Corridor> getCorridors() {
+	public Set<Corridor> getCorridors() {
 		return corridors;
 	}
 
-	public void setCorridors(List<Corridor> corridors) {
+	public void setCorridors(Set<Corridor> corridors) {
 		this.corridors = corridors;
 	}
 

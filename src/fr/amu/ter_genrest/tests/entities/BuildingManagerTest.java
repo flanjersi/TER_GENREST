@@ -85,6 +85,8 @@ public class BuildingManagerTest {
 		//Delete
 		projectFinded.removeBuildings(building);
 		projectManager.updateProject(projectFinded);
+		
+		
 		assertEquals(0,projectManager.findProject(project.getId()).getBuilding().size());
 	}
 
@@ -98,9 +100,7 @@ public class BuildingManagerTest {
 
 		building = buildingManager.updateBuilding(building);
 
-		System.out.println(building.getFloors().get(0).getId());
-
-		Building buildingByFloorID = buildingManager.findBuildingByFloorId(building.getFloors().get(0).getId());
+		Building buildingByFloorID = buildingManager.findBuildingByFloorId(building.getFloors().stream().findFirst().get().getId());
 
 		assertNotNull(buildingByFloorID);
 		assertEquals(building.getId(), buildingByFloorID.getId());

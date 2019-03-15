@@ -1,6 +1,7 @@
 package fr.amu.ter_genrest.services.generation;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -54,7 +55,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonContextObjectBuilder.build();
 	}
 
-	private JsonArray createJsonArrayBuildings(List<Building> buildings) {
+	private JsonArray createJsonArrayBuildings(Set<Building> buildings) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Building building : buildings) {
@@ -81,7 +82,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayStorey(List<Floor> floors) {
+	private JsonArray createJsonArrayStorey(Set<Floor> floors) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Floor floor : floors) {
@@ -109,7 +110,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayMotherRooms(List<MotherRoom> motherRooms) {
+	private JsonArray createJsonArrayMotherRooms(Set<MotherRoom> motherRooms) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(MotherRoom motherRoom : motherRooms) {
@@ -140,7 +141,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayRooms(List<Room> rooms) {
+	private JsonArray createJsonArrayRooms(Set<Room> rooms) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Room room : rooms) {
@@ -171,7 +172,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 	
-	private JsonArray createJsonArrayCorridors(List<Corridor> corridors) {
+	private JsonArray createJsonArrayCorridors(Set<Corridor> corridors) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Corridor corridor : corridors) {
@@ -215,7 +216,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayActuators(List<Actuator> actuators) {
+	private JsonArray createJsonArrayActuators(Set<Actuator> actuators) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Actuator actuator : actuators) {
@@ -246,7 +247,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArraySensors(List<Sensor> sensors) {
+	private JsonArray createJsonArraySensors(Set<Sensor> sensors) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Sensor sensor : sensors) {

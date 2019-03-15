@@ -2,7 +2,9 @@ package fr.amu.ter_genrest.entities.project;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -53,7 +55,7 @@ public class Project implements Serializable{
 	private String projectName; 
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST }, orphanRemoval=true)
-	private List<Building> buildings = new ArrayList<>();
+	private Set<Building> buildings = new HashSet<>();
 
 	public Project() {
 		
@@ -77,19 +79,16 @@ public class Project implements Serializable{
 	
 //--------------------------------------- Building ------------------------------------ // 
 
-	public List<Building>  getBuilding() {
+	public Set<Building>  getBuilding() {
 		return buildings;
 	}
 
-	public void setBuilding(List<Building> buildings) {
+	public void setBuilding(Set<Building> buildings) {
 		this.buildings.clear();
 		this.buildings.addAll(buildings);
 	}
 
 	public void addBuilding(Building building) {
-		if(this.buildings == null) {
-			this.buildings = new ArrayList<>();
-		}		
 		this.buildings.add(building);
 	}
 
@@ -101,4 +100,38 @@ public class Project implements Serializable{
 	public String toString() {
 		return "Project [id=" + id + ", ProjectName=" + projectName + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (projectName == null) {
+			if (other.projectName != null)
+				return false;
+		} else if (!projectName.equals(other.projectName))
+			return false;
+		return true;
+	}
+	
+	
+	
 }

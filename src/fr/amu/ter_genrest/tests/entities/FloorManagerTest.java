@@ -86,7 +86,7 @@ public class FloorManagerTest {
 		floor.setFloorNumber(55);
 		floorManager.updateFloor(floor);
 		Building buildFinded = buildingManager.findById(building.getId());
-		Floor floorUpdate = buildFinded.getFloors().get(0);
+		Floor floorUpdate = buildFinded.getFloors().stream().findFirst().get();
 		assertEquals(55, floorUpdate.getFloorNumber());
 
 		//delete

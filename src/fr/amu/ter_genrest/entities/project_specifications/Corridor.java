@@ -1,8 +1,8 @@
 package fr.amu.ter_genrest.entities.project_specifications;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,10 +45,10 @@ public class Corridor implements Serializable {
 	private int numberCorridor;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Sensor> sensors = new ArrayList<Sensor>();
+	private Set<Sensor> sensors = new HashSet<Sensor>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, orphanRemoval = true)
-	private List<Actuator> actuators = new ArrayList<Actuator>();
+	private Set<Actuator> actuators = new HashSet<Actuator>();
 
 	public Corridor() {
 	}
@@ -73,11 +73,11 @@ public class Corridor implements Serializable {
 		actuators.remove(a);
 	}
 
-	public List<Sensor> getSensors() {
+	public Set<Sensor> getSensors() {
 		return sensors;
 	}
 
-	public void setSensors(List<Sensor> sensors) {
+	public void setSensors(Set<Sensor> sensors) {
 		this.sensors = sensors;
 	}
 
@@ -93,11 +93,11 @@ public class Corridor implements Serializable {
 		this.numberCorridor = numberCorridor;
 	}
 
-	public List<Actuator> getActuators() {
+	public Set<Actuator> getActuators() {
 		return actuators;
 	}
 
-	public void setActuators(List<Actuator> actuators) {
+	public void setActuators(Set<Actuator> actuators) {
 		this.actuators = actuators;
 	}
 

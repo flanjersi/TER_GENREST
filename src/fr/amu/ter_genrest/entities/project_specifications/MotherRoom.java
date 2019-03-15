@@ -1,8 +1,8 @@
 package fr.amu.ter_genrest.entities.project_specifications;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,10 +49,10 @@ public class MotherRoom implements Serializable {
 	private int numberMotherRoom;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Room> rooms = new ArrayList<Room>();
+	private Set<Room> rooms = new HashSet<Room>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Corridor> corridors = new ArrayList<Corridor>();
+	private Set<Corridor> corridors = new HashSet<Corridor>();
 
 	public MotherRoom() {
 	}
@@ -99,19 +99,19 @@ public class MotherRoom implements Serializable {
 	}
 
 
-	public List<Room> getRooms() {
+	public Set<Room> getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(List<Room> rooms) {
+	public void setRooms(Set<Room> rooms) {
 		this.rooms = rooms;
 	}
 
-	public List<Corridor> getCorridors() {
+	public Set<Corridor> getCorridors() {
 		return corridors;
 	}
 
-	public void setCorridors(List<Corridor> corridors) {
+	public void setCorridors(Set<Corridor> corridors) {
 		this.corridors = corridors;
 	}
 

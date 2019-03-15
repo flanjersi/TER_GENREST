@@ -47,17 +47,14 @@ public class ProjectManagerImplTest {
 
 	@After
 	public void tearDown() throws Exception {
-		System.out.println("999999999999999999999999999");
-		System.out.println(user.getProjects());
-		
-		userManager.removeUser(user);
+		userManager.removeUser(userManager.findUser(user.getId()));
 		EJBContainer.createEJBContainer().close();	
 	}
 
 	@Test
 	public void testAddProject() {
 		Project projcetAdded = projectManager.findProject(project.getId()); 
-		Assert.assertEquals(projcetAdded, project);	
+		Assert.assertEquals(projcetAdded.getProjectName(), project.getProjectName());	
 	}
 
 	@Test
