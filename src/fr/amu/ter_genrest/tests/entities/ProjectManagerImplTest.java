@@ -47,6 +47,9 @@ public class ProjectManagerImplTest {
 
 	@After
 	public void tearDown() throws Exception {
+		System.out.println("999999999999999999999999999");
+		System.out.println(user.getProjects());
+		
 		userManager.removeUser(user);
 		EJBContainer.createEJBContainer().close();	
 	}
@@ -74,7 +77,7 @@ public class ProjectManagerImplTest {
 	@Test
 	public void testFindProjectByProjectName() {	
 		List<Project> projects = projectManager.findByProjectName(project.getProjectName());
-		long nbProject = projects.stream().filter(projectFinded -> projectFinded.equals(project)).count();
+		long nbProject = projects.stream().filter(projectFinded -> projectFinded.getId().equals(project.getId())).count();
 		Assert.assertTrue(nbProject != 0);
 	}
 

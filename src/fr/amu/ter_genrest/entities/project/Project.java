@@ -52,7 +52,7 @@ public class Project implements Serializable{
 	@Size(min = 1, max = 200) 
 	private String projectName; 
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST })
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST }, orphanRemoval=true)
 	private List<Building> buildings = new ArrayList<>();
 
 	public Project() {
@@ -82,7 +82,8 @@ public class Project implements Serializable{
 	}
 
 	public void setBuilding(List<Building> buildings) {
-		this.buildings = buildings;
+		this.buildings.clear();
+		this.buildings.addAll(buildings);
 	}
 
 	public void addBuilding(Building building) {
@@ -99,36 +100,5 @@ public class Project implements Serializable{
 	@Override
 	public String toString() {
 		return "Project [id=" + id + ", ProjectName=" + projectName + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Project other = (Project) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (projectName == null) {
-			if (other.projectName != null)
-				return false;
-		} else if (!projectName.equals(other.projectName))
-			return false;
-		return true;
 	}
 }
