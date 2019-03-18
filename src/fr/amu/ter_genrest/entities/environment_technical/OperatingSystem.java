@@ -14,19 +14,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 
-@NamedQueries ({
-	@NamedQuery(
-			name = "OperatingSystem.findAllOperatingSystems", 
-			query = "SELECT op FROM OperatingSystem op"),
-	@NamedQuery(
-			name = "OperatingSystem.findByName", 
-			query = "SELECT op FROM OperatingSystem op WHERE name = :name" ),
-	@NamedQuery(
-			name = "OperatingSystem.findByPathFolder", 
-			query = "SELECT op FROM OperatingSystem op WHERE nameFolder = :nameFolder" )
-	
-})
-
 @Entity
 @Table(name = "OperatingSystem")
 public class OperatingSystem implements Serializable {
@@ -38,14 +25,14 @@ public class OperatingSystem implements Serializable {
 	private long id;
 	
 	@Basic(optional = false) @Size(min = 1, max = 50)
-	@Column(nullable = false, length = 50, unique = true)
+	@Column(nullable = false, length = 50)
 	private String name;
 	
 	/**
 	 * Name folder where scripts are store
 	 */
 	@Basic(optional = false) @Size(min = 1, max = 200)
-	@Column(nullable = false, length = 200, unique = true)
+	@Column(nullable = false, length = 200)
 	private String nameFolder;
 	
 	public OperatingSystem() {	

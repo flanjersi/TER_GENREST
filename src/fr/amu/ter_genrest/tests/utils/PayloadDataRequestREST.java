@@ -2,6 +2,7 @@ package fr.amu.ter_genrest.tests.utils;
 
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 public class PayloadDataRequestREST {
@@ -37,7 +38,9 @@ public class PayloadDataRequestREST {
 	}
 
 	public static JsonObject jsonPayloadRequestBuilding(){
-		return Json.createObjectBuilder().add("type", "studio").build();
+		return Json.createObjectBuilder().add("type", "studio")
+				.add("address", Json.createObjectBuilder().add("city", "Marseille").add("country", "France").add("street", "luminy").build())
+				.build();
 	}
 
 	public static JsonObject jsonPayloadRequestFloor(){

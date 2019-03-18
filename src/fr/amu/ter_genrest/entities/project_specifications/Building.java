@@ -93,6 +93,11 @@ public class Building implements Serializable {
 	}
 
 	public void removeFloor(Floor floor) {
+		
+		if(this.floors.size() == 1 && this.floors.removeIf(f -> f.getId().equals(floor.getId()))) {
+			this.floors.clear();
+		}
+		
 		this.floors.remove(floor);
 	}
 

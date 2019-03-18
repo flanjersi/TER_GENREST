@@ -140,4 +140,27 @@ public class ProjectManagerControllerREST {
 
 		return Response.ok().build();
 	}
+	
+	@POST
+	@Path("{idProject:[0-9]+}")
+	public Response updateProject(@PathParam("idProject") Long id, Project project) {
+
+		
+		Project projectFinded = projectManager.findProject(id);
+		
+		if(projectFinded == null) {
+			return Response
+					.status(404)
+					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
+					.build();
+		}
+
+		if(project.getProjectName() != null) {
+			projectFinded.setProjectName(project.getProjectName());
+		}
+		
+		projectManager.updateProject(projectFinded);
+		
+		return Response.status(200).entity(projectFinded).build();
+	}
 }

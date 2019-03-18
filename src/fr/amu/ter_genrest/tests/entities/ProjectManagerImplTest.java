@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.amu.ter_genrest.entities.project.Project;
@@ -59,9 +60,14 @@ public class ProjectManagerImplTest {
 
 	@Test
 	public void testRemoveProject() {
+		int nbProjects = userManager.findUser(user.getId()).getProjects().size();
+		System.out.println(user.getProjects());
 		user.removeProject(project);
+		System.out.println(user.getProjects());
+		
 		userManager.updateUser(user);
-		Assert.assertEquals(0,userManager.findUser(user.getId()).getProjects().size());
+		
+		Assert.assertEquals(nbProjects - 1,userManager.findUser(user.getId()).getProjects().size());
 	}
 
 	@Test

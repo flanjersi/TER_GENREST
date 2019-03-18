@@ -18,9 +18,12 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import fr.amu.ter_genrest.tests.utils.PayloadDataRequestREST;
 import fr.amu.ter_genrest.tests.utils.RequestsHelper;
 import fr.amu.ter_genrest.tests.utils.Utils;
 import fr.amu.ter_genrest.tests.utils.RequestsHelper.ResponseJsonArray;
@@ -30,7 +33,28 @@ import junit.framework.Assert;
 public class OperatingSystemRESTControllerTest {
 
 	private static final String URL_ROOT_OPERATING_SYSTEM = "http://localhost:8090/terGENREST/api/operatingSystem/";
+	private static final String URL_ROOT_LANGUAGE = "http://localhost:8090/terGENREST/api/language/";
+	private static final String URL_ROOT_CONFIGURATION = "http://localhost:8090/terGENREST/api/configurations/";
 
+	private long idLanguage;
+	private long idConfiguration;
+	
+	@Before
+	public void setup() throws IOException {
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, PayloadDataRequestREST.jsonPayloadRequestLanguage());
+
+		idLanguage = response.getPayload().getJsonNumber("id").longValue();
+
+		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", PayloadDataRequestREST.jsonPayloadRequestConfiguration());
+
+		idConfiguration = response.getPayload().getJsonNumber("id").longValue();
+	}
+
+	@After
+	public void tearDown() throws IOException {
+		RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage);
+	}
+	
 	@Test
 	public void testCRUD() throws IOException {
 
@@ -40,7 +64,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);		
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		assertEquals(201, response.getResponseCode());
 
@@ -80,7 +104,7 @@ public class OperatingSystemRESTControllerTest {
 
 		//Delete data
 
-		response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + id);		
+		response = RequestsHelper.httpDELETE(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem/" + id);		
 
 		assertEquals(200, response.getResponseCode());
 
@@ -100,7 +124,7 @@ public class OperatingSystemRESTControllerTest {
 
 	@Test
 	public void deleteOperatingSystemWithUnknowID() throws IOException {
-		ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + "99999");		
+		ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem/999999");		
 
 		assertEquals(404, response.getResponseCode());
 	}
@@ -111,7 +135,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("name", "Ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);		
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		assertEquals(400, response.getResponseCode());		
 	}
@@ -123,7 +147,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);	
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		long id = response.getPayload().getJsonNumber("id").longValue();
 		
@@ -132,7 +156,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu2")
 				.build();
 
-		response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);
+		response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		assertEquals(400, response.getResponseCode());
 		
@@ -146,7 +170,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("name", "Ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);		
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		assertEquals(400, response.getResponseCode());		
 	}
@@ -158,7 +182,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);	
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		long id = response.getPayload().getJsonNumber("id").longValue();
 		
@@ -167,7 +191,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu")
 				.build();
 
-		response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);
+		response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		assertEquals(400, response.getResponseCode());	
 		
@@ -181,7 +205,7 @@ public class OperatingSystemRESTControllerTest {
 				.add("nameFolder", "ubuntu")
 				.build();
 
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);		
+		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_CONFIGURATION + idConfiguration + "/operatingsSystem", jsonPayloadRequest);		
 
 		long id = response.getPayload().getJsonNumber("id").longValue();
 
@@ -209,78 +233,6 @@ public class OperatingSystemRESTControllerTest {
 		ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_OPERATING_SYSTEM + 99999, jsonPayloadRequest);		
 
 		assertEquals(404, response.getResponseCode());
-	}
-
-	@Test
-	public void updateOperatingSystemUniqueNameConstraint() throws IOException {
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu")
-				.add("nameFolder", "ubuntu")
-				.build();
-
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);	
-
-		long id = response.getPayload().getJsonNumber("id").longValue();
-		
-		jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu2")
-				.add("nameFolder", "ubuntu2")
-				.build();
-
-		response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);
-
-		long id2 = response.getPayload().getJsonNumber("id").longValue();
-		
-		
-		jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu2")
-				.build();
-
-		response = RequestsHelper.httpPOST(URL_ROOT_OPERATING_SYSTEM + id, jsonPayloadRequest);
-		
-		assertEquals(400, response.getResponseCode());
-		
-		response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + id);
-		response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + id2);
-	}
-
-	@Test
-	public void updateOperatingSystemUniqueNameFolderConstraint() throws IOException {
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu")
-				.add("nameFolder", "ubuntu")
-				.build();
-
-		ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);	
-
-		long id = response.getPayload().getJsonNumber("id").longValue();
-		
-		jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu2")
-				.add("nameFolder", "ubuntu2")
-				.build();
-
-		response = RequestsHelper.httpPUT(URL_ROOT_OPERATING_SYSTEM, jsonPayloadRequest);
-
-		long id2 = response.getPayload().getJsonNumber("id").longValue();
-		
-		jsonPayloadRequest = Json.createObjectBuilder()
-				.add("nameFolder", "ubuntu2")
-				.build();
-
-		response = RequestsHelper.httpPOST(URL_ROOT_OPERATING_SYSTEM + id, jsonPayloadRequest);
-		
-		assertEquals(400, response.getResponseCode());
-		
-		response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + id);
-		response = RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + id2);
-	}
-
-	@Test
-	public void findAllOperatingSystem() throws IOException {
-		ResponseJsonArray response = RequestsHelper.httpGetJsonArray(URL_ROOT_OPERATING_SYSTEM);	
-
-		assertEquals(200, response.getResponseCode());
 	}
 
 }
