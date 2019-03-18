@@ -82,7 +82,7 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 		
 		File scriptsFolder = new File(operatingSystemFolder + File.separator + "scripts");
 		
-		File scriptsFolderDest = new File(generatedDirectoryPath, "scripts");
+		File scriptsFolderDest = new File(generatedDirectoryPath);
 		
 		File appFolder = new File(operatingSystemFolder + File.separator + "app");
 		

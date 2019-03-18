@@ -1,5 +1,9 @@
 package fr.amu.ter_genrest.services.generation;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +14,8 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
+import org.apache.commons.io.FileUtils;
 
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.project_specifications.Actuator;
@@ -25,33 +31,38 @@ import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 	@Override
-	public JsonObject generateJsonLDDataFile(Project project) {
+	public void generateJsonLDDataFile(File fileDest, Project project) {
 
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
-		
+
 		jsonbuilder.add("@context", generateContext());
-		
+
 		jsonbuilder.add("@id", "Project" + project.getId());
-		
+
 		jsonbuilder.add("@type", "sch:Project");
-		
+
 		jsonbuilder.add("sch:name", project.getProjectName());
 
 		jsonbuilder.add("bot:hasBuilding", createJsonArrayBuildings(project.getBuilding()));
 
-		return jsonbuilder.build();
+		
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileDest))) {
+			writer.write(jsonbuilder.build().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
-	
+
 	public JsonObject generateContext() {
 		JsonObjectBuilder jsonContextObjectBuilder = Json.createObjectBuilder();
-		
-		
+
+
 		jsonContextObjectBuilder.add("sch", "http://schema.org/");
 		jsonContextObjectBuilder.add("bot", "https://w3id.org/bot#");
 		jsonContextObjectBuilder.add("sosa", "http://www.w3.org/ns/sosa/");
 		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
-		
-		
+
+
 		return jsonContextObjectBuilder.build();
 	}
 
@@ -70,9 +81,9 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Building");
-		
+
 		jsonbuilder.add("@id", "Building" + building.getId());
-		
+
 		jsonbuilder.add("sch:name", building.getType());
 
 		jsonbuilder.add("sch:address", createJsonObjectAddress(building.getAddress()));
@@ -99,7 +110,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonbuilder.add("@type", "bot:Storey");
 
 		jsonbuilder.add("@id", "Storey" + floor.getId());
-		
+
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", floor.getFloorNumber());
 
@@ -126,7 +137,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonbuilder.add("@type", "bot:Zone");
 
 		jsonbuilder.add("@id", "Zone" + motherRoom.getId());
-	
+
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
 
@@ -135,8 +146,8 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
 				createJsonArrayCorridors(motherRoom.getCorridors()),
 				createJsonArrayRooms(motherRoom.getRooms())
-			)
-		);
+				)
+				);
 
 		return jsonbuilder.build();
 	}
@@ -157,21 +168,21 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonbuilder.add("@type", "bot:Space");
 
 		jsonbuilder.add("@id", "Room" + room.getId());
-		
+
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", room.getNumberRoom());
-		
+
 		jsonbuilder.add("sch:name", room.getType());
-		
+
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(room.getSensors()),
 				createJsonArrayActuators(room.getActuators())
-			)
-		);
+				)
+				);
 
 		return jsonbuilder.build();
 	}
-	
+
 	private JsonArray createJsonArrayCorridors(Set<Corridor> corridors) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
@@ -186,20 +197,20 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Space");
-		
+
 		jsonbuilder.add("@id", "Corridor" + corridor.getId());
-		
+
 		jsonbuilder.add("sch:name", "Corridor");
-		
-		
+
+
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", corridor.getNumberCorridor());
-		
+
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(corridor.getSensors()),
 				createJsonArrayActuators(corridor.getActuators())
-			)
-		);
+				)
+				);
 
 		return jsonbuilder.build();
 	}
@@ -208,7 +219,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "sch:PostalAddress");
-		
+
 		jsonbuilder.add("sch:addressCountry", address.getCountry());
 		jsonbuilder.add("sch:addressLocality", address.getCity());
 		jsonbuilder.add("sch:streetAddress", address.getStreet());
@@ -230,18 +241,18 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "sosa:Actuator");
-		
+
 		jsonbuilder.add("@id", "Actuator" + actuator.getId());
-		
+
 		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
 				.add("sch:latitude", actuator.getLatitude())
 				.add("sch:longitude", actuator.getLatitude()).build());
-		
-		
+
+
 		jsonbuilder.add("sch:brand", actuator.getBrand());
-		
+
 		jsonbuilder.add("sch:model", actuator.getModel());
-		
+
 		jsonbuilder.add("sch:gtin" + actuator.getReference().length(), actuator.getReference());
 
 		return jsonbuilder.build();
@@ -260,42 +271,42 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "sosa:Sensor");
-		
+
 		jsonbuilder.add("@id", "Sensor" + sensor.getId());
-		
+
 		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
 				.add("sch:latitude", sensor.getLatitude())
 				.add("sch:longitude", sensor.getLatitude()).build());
-		
-		
+
+
 		//TODO A ajouter type
 		//jsonbuilder.add("qu:QuantityKind", sensor.getType());
-		
+
 		jsonbuilder.add("sch:brand", sensor.getBrand());
-		
+
 		jsonbuilder.add("sch:model", sensor.getModel());
-		
+
 		jsonbuilder.add("sch:gtin" + sensor.getReference().length(), sensor.getReference());
 
-		
+
 		jsonbuilder.add("qu:Unit", sensor.getUnitData());
 
 		return jsonbuilder.build();
 	}
-	
+
 	private JsonArray mergeJsonArray(JsonArray jsonArray1, JsonArray jsonArray2) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
-		
+
 		for(JsonValue jsonValue : jsonArray1) {
 			jsonArrayBuilder.add(jsonValue);
 		}
-		
+
 		for(JsonValue jsonValue : jsonArray2) {
 			jsonArrayBuilder.add(jsonValue);
 		}
-		
+
 		return jsonArrayBuilder.build();
-		
+
 	}
 
 

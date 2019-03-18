@@ -7,13 +7,30 @@ var app = express();
 // Load up the routes
 app.use('/api', routes);
 
-var fusekiHTTP = new FusekiHTTP();
+function sleep(ms){
+	return new Promise(resolve=>{
+		setTimeout(resolve,ms)
+	})
+}
 
-fusekiHTTP.createDataset("genrest", "tdb", 'C:\\Users\\Jeremy\\WebstormProjects\\testJsonLDParsing\\data.jsonld')
-    .then(function (res) {
-		app.listen(${PORT}, function () {
-		  console.log('App listening on port 3001!')
-		})
+sleep(10000).then(
+	function () {
+		var options = {
+			home: './fuseki',
+			url: 'http://localhost:3030/'
+		}
+
+		var fusekiHTTP = new FusekiHTTP();
+
+		fusekiHTTP.createDataset("genrest", "tdb", 'data.jsonld')
+			.then(function (res) {
+					app.listen(3001, function () {
+						console.log('App listening on port 3001!')
+					})
+				}
+			);
 	}
-);
+)
+
+
 
