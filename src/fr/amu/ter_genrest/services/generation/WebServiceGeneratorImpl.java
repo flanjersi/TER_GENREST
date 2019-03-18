@@ -32,7 +32,6 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 	private final static String ROUTE_TEMPLATE = "RoutesTemplate.ftl";
 	private final static String SERVER_TEMPLATE = "ServerTemplate.ftl";
 	
-	//private final static String GENERATED_FOLDER_PATH = "Generated/";  // in root paath
 	private final static String URLPROJECTS = "/projects/";
 	private final static String EXPRESS_PORT="3001";
 	private final static String SERVER = "server.js";
@@ -50,20 +49,27 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 			OperatingSystem operatingSystem) {
 		
 		try {
-			String templateFolder = directoryManager.getWebContentPathFolder() + File.separator + "templates" 
-					+ File.separator + language.getName() + File.separator + configuration.getPathFolder();
+			String templateFolder = directoryManager.getWebContentPathFolder() + File.separator + "GenerationFiles" 
+					+ File.separator + "templates" + File.separator 
+					+ language.getName() + File.separator + configuration.getPathFolder();
 
+			String fusekiFolder = directoryManager.getWebContentPathFolder() + File.separator + "GenerationFiles" 
+					+ File.separator + "databases" + File.separator + "fuseki";
+
+			
 			initTemplate(templateFolder);					
 			
 			String nameFolder = "GENREST APP " + project.getId() + " - " + project.getProjectName();
 			
 			// create directory in the context
-			String generatedDirectoryPath = directoryManager.createDirectory(servletContext.getRealPath("/"), nameFolder).getAbsolutePath();   
+			String generatedDirectoryPath = directoryManager.createDirectory(directoryManager.getWebContentPathFolder() + File.separator + "ProjectsMade", nameFolder).getAbsolutePath();   
 			
 			// TODO configuration.getPort() instead EXPRESS_PORT
 			writeFile(generatedDirectoryPath, buildDataRoutes(project), buildDataServer(EXPRESS_PORT));	
 			
 			writeFilesOperatingSystem(generatedDirectoryPath, templateFolder, operatingSystem);
+			
+			copyFilesFuseki(generatedDirectoryPath, fusekiFolder);
 			
 			return generatedDirectoryPath;
 		} catch (UnsupportedEncodingException e) {
@@ -72,13 +78,21 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 		}		
 	}
 	
-	private void writeFilesOperatingSystem(String generatedDirectoryPath, String pathTemplate, OperatingSystem operatingSystem) {
-		
-		String operatingSystemFolder = pathTemplate + File.separator + operatingSystem.getNameFolder();
-		
-		File fusekiFolder = new File(operatingSystemFolder + File.separator + "fuseki");
+	private void copyFilesFuseki(String generatedDirectoryPath, String fusekiFolderStr) {
+		File fusekiFolder = new File(fusekiFolderStr);
 		
 		File fusekiFolderDest = new File(generatedDirectoryPath, "fuseki");
+		
+		try {
+			FileUtils.copyDirectory(fusekiFolder, fusekiFolderDest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void writeFilesOperatingSystem(String generatedDirectoryPath, String pathTemplate, OperatingSystem operatingSystem) {
+		
+		String operatingSystemFolder = pathTemplate + File.separator + "operatingsSystem" + File.separator + operatingSystem.getNameFolder();
 		
 		File scriptsFolder = new File(operatingSystemFolder + File.separator + "scripts");
 		
@@ -94,7 +108,6 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 		
 		
 		try {
-			FileUtils.copyDirectory(fusekiFolder, fusekiFolderDest);
 			FileUtils.copyDirectory(scriptsFolder, scriptsFolderDest);
 			FileUtils.copyDirectory(appFolder, appFolderDest);
 			FileUtils.copyDirectory(libsFolder, libsFolderDest);

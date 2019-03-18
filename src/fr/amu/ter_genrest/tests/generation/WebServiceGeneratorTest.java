@@ -118,7 +118,7 @@ public class WebServiceGeneratorTest {
 
 		 jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "Windows 10")
-				.add("nameFolder", "windows10")
+				.add("nameFolder", "windows")
 				.build();
 		 idConfiguration = response.getPayload().getJsonNumber("id").longValue();
 		 
