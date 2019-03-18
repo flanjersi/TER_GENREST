@@ -129,14 +129,15 @@ public class WebServiceGeneratorTest {
 
 	@After
 	public void tearDown() throws IOException {
-		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
-		RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage);
-		RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + idOperatingSystem);		
+//		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
+//		RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage);
+//		RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + idOperatingSystem);		
 	}
 	
 	@Test
 	public void testGenerateWS() throws IOException {
-		RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/deploiement?project="+idProject+"&language="+idLanguage+"&configuration="+idConfiguration+"&operatingSystem="+idOperatingSystem);
+		System.out.println("http://localhost:8090/terGENREST/api/deploiement?project="+idProject+"&language="+idLanguage+"&configuration="+idConfiguration+"&operatingSystem="+idOperatingSystem);
+		//RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/deploiement?project="+idProject+"&language="+idLanguage+"&configuration="+idConfiguration+"&operatingSystem="+idOperatingSystem);
 		//idUser = response.getPayload().getJsonNumber("id").longValue();
 		
 	}

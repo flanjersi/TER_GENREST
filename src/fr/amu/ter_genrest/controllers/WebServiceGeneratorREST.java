@@ -1,6 +1,6 @@
 package fr.amu.ter_genrest.controllers;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -12,13 +12,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import fr.amu.ter_genrest.controllers.utils.Utils;
 import fr.amu.ter_genrest.entities.environment_technical.Configuration;
 import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
-import fr.amu.ter_genrest.entities.user.User;
 import fr.amu.ter_genrest.services.DirectoryManager;
 import fr.amu.ter_genrest.services.SendMail;
 import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
@@ -29,7 +29,7 @@ import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.user.UserManager;
 
 @Path("api/deploiement")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces("application/zip")
 @Consumes(MediaType.APPLICATION_JSON)
 public class WebServiceGeneratorREST {
 	
@@ -103,17 +103,23 @@ public class WebServiceGeneratorREST {
 		String generatedZipDirectoryPath = directoryManager.zipDirectory(generatedDirectoryPath);
 
 		// DELETE
-		try {
-			// delete folder
-			directoryManager.deleteFolder(generatedDirectoryPath);
-			
-			// delete zip
-			// directoryManager.deleteFolder(generatedZipDirectoryPath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			// delete folder
+//			directoryManager.deleteFolder(generatedDirectoryPath);
+//			
+//			// delete zip
+//			 directoryManager.deleteFolder(generatedZipDirectoryPath);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
 		
-		return Response.ok().build();
+		 // set file (and path) to be download
+        File file = new File(generatedZipDirectoryPath);
+        String filName = file.getName();
+        
+        ResponseBuilder responseBuilder = Response.ok((Object) file);
+        responseBuilder.header("Content-Disposition", "attachment; filename="+filName);
+        return responseBuilder.build();
 	}
 	
 	
