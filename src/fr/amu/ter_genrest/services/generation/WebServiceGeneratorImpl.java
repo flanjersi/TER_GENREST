@@ -3,20 +3,22 @@ package fr.amu.ter_genrest.services.generation;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
+import org.apache.commons.io.FileUtils;
+
 import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
-import fr.amu.ter_genrest.services.DirectoryManager;
+import fr.amu.ter_genrest.services.utils.DirectoryManager;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
@@ -47,26 +49,68 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 			fr.amu.ter_genrest.entities.environment_technical.Configuration configuration,
 			OperatingSystem operatingSystem) {
 		
-		String templateFolder = configuration.getPathFolder();
-		
-		initTemplate(templateFolder);					
-				
-		// create directory in the context
-		String generatedDirectoryPath = directoryManager.createDirectory(servletContext.getRealPath("/")).getAbsolutePath();   
-		
-		// TODO configuration.getPort() instead EXPRESS_PORT
-		writeFile(generatedDirectoryPath, buildDataRoutes(project), buildDataServer(EXPRESS_PORT));	
-		
-		return generatedDirectoryPath;
+		try {
+			String templateFolder = directoryManager.getWebContentPathFolder() + File.separator + "templates" 
+					+ File.separator + language.getName() + File.separator + configuration.getPathFolder();
+
+			initTemplate(templateFolder);					
+			
+			String nameFolder = "GENREST APP " + project.getId() + " - " + project.getProjectName();
+			
+			// create directory in the context
+			String generatedDirectoryPath = directoryManager.createDirectory(servletContext.getRealPath("/"), nameFolder).getAbsolutePath();   
+			
+			// TODO configuration.getPort() instead EXPRESS_PORT
+			writeFile(generatedDirectoryPath, buildDataRoutes(project), buildDataServer(EXPRESS_PORT));	
+			
+			writeFilesOperatingSystem(generatedDirectoryPath, templateFolder, operatingSystem);
+			
+			return generatedDirectoryPath;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}		
 	}
 	
+	private void writeFilesOperatingSystem(String generatedDirectoryPath, String pathTemplate, OperatingSystem operatingSystem) {
+		
+		String operatingSystemFolder = pathTemplate + File.separator + operatingSystem.getNameFolder();
+		
+		File fusekiFolder = new File(operatingSystemFolder + File.separator + "fuseki");
+		
+		File fusekiFolderDest = new File(generatedDirectoryPath, "fuseki");
+		
+		File scriptsFolder = new File(operatingSystemFolder + File.separator + "scripts");
+		
+		File scriptsFolderDest = new File(generatedDirectoryPath, "scripts");
+		
+		File appFolder = new File(operatingSystemFolder + File.separator + "app");
+		
+		File appFolderDest = new File(generatedDirectoryPath);
+		
+		File libsFolder = new File(pathTemplate + File.separator + "libs");
+		
+		File libsFolderDest = new File(generatedDirectoryPath + File.separator + "libs");
+		
+		
+		try {
+			FileUtils.copyDirectory(fusekiFolder, fusekiFolderDest);
+			FileUtils.copyDirectory(scriptsFolder, scriptsFolderDest);
+			FileUtils.copyDirectory(appFolder, appFolderDest);
+			FileUtils.copyDirectory(libsFolder, libsFolderDest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// init template files
 	public void initTemplate(String pathTemplateFolder) {
 		Configuration cfg = new Configuration(new Version(2, 3, 23)); 
 
-		cfg.setClassForTemplateLoading(this.getClass(), pathTemplateFolder);   // lookup for templates
 		try { 
-			 templateRoute = cfg.getTemplate(ROUTE_TEMPLATE);
+			cfg.setDirectoryForTemplateLoading(new File(pathTemplateFolder));   // lookup for templates
+		
+			templateRoute = cfg.getTemplate(ROUTE_TEMPLATE);
 			 templateServer = cfg.getTemplate(SERVER_TEMPLATE);
 		} catch (IOException e) {
 			e.printStackTrace();

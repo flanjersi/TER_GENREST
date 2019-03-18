@@ -19,14 +19,14 @@ import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.user.User;
-import fr.amu.ter_genrest.services.DirectoryManager;
-import fr.amu.ter_genrest.services.SendMail;
 import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
 import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
 import fr.amu.ter_genrest.services.generation.WebServiceGenerator;
 import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.user.UserManager;
+import fr.amu.ter_genrest.services.utils.DirectoryManager;
+import fr.amu.ter_genrest.services.utils.SendMail;
 
 @Path("api/deploiement")
 @Produces(MediaType.APPLICATION_JSON)
