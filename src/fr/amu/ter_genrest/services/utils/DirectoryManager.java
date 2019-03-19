@@ -77,7 +77,7 @@ public class DirectoryManager {
 	public void deleteFolder(String directory) throws FileNotFoundException{
 
 		// convert string to Path and get the file
-		File folderToDelete = Paths.get(directory).toFile();
+		File folderToDelete = new File(directory);
 
 		// make sure directory exists
 		if (!folderToDelete.exists()) {

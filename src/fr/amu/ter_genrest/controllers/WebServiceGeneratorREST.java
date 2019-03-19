@@ -101,7 +101,7 @@ public class WebServiceGeneratorREST {
 					.entity(Utils.makeErrorMessage(404, "No operatingSystem has been found"))
 					.build();
 		}
-
+	
 		String generatedDirectoryPath = webServiceGenerator.engine( project, language, configuration, operatingSystem);
 		
 		generationJsonLD.generateJsonLDDataFile(new File(generatedDirectoryPath + File.separator + "data.jsonld"), project);
@@ -110,15 +110,11 @@ public class WebServiceGeneratorREST {
 		String generatedZipDirectoryPath = directoryManager.zipDirectory(generatedDirectoryPath);
 
 		// DELETE
-//		try {
-//			// delete folder
-//			directoryManager.deleteFolder(generatedDirectoryPath);
-//			
-//			// delete zip
-//			 directoryManager.deleteFolder(generatedZipDirectoryPath);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			directoryManager.deleteFolder(generatedDirectoryPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		 // set file (and path) to be download
         File file = new File(generatedZipDirectoryPath);
