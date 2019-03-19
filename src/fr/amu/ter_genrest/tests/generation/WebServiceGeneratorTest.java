@@ -129,7 +129,7 @@ public class WebServiceGeneratorTest {
 
 	@After
 	public void tearDown() throws IOException {
-//		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
+		RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/users/" + idUser);
 //		RequestsHelper.httpDELETE(URL_ROOT_LANGUAGE + idLanguage);
 //		RequestsHelper.httpDELETE(URL_ROOT_OPERATING_SYSTEM + idOperatingSystem);		
 	}
