@@ -14,7 +14,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.amu.ter_genrest.entities.environment_technical.Configuration;
+import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
+import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
+import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
 
 @Transactional
@@ -22,6 +26,14 @@ public class OperatingSystemManagerTest {
 	
 	@EJB
 	private OperatingSystemManager operatingSystemManager;
+	
+	@EJB
+	private ConfigurationManager configurationManager;
+	
+	
+	@EJB
+	private LanguagesManager languageManager ;
+	
 	
 	@Before
     public void setUp() throws Exception {
@@ -35,11 +47,18 @@ public class OperatingSystemManagerTest {
     
     @Test
     public void testCRUD() {
+    	Language language = new Language("JavaScript");
+
+		Configuration configuration = new Configuration("nodejs-express", "A description", "/templates/JavaScript/nodejs-express/");
+
+		OperatingSystem operatingSystem = new OperatingSystem("Raspbian", "test");
     	
-    	OperatingSystem operatingSystem = new OperatingSystem("Raspbian", "test");
-    	
-    	operatingSystemManager.addOperatingSystem(operatingSystem);
-    	
+		configuration.getOperatingsSystem().add(operatingSystem);
+		
+		language.addConfiguration(configuration);
+		
+		languageManager.addLanguage(language);
+  
     	OperatingSystem operatingSystemFinded = operatingSystemManager.findById(operatingSystem.getId());
     	
     	assertTrue(operatingSystem.getName().equals(operatingSystemFinded.getName()));
@@ -53,84 +72,16 @@ public class OperatingSystemManagerTest {
     	assertTrue(operatingSystemFinded.getName().equals("Raspbian update"));
 
     	long id = operatingSystemFinded.getId();
+    	    	
+    	configuration = configurationManager.findById(configuration.getId());
     	
-    	operatingSystemManager.removeOperatingSystem(operatingSystemFinded);
+    	configuration.getOperatingsSystem().remove(operatingSystemFinded);
+
+    	configurationManager.updateConfiguration(configuration);
     	
     	OperatingSystem operatingSystemRemoved = operatingSystemManager.findById(id);
     	
     	assertNull(operatingSystemRemoved);
     }
-    
-    @Test
-    public void testFindByName() {
-    	OperatingSystem operatingSystem = new OperatingSystem("UbuntuFound", "path");
 
-		operatingSystemManager.addOperatingSystem(operatingSystem);
-		
-		OperatingSystem operatingSystemFound = operatingSystemManager.findByName("UbuntuFound");
-		
-		assertNotNull(operatingSystemFound);
-		
-		operatingSystemFound = operatingSystemManager.findByName("UbuntuNotFound");
-		assertNull(operatingSystemFound);
-		
-		operatingSystemManager.removeOperatingSystem(operatingSystem);
-    }
-    
-    @Test
-    public void testFindByNameFolder() {
-    	OperatingSystem operatingSystem = new OperatingSystem("UbuntuFound", "path");
-
-		operatingSystemManager.addOperatingSystem(operatingSystem);
-		
-		OperatingSystem operatingSystemFound = operatingSystemManager.findByPathFolder("path");
-		
-		assertNotNull(operatingSystemFound);
-		
-		operatingSystemFound = operatingSystemManager.findByPathFolder("pathNotFound");
-		assertNull(operatingSystemFound);
-		
-		operatingSystemManager.removeOperatingSystem(operatingSystem);
-    }
-    
-    @Test
-    public void testUniqueNameConstraint() {
-    	OperatingSystem operatingSystem = new OperatingSystem("Ubuntu", "path");
-
-		operatingSystemManager.addOperatingSystem(operatingSystem);
-
-		OperatingSystem operatingSystemError = new OperatingSystem("Ubuntu", "otherPath");
-		
-		try {
-			operatingSystemManager.addOperatingSystem(operatingSystemError);
-			
-			Assert.fail("Should have throw EJBException");
-		}
-		catch (EJBException e) {
-			assertTrue(true);
-		}
-		
-		operatingSystemManager.removeOperatingSystem(operatingSystem);
-    	
-    }
-    
-    @Test
-    public void testUniquePathFolderConstraint() {
-    	OperatingSystem operatingSystem = new OperatingSystem("Ubuntu", "path");
-
-		operatingSystemManager.addOperatingSystem(operatingSystem);
-
-		OperatingSystem operatingSystemError = new OperatingSystem("Ubuntu16", "path");
-		
-		try {
-			operatingSystemManager.addOperatingSystem(operatingSystemError);
-			
-			Assert.fail("Should have throw EJBException");
-		}
-		catch (EJBException e) {
-			assertTrue(true);
-		}
-		
-		operatingSystemManager.removeOperatingSystem(operatingSystem);
-    }
 }

@@ -163,7 +163,7 @@ public class FloorManagerControllerRESTTest {
 	
 	@Test
 	public void deleteFloorWithUnknowIDBuilding() throws IOException {	
-		ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_BUILDING + 44 + "/floors/"+idFloor);
+		ResponseJsonObject response = RequestsHelper.httpDELETE(URL_ROOT_BUILDING + 44 + "/floors/"+ idFloor);
 		assertEquals(404, response.getResponseCode());
 	}
 }

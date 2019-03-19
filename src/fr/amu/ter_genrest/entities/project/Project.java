@@ -93,7 +93,9 @@ public class Project implements Serializable{
 	}
 
 	public void removeBuildings(Building building) {
-		this.buildings.remove(building);
+		if(this.buildings.size() == 1 && this.buildings.removeIf(p -> p.getId().equals(building.getId()))) {
+			this.buildings.clear();
+		}
 	}
 
 	@Override
@@ -106,7 +108,6 @@ public class Project implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
 		return result;
 	}
 
@@ -124,13 +125,12 @@ public class Project implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (projectName == null) {
-			if (other.projectName != null)
-				return false;
-		} else if (!projectName.equals(other.projectName))
-			return false;
 		return true;
 	}
+
+	
+
+	
 	
 	
 	

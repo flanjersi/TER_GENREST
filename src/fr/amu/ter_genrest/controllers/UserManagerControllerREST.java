@@ -269,39 +269,4 @@ public class UserManagerControllerREST {
 
 		return Response.ok().build();
 	}
-	
-	@POST
-	@Path("/{idUser:[0-9]+}/projects/{idProject:[0-9]+}")
-	public Response updateProject(@PathParam("idUser") Long idUser, @PathParam("idProject") Long id, Project project) {
-
-		User userFinded = userManager.findUser(idUser);
-		
-		if(userFinded == null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "User with id '" + idUser + "' no exist"))
-					.build();
-		}
-		
-		
-		Optional<Project> projectFinded = userFinded.getProjects().stream()
-			.filter(projectFilter -> id.equals(projectFilter.getId()))
-			.findFirst();
-	
-		
-		if(!projectFinded.isPresent()) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(404, "Project with id '" + id + "' no exist"))
-					.build();
-		}
-
-		if(project.getProjectName() != null) {
-			projectFinded.get().setProjectName(project.getProjectName());
-		}
-		
-		userManager.updateUser(userFinded);
-		
-		return Response.status(200).entity(projectFinded.get()).build();
-	}
 }

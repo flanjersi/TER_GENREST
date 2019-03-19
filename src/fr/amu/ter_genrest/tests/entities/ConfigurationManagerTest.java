@@ -60,7 +60,7 @@ public class ConfigurationManagerTest {
 
 		languageFinded = languageManager.findById(language.getId());
 
-		Configuration configurationUpdate = languageFinded.getConfigurationsAvailable().get(0);
+		Configuration configurationUpdate = languageFinded.getConfigurationsAvailable().stream().findFirst().get();
 
 		assertTrue(configurationUpdate.getName().equals("nodejs-express-update"));
 

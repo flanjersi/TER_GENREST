@@ -2,7 +2,9 @@ package fr.amu.ter_genrest.entities.environment_technical;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -40,7 +42,7 @@ public class Language implements Serializable{
 	private String name;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
-	private List<Configuration> configurationsAvailable = new ArrayList<Configuration>();
+	private Set<Configuration> configurationsAvailable = new HashSet<Configuration>();
 	
 	public Language() {	
 	}
@@ -61,11 +63,11 @@ public class Language implements Serializable{
 		this.name = name;
 	}
 
-	public List<Configuration> getConfigurationsAvailable() {
+	public Set<Configuration> getConfigurationsAvailable() {
 		return configurationsAvailable;
 	}
 
-	public void setConfigurationsAvailable(List<Configuration> configurationsAvailable) {
+	public void setConfigurationsAvailable(Set<Configuration> configurationsAvailable) {
 		this.configurationsAvailable = configurationsAvailable;
 	}
 

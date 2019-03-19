@@ -1,15 +1,20 @@
 package fr.amu.ter_genrest.entities.environment_technical;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -42,7 +47,10 @@ public class Configuration implements Serializable {
 	@Size(min = 1, max = 2000)
 	@Column(nullable = false, length = 2000)
 	private String description;
-
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
+	private Set<OperatingSystem> operatingsSystem = new HashSet<OperatingSystem>();
+	
 	/**
 	 * Path folder where all of templates are store
 	 */
@@ -78,6 +86,14 @@ public class Configuration implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Set<OperatingSystem> getOperatingsSystem() {
+		return operatingsSystem;
+	}
+
+	public void setOperatingsSystem(Set<OperatingSystem> operatingsSystem) {
+		this.operatingsSystem = operatingsSystem;
 	}
 
 	public String getPathFolder() {
