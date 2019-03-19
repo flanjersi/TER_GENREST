@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import fr.amu.ter_genrest.entities.user.User;
-import fr.amu.ter_genrest.services.DBException;
+import fr.amu.ter_genrest.services.exceptions.DBException;
 
 @Stateless
 public class UserManagerImpl implements UserManager {

@@ -102,7 +102,7 @@ public class WebServiceGeneratorTest {
 		
 		// ADD LANGUAGE
 		JsonObject jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Javascript")
+				.add("name", "JavaScript")
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE, jsonPayloadRequest);
  
@@ -110,15 +110,15 @@ public class WebServiceGeneratorTest {
 		
 		 jsonPayloadRequest = Json.createObjectBuilder()
 				.add("name", "nodejs-express")
-				.add("pathFolder", "/resources/templates/expressjs")
+				.add("pathFolder", "nodejs-express")
 				.add("description", "description")
 				.build();
 
 		response = RequestsHelper.httpPUT(URL_ROOT_LANGUAGE + idLanguage + "/configurations/", jsonPayloadRequest);
 
 		 jsonPayloadRequest = Json.createObjectBuilder()
-				.add("name", "Ubuntu")
-				.add("nameFolder", "ubuntu")
+				.add("name", "Windows 10")
+				.add("nameFolder", "windows")
 				.build();
 		 idConfiguration = response.getPayload().getJsonNumber("id").longValue();
 		 

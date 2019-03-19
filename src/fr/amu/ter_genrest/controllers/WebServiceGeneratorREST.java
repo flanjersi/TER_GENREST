@@ -1,7 +1,7 @@
 package fr.amu.ter_genrest.controllers;
 
 import java.io.File;
-
+import java.io.FileNotFoundException;
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -19,14 +19,16 @@ import fr.amu.ter_genrest.entities.environment_technical.Configuration;
 import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
-import fr.amu.ter_genrest.services.DirectoryManager;
-import fr.amu.ter_genrest.services.SendMail;
+import fr.amu.ter_genrest.entities.user.User;
 import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
 import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
+import fr.amu.ter_genrest.services.generation.GenerationJsonLD;
 import fr.amu.ter_genrest.services.generation.WebServiceGenerator;
 import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.user.UserManager;
+import fr.amu.ter_genrest.services.utils.DirectoryManager;
+import fr.amu.ter_genrest.services.utils.SendMail;
 
 @Path("api/deploiement")
 @Produces("application/zip")
@@ -50,6 +52,9 @@ public class WebServiceGeneratorREST {
 	
 	@EJB
 	private WebServiceGenerator webServiceGenerator;
+	
+	@EJB
+	private GenerationJsonLD generationJsonLD;
 	
 	@Context 
 	ServletContext servletContext;
@@ -98,6 +103,8 @@ public class WebServiceGeneratorREST {
 		}
 
 		String generatedDirectoryPath = webServiceGenerator.engine( project, language, configuration, operatingSystem);
+		
+		generationJsonLD.generateJsonLDDataFile(new File(generatedDirectoryPath + File.separator + "data.jsonld"), project);
 		
 		 // ZIP
 		String generatedZipDirectoryPath = directoryManager.zipDirectory(generatedDirectoryPath);

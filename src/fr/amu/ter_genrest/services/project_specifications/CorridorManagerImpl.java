@@ -9,7 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
-import fr.amu.ter_genrest.services.DBException;
+import fr.amu.ter_genrest.services.exceptions.DBException;
 
 @Stateless
 public class CorridorManagerImpl implements CorridorManager {
