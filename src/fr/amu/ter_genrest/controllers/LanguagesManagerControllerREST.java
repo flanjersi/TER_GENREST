@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import fr.amu.ter_genrest.controllers.utils.Utils;
 import fr.amu.ter_genrest.entities.environment_technical.Configuration;
 import fr.amu.ter_genrest.entities.environment_technical.Language;
+import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
 import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 
@@ -40,7 +41,34 @@ public class LanguagesManagerControllerREST {
 	@Path("")
 	public Response getAllLanguages() {
 		List<Language> languages = languagesManager.findAllLanguages();
-		return Response.ok().entity(languages).build();
+		
+		if(languages.isEmpty()) {
+			Language language = new Language("JavaScript");
+			Configuration configuration = new Configuration("nodejs-express", "Rest API with nodejs and the express tool", "nodejs-express");
+			OperatingSystem windowsOS = new OperatingSystem("Windows", "windows");
+			OperatingSystem linuxOS = new OperatingSystem("Ubuntu", "linux");
+			OperatingSystem linuxOS2 = new OperatingSystem("Debian", "linux");
+			
+			configuration.getOperatingsSystem().add(windowsOS);
+			
+			language.addConfiguration(configuration);
+			
+			languagesManager.addLanguage(language);
+		
+			long idConfiguration = configuration.getId();
+			
+			configuration = configurationManager.findById(idConfiguration);
+			
+			configuration.getOperatingsSystem().add(linuxOS);
+			
+			configuration = configurationManager.updateConfiguration(configuration);
+			
+			configuration.getOperatingsSystem().add(linuxOS2);
+			
+			configurationManager.updateConfiguration(configuration);
+		}
+		
+		return Response.ok().entity(languagesManager.findAllLanguages()).build();
 	}
 
 	@GET
