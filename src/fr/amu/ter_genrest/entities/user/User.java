@@ -130,9 +130,11 @@ public class User implements Serializable{
 
 
 	public void removeProject(Project project) {
-		
 		if(this.projects.size() == 1 && this.projects.removeIf(p -> p.getId().equals(project.getId()))) {
 			this.projects.clear();
+		}
+		else {
+			this.projects.remove(project);
 		}
 	}
 

@@ -49,27 +49,16 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 			OperatingSystem operatingSystem) {
 		
 		try {
-			String templateFolder = directoryManager.getWebContentPathFolder() + File.separator + "GenerationFiles" 
-					+ File.separator + "templates" + File.separator 
-					+ language.getName() + File.separator + configuration.getPathFolder();
+			String templateFolder = directoryManager.templateFolder(language, configuration);
 
-			String fusekiFolder = directoryManager.getWebContentPathFolder() + File.separator + "GenerationFiles" 
-					+ File.separator + "databases" + File.separator + "fuseki";
-
-			
 			initTemplate(templateFolder);					
 			
-			String nameFolder = "GENREST APP " + project.getId() + " - " + project.getProjectName();
-			
-			// create directory in the context
-			String generatedDirectoryPath = directoryManager.createDirectory(directoryManager.getWebContentPathFolder() + File.separator + "ProjectsMade", nameFolder).getAbsolutePath();   
+			String generatedDirectoryPath = new File(directoryManager.generateProjectDestFolderName(project)).getAbsolutePath();
 			
 			// TODO configuration.getPort() instead EXPRESS_PORT
 			writeFile(generatedDirectoryPath, buildDataRoutes(project), buildDataServer(EXPRESS_PORT));	
 			
-			writeFilesOperatingSystem(generatedDirectoryPath, templateFolder, operatingSystem);
-			
-			copyFilesFuseki(generatedDirectoryPath, fusekiFolder);
+			copyAllLibrairiesFiles(templateFolder, generatedDirectoryPath);
 			
 			return generatedDirectoryPath;
 		} catch (UnsupportedEncodingException e) {
@@ -78,43 +67,19 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 		}		
 	}
 	
-	private void copyFilesFuseki(String generatedDirectoryPath, String fusekiFolderStr) {
-		File fusekiFolder = new File(fusekiFolderStr);
-		
-		File fusekiFolderDest = new File(generatedDirectoryPath, "fuseki");
-		
-		try {
-			FileUtils.copyDirectory(fusekiFolder, fusekiFolderDest);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
-	private void writeFilesOperatingSystem(String generatedDirectoryPath, String pathTemplate, OperatingSystem operatingSystem) {
-		
-		String operatingSystemFolder = pathTemplate + File.separator + "operatingsSystem" + File.separator + operatingSystem.getNameFolder();
-		
-		File scriptsFolder = new File(operatingSystemFolder + File.separator + "scripts");
-		
-		File scriptsFolderDest = new File(generatedDirectoryPath);
-		
-		File appFolder = new File(operatingSystemFolder + File.separator + "app");
-		
-		File appFolderDest = new File(generatedDirectoryPath);
-		
+	private void copyAllLibrairiesFiles(String pathTemplate, String generatedDirectoryPath) {
 		File libsFolder = new File(pathTemplate + File.separator + "libs");
-		
+
 		File libsFolderDest = new File(generatedDirectoryPath + File.separator + "libs");
-		
-		
+
 		try {
-			FileUtils.copyDirectory(scriptsFolder, scriptsFolderDest);
-			FileUtils.copyDirectory(appFolder, appFolderDest);
 			FileUtils.copyDirectory(libsFolder, libsFolderDest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	// init template files
 	public void initTemplate(String pathTemplateFolder) {

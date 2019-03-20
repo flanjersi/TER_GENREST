@@ -19,6 +19,8 @@ import java.util.zip.ZipOutputStream;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import fr.amu.ter_genrest.entities.environment_technical.Configuration;
+import fr.amu.ter_genrest.entities.environment_technical.Language;
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.user.User;
 
@@ -26,6 +28,36 @@ import fr.amu.ter_genrest.entities.user.User;
 @Stateless
 public class DirectoryManager {
 
+	public String generateFileNameDataJsonLD(Project project) throws UnsupportedEncodingException {
+		return generateProjectDestFolderName(project) + File.separator + "data.jsonld";
+	}
+	
+	public String generateFileNameDescriptionAPI(Project project) throws UnsupportedEncodingException {
+		return generateProjectDestFolderName(project) + File.separator + "descriptionAPI.json";
+	}
+	
+	
+	public String generateProjectDestFolderName(Project project) throws UnsupportedEncodingException {
+		return getWebContentPathFolder() + File.separator + "ProjectsMade" + File.separator + generateNameProject(project);
+	}
+	
+	public String generateNameProject(Project project) {
+		return "GENREST APP " + project.getId() + " - " + project.getProjectName();
+	}
+	
+	public String fusekiFolder() throws UnsupportedEncodingException {
+		return getWebContentPathFolder() + File.separator + "GenerationFiles" 
+				+ File.separator + "databases" + File.separator + "fuseki";
+
+	}
+	
+	public String templateFolder(Language language, Configuration configuration) throws UnsupportedEncodingException {
+		return getWebContentPathFolder() + File.separator + "GenerationFiles" 
+				+ File.separator + "templates" + File.separator 
+				+ language.getName() + File.separator + configuration.getPathFolder();
+
+	}
+	
 	public String getWebContentPathFolder() throws UnsupportedEncodingException {
 
 		String path = this.getClass().getClassLoader().getResource("").getPath();
@@ -59,11 +91,10 @@ public class DirectoryManager {
 		zos.close();
 	}
 	
-	public File createDirectory(String path, String nameFolder) {
+	public File createDirectory(String pathFolder) {
 		
-		String separator = File.separator;
-		
-        File file = new File(path + separator + nameFolder);
+	
+        File file = new File(pathFolder);
         if (!file.exists()) {
             if (file.mkdirs()) {
                 return file;

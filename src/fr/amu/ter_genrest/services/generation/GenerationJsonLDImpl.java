@@ -45,7 +45,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("bot:hasBuilding", createJsonArrayBuildings(project.getBuilding()));
 
-		
+	
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileDest))) {
 			writer.write(jsonbuilder.build().toString());
 		} catch (IOException e) {

@@ -1,4 +1,4 @@
-Hello ${firstName} ${lastName} ! Thanks to have used our software to implement your RestFull API.
+Hello ! Thanks to have used our software to implement your RestFull API.
 
 Firstly, you need to just lunching the 'setup.sh' script.
 

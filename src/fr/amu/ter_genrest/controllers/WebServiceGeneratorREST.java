@@ -24,6 +24,7 @@ import fr.amu.ter_genrest.services.environment_technical.ConfigurationManager;
 import fr.amu.ter_genrest.services.environment_technical.LanguagesManager;
 import fr.amu.ter_genrest.services.environment_technical.OperatingSystemManager;
 import fr.amu.ter_genrest.services.generation.GenerationJsonLD;
+import fr.amu.ter_genrest.services.generation.ProjectGenerator;
 import fr.amu.ter_genrest.services.generation.WebServiceGenerator;
 import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.user.UserManager;
@@ -51,10 +52,7 @@ public class WebServiceGeneratorREST {
 	private OperatingSystemManager operatingSystemManager;
 	
 	@EJB
-	private WebServiceGenerator webServiceGenerator;
-	
-	@EJB
-	private GenerationJsonLD generationJsonLD;
+	private ProjectGenerator projectGenerator;
 	
 	@Context 
 	ServletContext servletContext;
@@ -102,9 +100,7 @@ public class WebServiceGeneratorREST {
 					.build();
 		}
 	
-		String generatedDirectoryPath = webServiceGenerator.engine( project, language, configuration, operatingSystem);
-		
-		generationJsonLD.generateJsonLDDataFile(new File(generatedDirectoryPath + File.separator + "data.jsonld"), project);
+		String generatedDirectoryPath = projectGenerator.generateProject(project, language, configuration, operatingSystem);
 		
 		 // ZIP
 		String generatedZipDirectoryPath = directoryManager.zipDirectory(generatedDirectoryPath);

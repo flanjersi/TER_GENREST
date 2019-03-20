@@ -1,4 +1,4 @@
-Hello ${firstName} ${lastName} ! Thanks to have used our software to implement your RestFull API.
+Hello ! Thanks to have used our software to implement your RestFull API.
 
 Firstly, you need to install npm and nodejs if you don't have already.
 Please, follow the instructions of the following link : https://nodejs.org/en/
