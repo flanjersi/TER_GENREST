@@ -61,22 +61,13 @@ public class CorridorRESTControllerTest {
 	@Test
 	public void testCRUDFloorRest() throws IOException {
 
-		// ADD CORRIDOR WITHOUT FLOOR
-
-		JsonObject jsonPayloadRequestCorridorWithoutFloor = Json.createObjectBuilder().add("numberCorridor", 6).build();
-		RequestsHelper.ResponseJsonObject responseCorridor = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/floors/" + 7 + "/corridors",
-				jsonPayloadRequestCorridorWithoutFloor);
-
-		assertEquals(404, responseCorridor.getResponseCode());
-
 		// ADD CORRIDOR WITHOUT numberCorridor
 
 		JsonObject jsonPayloadRequestCorridorNumber = Json.createObjectBuilder().build();
 		RequestsHelper.ResponseJsonObject responseWithoutNumber = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/floors/" + 7 + "/corridors", jsonPayloadRequestCorridorNumber);
 
-		assertEquals(404, responseWithoutNumber.getResponseCode());
+		assertEquals(400, responseWithoutNumber.getResponseCode());
 
 		// ADD CORRIDOR
 
@@ -84,7 +75,7 @@ public class CorridorRESTControllerTest {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/floors/" + idFloor + "/corridors", jsonPayloadRequestCorridor);
 
-		assertEquals(200, response.getResponseCode());
+		assertEquals(201, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
 		assertFalse(response.getPayload().containsKey("numberCorridor"));
