@@ -316,7 +316,7 @@ public class UserRESTControllerTest {
 	public void testCreateProjectWithAFalseIdOfUser() throws IOException {
 
 		// add Project		
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project12")
 				.build();		 
 		RequestsHelper.ResponseJsonObject  response = RequestsHelper.httpPUT(URL_ROOT_USER + 1 + "/projects/", jsonPayloadRequest2);		
 		assertEquals(404, response.getResponseCode());

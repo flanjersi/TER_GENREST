@@ -90,7 +90,6 @@ public class RoomManagerControllerREST {
 		}
 		
 		if (sensor.getLatitude() == 0) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor latitude is missing")).build();
 		}
 
 		if (sensor.getLongitude() == 0) {
