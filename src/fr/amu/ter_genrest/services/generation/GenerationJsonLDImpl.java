@@ -85,7 +85,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Building" + building.getId());
 
-		jsonbuilder.add("sch:name", building.getType());
+		jsonbuilder.add("rdfs:label", building.getType());
 
 		jsonbuilder.add("sch:address", createJsonObjectAddress(building.getAddress()));
 
@@ -142,7 +142,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
 
-		jsonbuilder.add("sch:name", motherRoom.getType());
+		jsonbuilder.add("rdfs:label", motherRoom.getType());
 
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
 				createJsonArrayCorridors(motherRoom.getCorridors()),
@@ -173,7 +173,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", room.getNumberRoom());
 
-		jsonbuilder.add("sch:name", room.getType());
+		jsonbuilder.add("rdfs:label", room.getType());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(room.getSensors()),
@@ -201,7 +201,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Corridor" + corridor.getId());
 
-		jsonbuilder.add("sch:name", "Corridor");
+		jsonbuilder.add("rdfs:label", "Corridor");
 
 
 		//TODO ONTOLOGY
@@ -274,7 +274,8 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("geo:Point", Json.createObjectBuilder()
 				.add("geo:lat", sensor.getLatitude())
-				.add("geo:long", sensor.getLatitude()).build());
+				.add("geo:long", sensor.getLatitude()).build()
+		);
 
 
 		jsonbuilder.add("rdfs:label", sensor.getModel());
