@@ -65,7 +65,7 @@ public class CorridorRESTControllerTest {
 
 		JsonObject jsonPayloadRequestCorridorNumber = Json.createObjectBuilder().build();
 		RequestsHelper.ResponseJsonObject responseWithoutNumber = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/floors/" + 7 + "/corridors", jsonPayloadRequestCorridorNumber);
+				"http://localhost:8090/terGENREST/api/floors/" + idFloor + "/corridors", jsonPayloadRequestCorridorNumber);
 
 		assertEquals(400, responseWithoutNumber.getResponseCode());
 

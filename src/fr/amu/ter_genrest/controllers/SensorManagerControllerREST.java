@@ -60,17 +60,16 @@ public class SensorManagerControllerREST {
 		if(sensor.getUnitData() != null) {
 			sensorFinded.setUnitData(sensor.getUnitData());
 		}
+		
+		//TODO Test if name already exist
 
-		if(sensor.getState() != null) {
-			sensorFinded.setState(sensor.getState());
+
+		if(sensor.getName() != null) {
+			sensorFinded.setName(sensor.getName());
 		}
 
-		if(sensor.getReference() != null) {
-			sensorFinded.setReference(sensor.getReference());
-		}
-
-		if(sensor.getBrand() != null) {
-			sensorFinded.setBrand(sensor.getBrand());
+		if(sensor.getQuantityKind() != null) {
+			sensorFinded.setQuantityKind(sensor.getQuantityKind());
 		}
 
 		if(sensor.getModel() != null) {

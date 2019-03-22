@@ -74,7 +74,7 @@ public class ActuatorManagerTest {
 	@Test
 	public void testCRUDRoom() {    	
 		//Add
-		Actuator actuator = new Actuator(1, 1, "model", "brand", "reference", "off");
+		Actuator actuator = new Actuator("actuator", 1, 1, "model");
 		room.addActuator(actuator);
 		room = roomManager.updateRoom(room);
 		actuator = room.getActuators().stream().max((a1, a2) -> a1.getId().compareTo(a2.getId())).get();
@@ -85,7 +85,7 @@ public class ActuatorManagerTest {
 		assertTrue(actuatorAdded.equals(actuator));
 
 		//Update
-		actuatorAdded.setBrand("brandUpdate");
+		actuatorAdded.setModel("modelUpdate");
 		actuatorManager.updateActuator(actuatorAdded);
 
 		//Find
@@ -105,7 +105,7 @@ public class ActuatorManagerTest {
 	@Test
 	public void testCRUDCorridor() {    	
 		//Add
-		Actuator actuator = new Actuator(1, 1, "model", "brand", "reference", "off");
+		Actuator actuator = new Actuator("actuator", 1, 1, "model");
 		corridor.addActuator(actuator);
 
 		corridor = corridorManager.updateCorridor(corridor);
@@ -120,8 +120,8 @@ public class ActuatorManagerTest {
 		assertTrue(actuatorAdded.equals(actuator));
 
 		//Update
-		actuatorAdded.setBrand("brandUpdate");
-
+		actuatorAdded.setModel("modelUpdate");
+		
 		actuatorManager.updateActuator(actuatorAdded);
 
 		//Find
