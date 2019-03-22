@@ -58,6 +58,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 
 		jsonContextObjectBuilder.add("sch", "http://schema.org/");
+		jsonContextObjectBuilder.add("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		jsonContextObjectBuilder.add("bot", "https://w3id.org/bot#");
 		jsonContextObjectBuilder.add("ssn", "http://www.w3.org/ns/ssn/");
 		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
