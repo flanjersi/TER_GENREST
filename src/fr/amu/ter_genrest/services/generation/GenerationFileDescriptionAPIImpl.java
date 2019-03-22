@@ -379,9 +379,7 @@ public class GenerationFileDescriptionAPIImpl implements GenerationFileDescripti
 					.add("sch:GeoCoordinates", Json.createObjectBuilder()
 							.add("sch:latitude", "The value is the latitude of the actuator")
 							.add("sch:longitude", "The value is the longitude of the actuator").build())
-					.add("sch:brand", "The value is the brand of the actuator")
-					.add("sch:model", "The value is the model of the actuator")
-					.add("sch:gtin" + actuator.getReference().length(), "The value is the gtin of the actuator")
+					.add("rdfs:label", "The value is the model of the actuator")
 					.add("sosa:madeActuation", "The actuation of the actuator")
 					.build()
 		);
@@ -429,10 +427,9 @@ public class GenerationFileDescriptionAPIImpl implements GenerationFileDescripti
 					.add("sch:GeoCoordinates", Json.createObjectBuilder()
 							.add("sch:latitude", "The value is the latitude of the sensor")
 							.add("sch:longitude", "The value is the longitude of the sensor").build())
-					.add("sch:brand", "The value is the brand of the sensor")
-					.add("sch:model", "The value is the model of the sensor")
-					.add("sch:gtin" + sensor.getReference().length(), "The value is the gtin of the sensor")
+					.add("rdfs:label", "The value is the model of the sensor")
 					.add("qu:Unit", "The value is the unit of the sensor data")
+					.add("qu:QuantityKind", "The value is the quantityKind of the sensor, temperature for example")
 					.add("sosa:madeObservation", "The observations of the sensor")
 					.build()
 		);

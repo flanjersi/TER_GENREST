@@ -35,6 +35,11 @@ public class Actuator implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(name = "name", nullable = false)
+	@Size(min = 1, max = 200)
+	private String name;
+	
 
 	@Column(name = "latitude", nullable = false)
 	private double latitude;
@@ -46,25 +51,12 @@ public class Actuator implements Serializable {
 	@Size(min = 1, max = 200)
 	private String model;
 
-	@Column(name = "brand", nullable = false)
-	@Size(min = 1, max = 200)
-	private String brand;
 
-	@Column(name = "reference", nullable = false)
-	@Size(min = 1, max = 200)
-	private String reference;
-
-	@Column(name = "state", nullable = false)
-	@Size(min = 1, max = 200)
-	private String state;
-
-	public Actuator(double latitude, double longitude, String model, String brand, String reference, String state) {
+	public Actuator(String name, double latitude, double longitude, String model) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
+		this.name = name;
 	}
 
 	public Actuator() {	}
@@ -97,41 +89,18 @@ public class Actuator implements Serializable {
 		this.model = model;
 	}
 
-	public String getBrand() {
-		return brand;
+	public String getName() {
+		return name;
 	}
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	@Override
-	public String toString() {
-		return "Actuator [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
-				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + "]";
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(latitude);
@@ -139,8 +108,7 @@ public class Actuator implements Serializable {
 		temp = Double.doubleToLongBits(longitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -153,11 +121,6 @@ public class Actuator implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Actuator other = (Actuator) obj;
-		if (brand == null) {
-			if (other.brand != null)
-				return false;
-		} else if (!brand.equals(other.brand))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -172,16 +135,20 @@ public class Actuator implements Serializable {
 				return false;
 		} else if (!model.equals(other.model))
 			return false;
-		if (reference == null) {
-			if (other.reference != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!reference.equals(other.reference))
-			return false;
-		if (state == null) {
-			if (other.state != null)
-				return false;
-		} else if (!state.equals(other.state))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}		
+	}
+
+	@Override
+	public String toString() {
+		return "Actuator [id=" + id + ", name=" + name + ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", model=" + model + "]";
+	}
+
+	
+	
 }

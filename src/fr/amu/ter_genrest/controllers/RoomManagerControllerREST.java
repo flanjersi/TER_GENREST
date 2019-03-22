@@ -85,31 +85,32 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		if (sensor.getBrand() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor brand is missing")).build();
+		if (sensor.getName() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor name is missing")).build();
 		}
 		
 		if (sensor.getLatitude() == 0) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor latitude is missing")).build();
 		}
 
 		if (sensor.getLongitude() == 0) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor longitude is missing")).build();
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor longitude is missing")).build();
 		}
 
 		if (sensor.getModel() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor model is missing")).build();
-		}
-		if (sensor.getReference() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor reference is missing")).build();
-		}
-		
-		if (sensor.getState() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor state is missing")).build();
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor model is missing")).build();
 		}
 
-		if (sensor.getUnitData() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(404, "Sensor unitdata is missing")).build();
+		if (sensor.getQuantityKind() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor quantityKind is missing")).build();
 		}
+		
+		if (sensor.getUnitData() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor unitdata is missing")).build();
+		}
+		//TODO Test if name already exist
+
+		
 
 		roomTofind.addSensor(sensor);
 		roomTofind = roomManager.updateRoom(roomTofind);
@@ -131,26 +132,22 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No room with id : " + idRoom)).build();
 		}
 
-		if (actuator.getBrand() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Brand' property is missing")).build();
+		if (actuator.getName() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, "'name' property is missing")).build();
 		}
 
 		if (actuator.getModel() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Model' property is missing")).build();
 		}
 
-		if (actuator.getReference() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Reference' property is missing")).build();
-		}
-		if (actuator.getState() == null) {
-			return Response.status(400).entity(Utils.makeErrorMessage(400, "'State' property is missing")).build();
-		}
 		if (actuator.getLongitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Longitude' property is missing")).build();
 		}
 		if (actuator.getLatitude() == 0) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Latitude' property is missing")).build();
 		}
+
+		//TODO Test if name already exist
 
 		roomTofind.addActuator(actuator);
 

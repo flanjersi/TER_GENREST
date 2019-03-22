@@ -87,10 +87,10 @@ public class UserManagerControllerREST {
 					.build();
 		}
 
-		if( userManager.findUserByEmail(user.getEmail()) != null ) {
+		if(userManager.findUserByEmail(user.getEmail()) != null ) {
 			return Response
 					.status(403)
-					.entity(Utils.makeErrorMessage(400, "User '" + user.getEmail() + "' already used"))
+					.entity(Utils.makeErrorMessage(403, "User '" + user.getEmail() + "' already used"))
 					.build();
 		}
 
