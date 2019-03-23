@@ -16,7 +16,7 @@ import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 import fr.amu.ter_genrest.entities.user.User;
@@ -63,7 +63,7 @@ public class SensorManagerTest {
 		Floor floor = new Floor(1);
 		building.addFloor(floor);
 
-		MotherRoom motherRoom = new MotherRoom("Appartement", 1);
+		Zone motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
 		room = new Room(1, "bed room");

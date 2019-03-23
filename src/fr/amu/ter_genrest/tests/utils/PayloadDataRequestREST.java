@@ -51,8 +51,8 @@ public class PayloadDataRequestREST {
 		return Json.createObjectBuilder().add("numberCorridor", 6).build();
 	}
 
-	public static JsonObject jsonPayloadRequestMotherRoom(){
-		return Json.createObjectBuilder().add("numberMotherRoom", 9)
+	public static JsonObject jsonPayloadRequestZone(){
+		return Json.createObjectBuilder().add("name", "9")
 				.add("type", "kitchen")
 				.build();
 	}

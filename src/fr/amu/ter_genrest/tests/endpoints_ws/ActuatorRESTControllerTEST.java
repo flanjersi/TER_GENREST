@@ -44,16 +44,16 @@ public class ActuatorRESTControllerTEST {
 		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors", PayloadDataRequestREST.jsonPayloadRequestFloor());
 		long idFloor = response.getPayload().getJsonNumber("id").longValue();
 
-		//ADD MOTHER ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
-		long idMotherRoom = response.getPayload().getJsonNumber("id").longValue();
+		//ADD ZONE
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/zones", PayloadDataRequestREST.jsonPayloadRequestZone());
+		long idZone = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/rooms", PayloadDataRequestREST.jsonPayloadRequestRoom());
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idZone + "/rooms", PayloadDataRequestREST.jsonPayloadRequestRoom());
 		idRoom = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD CORRIDOR
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/corridors", PayloadDataRequestREST.jsonPayloadRequestCorridor());
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idZone + "/corridors", PayloadDataRequestREST.jsonPayloadRequestCorridor());
 		idCorridor = response.getPayload().getJsonNumber("id").longValue();
 	}
 

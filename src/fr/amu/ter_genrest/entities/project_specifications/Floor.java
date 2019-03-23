@@ -40,7 +40,7 @@ public class Floor implements Serializable{
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
 			CascadeType.PERSIST }, orphanRemoval = true)
-	private Set<MotherRoom> motherRooms = new HashSet<MotherRoom>();
+	private Set<Zone> zones = new HashSet<Zone>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,
 			CascadeType.PERSIST }, orphanRemoval = true)
@@ -53,12 +53,12 @@ public class Floor implements Serializable{
 		this.floorNumber = floorNumber;
 	}
 	
-	public void addMotherRoom(MotherRoom m) {
-		motherRooms.add(m);
+	public void addMotherRoom(Zone m) {
+		zones.add(m);
 	}
 
-	public void removeMotherRoom(MotherRoom m) {
-		motherRooms.remove(m);
+	public void removeMotherRoom(Zone m) {
+		zones.remove(m);
 	}
 	
 	public void addCorridor(Corridor corridor) {
@@ -81,12 +81,12 @@ public class Floor implements Serializable{
 		this.floorNumber = floorNumber;
 	}
 	
-	public Set<MotherRoom> getMotherRooms() {
-		return motherRooms;
+	public Set<Zone> getZones() {
+		return zones;
 	}
 
-	public void setMotherRooms(Set<MotherRoom> motherRooms) {
-		this.motherRooms = motherRooms;
+	public void setZones(Set<Zone> zones) {
+		this.zones = zones;
 	}
 
 	public Set<Corridor> getCorridors() {
@@ -99,7 +99,7 @@ public class Floor implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", motherRooms=" + motherRooms + ", corridors="
+		return "Floor [id=" + id + ", floorNumber=" + floorNumber + ", zones=" + zones + ", corridors="
 				+ corridors + "]";
 	}
 }

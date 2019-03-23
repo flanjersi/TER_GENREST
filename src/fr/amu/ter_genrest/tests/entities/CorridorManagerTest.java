@@ -15,17 +15,17 @@ import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.user.User;
 import fr.amu.ter_genrest.services.project_specifications.CorridorManager;
-import fr.amu.ter_genrest.services.project_specifications.MotherRoomManager;
+import fr.amu.ter_genrest.services.project_specifications.ZoneManager;
 import fr.amu.ter_genrest.services.user.UserManager;
 
 @Transactional
 public class CorridorManagerTest {
 
 	@EJB
-	private MotherRoomManager motherRoomManager;
+	private ZoneManager motherRoomManager;
 
 	@EJB
 	private CorridorManager corridorManager;
@@ -33,7 +33,7 @@ public class CorridorManagerTest {
 	@EJB
 	private UserManager userManager;
 
-	private MotherRoom motherRoom;
+	private Zone motherRoom;
 	private Corridor corridor1, corridor2, corridor3;
 	private Floor floor = new Floor(1);
 	private User user;
@@ -52,7 +52,7 @@ public class CorridorManagerTest {
 		project.addBuilding(building);
 		building.addFloor(floor);
 
-		motherRoom = new MotherRoom("Appartement", 1);
+		motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
 		corridor1 = new Corridor(1);
@@ -74,7 +74,7 @@ public class CorridorManagerTest {
 
 	@Test
 	public void testFindRoom() {
-		MotherRoom motherWaiting = motherRoomManager.updateMotherRoom(motherRoom);
+		Zone motherWaiting = motherRoomManager.updateZone(motherRoom);
 
 		assertEquals(3, motherWaiting.getCorridors().size());
 	}

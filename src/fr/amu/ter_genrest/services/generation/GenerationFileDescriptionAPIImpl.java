@@ -19,7 +19,7 @@ import fr.amu.ter_genrest.entities.project_specifications.Actuator;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 
@@ -163,23 +163,23 @@ public class GenerationFileDescriptionAPIImpl implements GenerationFileDescripti
 		
 		jsonbuilder.add("corridors", createJsonArrayCorridors(pathOfCorridors, floor.getCorridors()));
 		
-		jsonbuilder.add("zones", createJsonArrayMotherRooms(pathOfMotherRooms, floor.getMotherRooms()));
+		jsonbuilder.add("zones", createJsonArrayMotherRooms(pathOfMotherRooms, floor.getZones()));
 		
 		
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayMotherRooms(String pathMotherRooms, Set<MotherRoom> motherRooms) {
+	private JsonArray createJsonArrayMotherRooms(String pathMotherRooms, Set<Zone> motherRooms) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		for(MotherRoom motherRoom : motherRooms) {
+		for(Zone motherRoom : motherRooms) {
 			jsonArrayBuilder.add(createJsonObjectMotherRoom(pathMotherRooms + "/" + motherRoom.getId(), motherRoom));
 		}
 
 		return jsonArrayBuilder.build();
 	}
 
-	private JsonObject createJsonObjectMotherRoom(String pathMotherRoom, MotherRoom motherRoom) {
+	private JsonObject createJsonObjectMotherRoom(String pathMotherRoom, Zone motherRoom) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		String pathOfCorridors = pathMotherRoom + "/corridors";

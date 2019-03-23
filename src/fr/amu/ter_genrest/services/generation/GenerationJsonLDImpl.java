@@ -23,7 +23,7 @@ import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 
@@ -118,32 +118,29 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("bot:hasSpace", createJsonArrayCorridors(floor.getCorridors()));
 
-		jsonbuilder.add("bot:hasZone", createJsonArrayMotherRooms(floor.getMotherRooms()));
+		jsonbuilder.add("bot:hasZone", createJsonArrayMotherRooms(floor.getZones()));
 
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayMotherRooms(Set<MotherRoom> motherRooms) {
+	private JsonArray createJsonArrayMotherRooms(Set<Zone> motherRooms) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		for(MotherRoom motherRoom : motherRooms) {
+		for(Zone motherRoom : motherRooms) {
 			jsonArrayBuilder.add(createJsonObjectMotherRoom(motherRoom));
 		}
 
 		return jsonArrayBuilder.build();
 	}
 
-	private JsonObject createJsonObjectMotherRoom(MotherRoom motherRoom) {
+	private JsonObject createJsonObjectMotherRoom(Zone motherRoom) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Zone");
 
 		jsonbuilder.add("@id", "Zone" + motherRoom.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
-
-		jsonbuilder.add("rdfs:label", motherRoom.getType());
+		jsonbuilder.add("rdfs:label", motherRoom.getType() + ' ' + motherRoom.getName());
 
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
 				createJsonArrayCorridors(motherRoom.getCorridors()),

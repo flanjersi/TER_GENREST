@@ -43,8 +43,8 @@ public class RoomRESTControllerTest {
 		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/buildings/" + idBuilding + "/floors", PayloadDataRequestREST.jsonPayloadRequestFloor());
 		 idFloor = response.getPayload().getJsonNumber("id").longValue();
 
-		//ADD MOTHER ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
+		//ADD ZONE
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/zones", PayloadDataRequestREST.jsonPayloadRequestZone());
 		idMotherroom = response.getPayload().getJsonNumber("id").longValue();
 	}
 	
@@ -58,7 +58,7 @@ public class RoomRESTControllerTest {
 		// ADD Room
 		JsonObject jsonPayloadRequestRoom = Json.createObjectBuilder().add("numberRoom", 6).add("type", "Cuisine").build();
 		RequestsHelper.ResponseJsonObject response = 
-				RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/", 
+				RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/", 
 				jsonPayloadRequestRoom);
 		
 		assertEquals(201, response.getResponseCode()); 
@@ -90,7 +90,7 @@ public class RoomRESTControllerTest {
 
 		//Remove Room
 
-		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/"+idRoom);
+		response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/"+idRoom);
 		assertEquals(200, response.getResponseCode());
 	}
 	
@@ -106,7 +106,7 @@ public class RoomRESTControllerTest {
 				.add("type", "BathRoom")
 				.build();
 
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + 8796 + "/rooms/", jsonPayloadRequest);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + 8796 + "/rooms/", jsonPayloadRequest);
 
 		assertEquals(404, response.getResponseCode());
 	}
@@ -117,7 +117,7 @@ public class RoomRESTControllerTest {
 				.add("numberRoom", 6)
 				.build();
 
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/", jsonPayloadRequest);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/", jsonPayloadRequest);
 
 		assertEquals(400, response.getResponseCode());
 	}
@@ -128,21 +128,21 @@ public class RoomRESTControllerTest {
 				.add("type", "salon")
 				.build();
 
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/", jsonPayloadRequest);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/", jsonPayloadRequest);
 
 		assertEquals(400, response.getResponseCode());
 	}
 	
 	@Test
 	public void deleteRoomWithUnknowID() throws IOException {
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherroom + "/rooms/" +7645);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/" +7645);
 		assertEquals(404, response.getResponseCode());
 
 	}
 	
 	@Test
 	public void deleteRoomWithUnknowIDMotherRoom() throws IOException {
-		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + 7645 + "/rooms/" +idRoom);
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpDELETE("http://localhost:8090/terGENREST/api/zones/" + 7645 + "/rooms/" +idRoom);
 		assertEquals(404, response.getResponseCode());
 	}
 }

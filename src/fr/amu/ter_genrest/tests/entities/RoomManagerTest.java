@@ -14,10 +14,10 @@ import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.user.User;
-import fr.amu.ter_genrest.services.project_specifications.MotherRoomManager;
+import fr.amu.ter_genrest.services.project_specifications.ZoneManager;
 import fr.amu.ter_genrest.services.project_specifications.RoomManager;
 import fr.amu.ter_genrest.services.user.UserManager;
 
@@ -25,7 +25,7 @@ import fr.amu.ter_genrest.services.user.UserManager;
 public class RoomManagerTest {
 
 	@EJB
-	private MotherRoomManager motherRoomManager;
+	private ZoneManager motherRoomManager;
 
 	@EJB
 	private RoomManager roomManager;
@@ -33,7 +33,7 @@ public class RoomManagerTest {
 	@EJB
 	private UserManager userManager;
 
-	private MotherRoom motherRoom;
+	private Zone motherRoom;
 	private Room room1, room2, room3;
 	private Floor floor = new Floor(1);
 	private User user;
@@ -52,7 +52,7 @@ public class RoomManagerTest {
 		project.addBuilding(building);
 		building.addFloor(floor);
 
-		motherRoom = new MotherRoom("Appartement", 1);
+		motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
 		room1 = new Room(1, "Chambre");
@@ -75,7 +75,7 @@ public class RoomManagerTest {
 	@Test
 	public void testFindRoom() {
 
-		MotherRoom motherWaiting = motherRoomManager.updateMotherRoom(motherRoom);
+		Zone motherWaiting = motherRoomManager.updateZone(motherRoom);
 
 		assertEquals(3, motherWaiting.getRooms().size());
 	}

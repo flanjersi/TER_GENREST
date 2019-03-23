@@ -23,7 +23,7 @@ public class CorridorRESTControllerTest {
 	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
 	long idUser;
 	private long idFloor;
-	private long idMotherRoom;
+	private long idZone;
 
 	@Before
 	public void setUp() throws Exception {
@@ -47,10 +47,10 @@ public class CorridorRESTControllerTest {
 				PayloadDataRequestREST.jsonPayloadRequestFloor());
 		idFloor = response.getPayload().getJsonNumber("id").longValue();
 
-		// ADD MOTHER ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms",
-				PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
-		idMotherRoom = response.getPayload().getJsonNumber("id").longValue();
+		// ADD ZONES
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/zones",
+				PayloadDataRequestREST.jsonPayloadRequestZone());
+		idZone = response.getPayload().getJsonNumber("id").longValue();
 	}
 
 	@After
@@ -124,11 +124,11 @@ public class CorridorRESTControllerTest {
 	@Test
 	public void testCRUDMotheRoomRest() throws IOException {
 
-		// ADD CORRIDOR WITHOUT MOTHER ROOM
+		// ADD CORRIDOR WITHOUT ZONES
 		JsonObject jsonPayloadRequestCorridorWithoutMother = Json.createObjectBuilder().add("numberCorridor", 6)
 				.build();
 		RequestsHelper.ResponseJsonObject responseCorridor = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/motherRooms/" + 147 + "/corridors",
+				"http://localhost:8090/terGENREST/api/zones/" + 147 + "/corridors",
 				jsonPayloadRequestCorridorWithoutMother);
 
 		assertEquals(404, responseCorridor.getResponseCode());
@@ -137,7 +137,7 @@ public class CorridorRESTControllerTest {
 		JsonObject jsonPayloadRequestCorridorWithoutnumberCorridor = Json.createObjectBuilder().add("numberCorridor", 6)
 				.build();
 		RequestsHelper.ResponseJsonObject responseFalse = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/motherRooms/" + 147 + "/corridors",
+				"http://localhost:8090/terGENREST/api/zones/" + 147 + "/corridors",
 				jsonPayloadRequestCorridorWithoutnumberCorridor);
 
 		assertEquals(404, responseFalse.getResponseCode());
@@ -145,7 +145,7 @@ public class CorridorRESTControllerTest {
 		// ADD CORRIDOR
 		JsonObject jsonPayloadRequestCorridor = Json.createObjectBuilder().add("numberCorridor", 6).build();
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/corridors",
+				"http://localhost:8090/terGENREST/api/zones/" + idZone + "/corridors",
 				jsonPayloadRequestCorridor);
 
 		assertEquals(201, response.getResponseCode());
@@ -185,19 +185,19 @@ public class CorridorRESTControllerTest {
 		// DELETE CORRIDOR WITHOUT ID
 
 		response = RequestsHelper
-				.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/corridors/" + 7777);
+				.httpDELETE("http://localhost:8090/terGENREST/api/zones/" + idZone + "/corridors/" + 7777);
 		assertEquals(404, response.getResponseCode());
 
-		// DELETE CORRIDOR WITHOUT MOTHERROOM ID
+		// DELETE CORRIDOR WITHOUT ZONE ID
 
 		response = RequestsHelper
-				.httpDELETE("http://localhost:8090/terGENREST/api/motherRooms/" + 88 + "/corridors/" + idCorridor);
+				.httpDELETE("http://localhost:8090/terGENREST/api/zones/" + 88 + "/corridors/" + idCorridor);
 		assertEquals(404, response.getResponseCode());
 
 		// DELETE CORRIDOR
 
 		response = RequestsHelper.httpDELETE(
-				"http://localhost:8090/terGENREST/api/motherRooms/" + idMotherRoom + "/corridors/" + idCorridor);
+				"http://localhost:8090/terGENREST/api/zones/" + idZone + "/corridors/" + idCorridor);
 		assertEquals(200, response.getResponseCode());
 
 	}

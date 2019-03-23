@@ -66,7 +66,7 @@ public class WebServiceGeneratorTest {
 		long idFloor = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD MOTHER ROOM
-		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestMotherRoom());
+		response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/floors/" + idFloor + "/motherRooms", PayloadDataRequestREST.jsonPayloadRequestZone());
 		long idMotherRoom = response.getPayload().getJsonNumber("id").longValue();
 
 		//ADD ROOM
