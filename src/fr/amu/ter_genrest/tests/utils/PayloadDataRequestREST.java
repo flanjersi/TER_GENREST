@@ -1,6 +1,9 @@
 package fr.amu.ter_genrest.tests.utils;
 
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -16,7 +19,13 @@ public class PayloadDataRequestREST {
 	}
 
 	public static JsonObject jsonPayloadRequestProject(){
-		return  Json.createObjectBuilder().add("projectName", "firstProject").build();
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		
+		return  Json.createObjectBuilder().add("projectName", "firstProject").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
+				.build();
 	}
 
 	public static JsonObject jsonPayloadRequestLanguage(){

@@ -1,11 +1,14 @@
 package fr.amu.ter_genrest.controllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.stream.JsonParser.Event;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +20,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.amu.ter_genrest.controllers.utils.Utils;
 import fr.amu.ter_genrest.entities.project.Project;
@@ -198,6 +203,7 @@ public class UserManagerControllerREST {
 	@Path("/{idUser:[0-9]+}/projects")
 	public Response createProject(@PathParam("idUser") Long id, Project project) {
 
+		
 		User user = userManager.findUser(id);
 		if(user == null){
 			return  Response
@@ -213,6 +219,20 @@ public class UserManagerControllerREST {
 					.build();
 		}
 
+		if(project.getDomaine() == null) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'Project domain' property is missing"))
+					.build();
+		}
+				
+		if( project.getCreationDate() == null) {
+			return  Response
+					.status(400)
+					.entity(Utils.makeErrorMessage(400, "'Creation date' property is missing"))
+					.build();
+		}
+		
 		Long nbProjects = user.getProjects()
 				.stream()
 				.filter(projectUser -> (projectUser.getProjectName().equals(project.getProjectName())))

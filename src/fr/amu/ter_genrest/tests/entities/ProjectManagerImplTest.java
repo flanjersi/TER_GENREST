@@ -1,4 +1,6 @@
 package fr.amu.ter_genrest.tests.entities;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -41,7 +43,11 @@ public class ProjectManagerImplTest {
 	public void setUp() throws Exception {
 		EJBContainer.createEJBContainer().getContext().bind("inject", this);
 		user = new User("firstName", "lastName", "email0@email.com", "password");
-		project = new Project("firstProject");
+		
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		project = new Project("firstProject", "domotic", creationDate, changeDate);
+		 
 		user.addProject(project);
 		userManager.saveUser(user);
 	}
