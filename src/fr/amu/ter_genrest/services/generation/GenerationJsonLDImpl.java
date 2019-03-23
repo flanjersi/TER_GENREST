@@ -63,7 +63,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonContextObjectBuilder.add("ssn", "http://www.w3.org/ns/ssn/");
 		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
 		jsonContextObjectBuilder.add("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#");
-
+		jsonContextObjectBuilder.add("dog", "http://elite.polito.it/ontologies/dogont.owl#");
 
 		return jsonContextObjectBuilder.build();
 	}
@@ -164,7 +164,9 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Space");
+		jsonbuilder.add("@type", "dog:Room");
 
+		
 		jsonbuilder.add("@id", "Room" + room.getId());
 
 		jsonbuilder.add("rdfs:label", room.getType() + " " + room.getName());
