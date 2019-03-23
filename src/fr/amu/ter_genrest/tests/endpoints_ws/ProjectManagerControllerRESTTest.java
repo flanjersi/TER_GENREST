@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.json.Json;
@@ -34,6 +36,8 @@ public class ProjectManagerControllerRESTTest {
 	private static final String URL_ROOT_PROJECT = "http://localhost:8090/terGENREST/api/projects/";
 	long idUser;
 	long idProject;
+	LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+	LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
 	
 	@Before
 	public void setUp() throws Exception {
@@ -59,18 +63,29 @@ public class ProjectManagerControllerRESTTest {
 	}
 	
 	@Test
-	public void testUpdateProject() throws IOException {	
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
+	public void testUpdateProject() throws IOException {
+		LocalDateTime creationDateUpdated = LocalDateTime.of(2019, Month.JANUARY, 10, 10, 44, 0);
+		LocalDateTime changeDateUpdated = LocalDateTime.of(2019, Month.MARCH, 15, 13, 37, 0);
+		
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject").add("domaine", "transport")
+				.add("creationDate", creationDateUpdated.toString())
+				.add("changeDate", changeDateUpdated.toString())
 				.build();
 		
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+idProject,jsonPayloadRequest2);
 		assertEquals(200, response.getResponseCode());	
-		assertEquals("MySecondProject", response.getPayload().getString("projectName"));		
+		
+		assertEquals("MySecondProject", response.getPayload().getString("projectName"));
+		assertEquals("transport", response.getPayload().getString("domaine"));
+		assertEquals( creationDateUpdated.toString(), response.getPayload().getString("creationDate"));
+		assertEquals( changeDateUpdated.toString(), response.getPayload().getString("changeDate"));
 	}
 	
 	@Test
 	public void testUpdateOfExistingProject() throws IOException {	
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject")
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "MySecondProject").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
 				.build();		
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPOST(URL_ROOT_PROJECT+0,jsonPayloadRequest2);
 		assertEquals(404, response.getResponseCode());		

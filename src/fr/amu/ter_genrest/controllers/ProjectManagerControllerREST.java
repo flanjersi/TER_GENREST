@@ -1,5 +1,7 @@
 package fr.amu.ter_genrest.controllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.ejb.EJB;
@@ -145,7 +147,6 @@ public class ProjectManagerControllerREST {
 	@Path("{idProject:[0-9]+}")
 	public Response updateProject(@PathParam("idProject") Long id, Project project) {
 
-		
 		Project projectFinded = projectManager.findProject(id);
 		
 		if(projectFinded == null) {
@@ -159,6 +160,18 @@ public class ProjectManagerControllerREST {
 			projectFinded.setProjectName(project.getProjectName());
 		}
 		
+		if(project.getDomaine() != null) {
+			projectFinded.setDomaine(project.getDomaine());
+		}
+
+		if( project.getCreationDate() != null) {
+			projectFinded.setCreationDate(project.getCreationDate());
+		}
+		
+		if( project.getChangeDate() != null) {
+			projectFinded.setChangeDate(project.getChangeDate());
+		}
+				
 		projectManager.updateProject(projectFinded);
 		
 		return Response.status(200).entity(projectFinded).build();

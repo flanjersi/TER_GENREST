@@ -2,6 +2,9 @@ package fr.amu.ter_genrest.tests.entities;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -43,7 +46,10 @@ public class RoomManagerTest {
 		EJBContainer.createEJBContainer().getContext().bind("inject", this);
 		user = new User("firstName", "lastName", "email0@email.com", "password");
 
-		Project project = new Project("firstProject");
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		Project project = new Project("firstProject", "domotic", creationDate, changeDate);
+		
 		user.addProject(project);
 
 		Address address = new Address("147 rue Aubagne", "Marseille", "France");

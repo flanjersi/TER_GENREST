@@ -1,14 +1,15 @@
 package fr.amu.ter_genrest.entities.project; 
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,11 +21,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import fr.amu.ter_genrest.entities.project_specifications.Building; 
 
 /**
  * 
- * @author Youcef 
+ * @author Youcef and Mohamed
  * 
  * Project hava 0 or many building 
  *
@@ -54,6 +58,21 @@ public class Project implements Serializable{
 	@Size(min = 1, max = 200) 
 	private String projectName; 
 
+	@Basic(optional = false) 
+	@Column(name = "domaine", nullable = false, length=200) 
+	@Size(min = 1, max = 200) 
+	private String domaine;
+	
+	@JsonValue
+	@Basic(optional = false) 
+	@Column(name = "creation_Date", nullable = false) 
+	private LocalDateTime  creationDate; 
+	
+	@JsonValue
+	@Basic(optional = true) 
+	@Column(name = "change_Date", nullable = true) 
+	private LocalDateTime  changeDate; 
+	
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST }, orphanRemoval=true)
 	private Set<Building> buildings = new HashSet<>();
 
@@ -61,8 +80,11 @@ public class Project implements Serializable{
 		
 	}
 	
-	public Project(String projectName) {
+	public Project(String projectName, String domaine, LocalDateTime creationDate, LocalDateTime changeDate) {
 		this.projectName = projectName;
+		this.domaine = domaine;
+		this.creationDate = creationDate;
+		this.changeDate = changeDate;
 	}
 
 	public Long getId() {
@@ -77,7 +99,39 @@ public class Project implements Serializable{
 		this.projectName = projectName;
 	}
 	
+	public String getDomaine() {
+		return domaine;
+	}
+
+	public void setDomaine(String domaine) {
+		this.domaine = domaine;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public LocalDateTime getChangeDate() {
+		return changeDate;
+	}
+
+	public void setChangeDate(LocalDateTime changeDate) {
+		this.changeDate = changeDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", projectName=" + projectName + ", domaine=" + domaine + ", creationDate="
+				+ creationDate + ", changeDate=" + changeDate + "]";
+	}
+	
 //--------------------------------------- Building ------------------------------------ // 
+
+
 
 	public Set<Building>  getBuilding() {
 		return buildings;
@@ -96,11 +150,6 @@ public class Project implements Serializable{
 		if(this.buildings.size() == 1 && this.buildings.removeIf(p -> p.getId().equals(building.getId()))) {
 			this.buildings.clear();
 		}
-	}
-
-	@Override
-	public String toString() {
-		return "Project [id=" + id + ", ProjectName=" + projectName + "]";
 	}
 
 	@Override
@@ -127,11 +176,7 @@ public class Project implements Serializable{
 			return false;
 		return true;
 	}
-
-	
-
-	
-	
 	
 	
 }
+

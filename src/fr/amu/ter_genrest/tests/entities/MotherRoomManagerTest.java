@@ -3,6 +3,9 @@ package fr.amu.ter_genrest.tests.entities;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -57,7 +60,9 @@ public class MotherRoomManagerTest {
 
 		user = new User("firstName", "lastName", "email0@email.com", "password");
 
-		project = new Project("firstProject");
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		 project = new Project("firstProject", "domotic", creationDate, changeDate);
 		
 		user.addProject(project);
 
