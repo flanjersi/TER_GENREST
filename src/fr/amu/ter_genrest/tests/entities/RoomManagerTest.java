@@ -61,9 +61,9 @@ public class RoomManagerTest {
 		motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
-		room1 = new Room(1, "Chambre");
-		room2 = new Room(2, "Toilettes");
-		room3 = new Room(3, "Douche");
+		room1 = new Room("1", "Chambre");
+		room2 = new Room("2", "Toilettes");
+		room3 = new Room("3", "Douche");
 		motherRoom.addRoom(room1);
 		motherRoom.addRoom(room2);
 		motherRoom.addRoom(room3);

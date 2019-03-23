@@ -63,8 +63,8 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, " Room with" + id + "not found")).build();
 		}
 
-		if (room.getNumberRoom() != 0) {
-			roomTofind.setNumberRoom(room.getNumberRoom());
+		if (room.getName() != null) {
+			roomTofind.setName(room.getName());
 		}
 
 		if (room.getType() != null) {

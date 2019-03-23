@@ -172,14 +172,14 @@ public class ZoneControllerRESTtest {
 
 		// ADD ROOM without type
 
-		payloadRoom = Json.createObjectBuilder().add("numberRoom", 14).build();
+		payloadRoom = Json.createObjectBuilder().add("name", "14").build();
 		responseRoom = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + idMotherRoomToFind + "/rooms", payloadRoom);
 
 		assertEquals(400, responseRoom.getResponseCode());
 
 		// ADD ROOM
-		payloadRoom = Json.createObjectBuilder().add("numberRoom", 14).add("type", "Chambre").build();
+		payloadRoom = Json.createObjectBuilder().add("name", "14").add("type", "Chambre").build();
 		responseRoom = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + idMotherRoomToFind + "/rooms", payloadRoom);
 

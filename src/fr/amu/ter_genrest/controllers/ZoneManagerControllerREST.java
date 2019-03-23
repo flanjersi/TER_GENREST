@@ -87,8 +87,8 @@ public class ZoneManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, " Zone with id: " + idZone + "not found")).build();
 		}
 
-		if (room.getNumberRoom() == 0) {
-			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'numberRoom' is missing")).build();
+		if (room.getName() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'name' is missing")).build();
 		}
 
 		if (room.getType() == null) {

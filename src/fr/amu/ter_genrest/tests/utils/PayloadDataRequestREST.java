@@ -68,7 +68,7 @@ public class PayloadDataRequestREST {
 
 	public static JsonObject jsonPayloadRequestRoom(){
 		return Json.createObjectBuilder().add("type", "house")
-				.add("numberRoom", 4)
+				.add("name", "4")
 				.build();
 	}
 

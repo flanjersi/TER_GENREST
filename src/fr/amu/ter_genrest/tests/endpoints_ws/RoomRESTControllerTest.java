@@ -56,7 +56,7 @@ public class RoomRESTControllerTest {
 	@Test
 	public void testCRUD() throws IOException {
 		// ADD Room
-		JsonObject jsonPayloadRequestRoom = Json.createObjectBuilder().add("numberRoom", 6).add("type", "Cuisine").build();
+		JsonObject jsonPayloadRequestRoom = Json.createObjectBuilder().add("name", "6").add("type", "Cuisine").build();
 		RequestsHelper.ResponseJsonObject response = 
 				RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/zones/" + idMotherroom + "/rooms/", 
 				jsonPayloadRequestRoom);
@@ -83,9 +83,9 @@ public class RoomRESTControllerTest {
 		response = RequestsHelper.httpGetJsonObject(URL_ROOT_ROOM+idRoom);
 
 		assertEquals(200, response.getResponseCode()); 
-		assertTrue(response.getPayload().containsKey("numberRoom"));
+		assertTrue(response.getPayload().containsKey("name"));
 		
-		assertEquals(6, response.getPayload().getInt("numberRoom"));
+		assertEquals("6", response.getPayload().getString("name"));
 		
 
 		//Remove Room

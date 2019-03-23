@@ -168,10 +168,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Room" + room.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", room.getNumberRoom());
-
-		jsonbuilder.add("rdfs:label", room.getType());
+		jsonbuilder.add("rdfs:label", room.getType() + " " + room.getName());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(room.getSensors()),

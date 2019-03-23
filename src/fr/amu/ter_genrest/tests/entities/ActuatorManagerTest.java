@@ -65,7 +65,7 @@ public class ActuatorManagerTest {
 		building.addFloor(floor);
 		Zone motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
-		room = new Room(1, "bed room");
+		room = new Room("1", "bed room");
 		corridor = new Corridor(1);		
 		motherRoom.addRoom(room);
 		motherRoom.addCorridor(corridor);		
