@@ -110,22 +110,22 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		if(corridor.getNumberCorridor() == 0) {
+		if(corridor.getName() == null) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'NumberCorridor' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "'name' property is missing"))
 					.build();
 		}
 		
 		Optional<Corridor> corridorSearch = floor.getCorridors()
 				.stream()
-				.filter(floorad -> floorad.getNumberCorridor() == corridor.getNumberCorridor())
+				.filter(floorad -> floorad.getName().equals(corridor.getName()))
 				.findFirst();
 		
 		if(corridorSearch.isPresent()) {
 			return Response
-					.status(400)
-					.entity(Utils.makeErrorMessage(400, "corridorNumber '" + corridor.getNumberCorridor() + "' already exist"))
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, "corridorNumber '" + corridor.getName() + "' already exist"))
 					.build();
 		}
 		
@@ -136,7 +136,7 @@ public class FloorManagerControllerREST {
 		
 		Optional<Corridor> corridorAdded = floor.getCorridors()
 				.stream()
-				.filter(floorCorridor -> (floorCorridor.getNumberCorridor()==(corridor.getNumberCorridor())))
+				.filter(floorCorridor -> (floorCorridor.getName().equals(corridor.getName())))
 				.findFirst();
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorAdded.get().getId()).build();
@@ -173,7 +173,7 @@ public class FloorManagerControllerREST {
 		
 		Optional<Zone> zoneSearch = floor.getZones()
 				.stream()
-				.filter(zoneAdd -> zoneAdd.getName() == zone.getName())
+				.filter(zoneAdd -> zoneAdd.getName().equals(zone.getName()))
 				.findFirst();
 		
 		if(zoneSearch.isPresent()) {

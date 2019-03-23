@@ -61,9 +61,9 @@ public class CorridorManagerTest {
 		motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
-		corridor1 = new Corridor(1);
-		corridor2 = new Corridor(2);
-		corridor3 = new Corridor(3);
+		corridor1 = new Corridor("1");
+		corridor2 = new Corridor("2");
+		corridor3 = new Corridor("3");
 		motherRoom.addCorridor(corridor1);
 		motherRoom.addCorridor(corridor2);
 		motherRoom.addCorridor(corridor3);

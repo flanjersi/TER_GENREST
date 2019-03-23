@@ -73,7 +73,7 @@ public class SensorManagerTest {
 		floor.addMotherRoom(motherRoom);
 
 		room = new Room("1", "bed room");
-		corridor = new Corridor(1);
+		corridor = new Corridor("1");
 
 		motherRoom.addRoom(room);
 		motherRoom.addCorridor(corridor);

@@ -200,7 +200,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 
 		//TODO ONTOLOGY
-		jsonbuilder.add("number", corridor.getNumberCorridor());
+		jsonbuilder.add("number", corridor.getName());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(corridor.getSensors()),

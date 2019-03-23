@@ -204,24 +204,16 @@ public class ZoneControllerRESTtest {
 		assertEquals(200, response.getResponseCode());
 		long idMotherRoomToFind = response.getPayload().getJsonNumber("id").longValue();
 
-		// ADD CORRIDOR with numberCorridor = 0
-
-		JsonObject payloadRoom = Json.createObjectBuilder().add("numberCorridor", 0).build();
-		ResponseJsonObject responseRoom = RequestsHelper.httpPUT(
-				"http://localhost:8090/terGENREST/api/zones/" + idMotherRoomToFind + "/corridors", payloadRoom);
-
-		assertEquals(400, responseRoom.getResponseCode());
-
 		// ADD CORRIDOR without numberCorridor
-		payloadRoom = Json.createObjectBuilder().build();
-		responseRoom = RequestsHelper.httpPUT(
+		JsonObject payloadRoom = Json.createObjectBuilder().build();
+		ResponseJsonObject responseRoom = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + idMotherRoomToFind + "/corridors", payloadRoom);
 
 		assertEquals(400, responseRoom.getResponseCode());
 
 		// ADD CORRIDOR
 
-		payloadRoom = Json.createObjectBuilder().add("numberCorridor", 4).build();
+		payloadRoom = Json.createObjectBuilder().add("name", "466").build();
 		responseRoom = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + idMotherRoomToFind + "/corridors", payloadRoom);
 

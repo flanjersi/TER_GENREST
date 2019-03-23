@@ -71,35 +71,35 @@ public class CorridorRESTControllerTest {
 
 		// ADD CORRIDOR
 
-		JsonObject jsonPayloadRequestCorridor = Json.createObjectBuilder().add("numberCorridor", 6).build();
+		JsonObject jsonPayloadRequestCorridor = Json.createObjectBuilder().add("name", "633").build();
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/floors/" + idFloor + "/corridors", jsonPayloadRequestCorridor);
 
 		assertEquals(201, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
-		assertFalse(response.getPayload().containsKey("numberCorridor"));
+		assertFalse(response.getPayload().containsKey("name"));
 
 		long idCorridor = response.getPayload().getJsonNumber("id").longValue();
 
 		// UPDATE CORRIDOR
 
-		jsonPayloadRequestCorridor = Json.createObjectBuilder().add("numberCorridor", 8).build();
+		jsonPayloadRequestCorridor = Json.createObjectBuilder().add("name", "866").build();
 		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/corridors/" + idCorridor,
 				jsonPayloadRequestCorridor);
 		assertEquals(200, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
-		assertTrue(response.getPayload().containsKey("numberCorridor"));
+		assertTrue(response.getPayload().containsKey("name"));
 
-		assertEquals(8, response.getPayload().getInt("numberCorridor"));
+		assertEquals("866", response.getPayload().getString("name"));
 
 		// UPDATE CORRIDOR BY id
 		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/corridors/" + idCorridor);
 
 		assertEquals(200, response.getResponseCode());
-		assertTrue(response.getPayload().containsKey("numberCorridor"));
-		assertEquals(8, response.getPayload().getInt("numberCorridor"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertEquals("866", response.getPayload().getString("name"));
 
 		// FIND CORRIDOR WITHOUT ID
 		response = RequestsHelper.httpGetJsonObject("http://localhost:8090/terGENREST/api/corridors/" + 241);
@@ -125,7 +125,7 @@ public class CorridorRESTControllerTest {
 	public void testCRUDMotheRoomRest() throws IOException {
 
 		// ADD CORRIDOR WITHOUT ZONES
-		JsonObject jsonPayloadRequestCorridorWithoutMother = Json.createObjectBuilder().add("numberCorridor", 6)
+		JsonObject jsonPayloadRequestCorridorWithoutMother = Json.createObjectBuilder().add("name", "6")
 				.build();
 		RequestsHelper.ResponseJsonObject responseCorridor = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + 147 + "/corridors",
@@ -134,7 +134,7 @@ public class CorridorRESTControllerTest {
 		assertEquals(404, responseCorridor.getResponseCode());
 
 		// ADD CORRIDOR WITHOUT numberCorridor
-		JsonObject jsonPayloadRequestCorridorWithoutnumberCorridor = Json.createObjectBuilder().add("numberCorridor", 6)
+		JsonObject jsonPayloadRequestCorridorWithoutnumberCorridor = Json.createObjectBuilder().add("name", "6")
 				.build();
 		RequestsHelper.ResponseJsonObject responseFalse = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + 147 + "/corridors",
@@ -143,7 +143,7 @@ public class CorridorRESTControllerTest {
 		assertEquals(404, responseFalse.getResponseCode());
 
 		// ADD CORRIDOR
-		JsonObject jsonPayloadRequestCorridor = Json.createObjectBuilder().add("numberCorridor", 6).build();
+		JsonObject jsonPayloadRequestCorridor = Json.createObjectBuilder().add("name", "666").build();
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(
 				"http://localhost:8090/terGENREST/api/zones/" + idZone + "/corridors",
 				jsonPayloadRequestCorridor);
@@ -151,21 +151,21 @@ public class CorridorRESTControllerTest {
 		assertEquals(201, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
-		assertFalse(response.getPayload().containsKey("numberCorridor"));
+		assertFalse(response.getPayload().containsKey("name"));
 
 		long idCorridor = response.getPayload().getJsonNumber("id").longValue();
 
 		// UPDATE CORRIDOR
 
-		jsonPayloadRequestCorridor = Json.createObjectBuilder().add("numberCorridor", 8).build();
+		jsonPayloadRequestCorridor = Json.createObjectBuilder().add("name", "866").build();
 		response = RequestsHelper.httpPOST("http://localhost:8090/terGENREST/api/corridors/" + idCorridor,
 				jsonPayloadRequestCorridor);
 		assertEquals(200, response.getResponseCode());
 
 		assertTrue(response.getPayload().containsKey("id"));
-		assertTrue(response.getPayload().containsKey("numberCorridor"));
+		assertTrue(response.getPayload().containsKey("name"));
 
-		assertEquals(8, response.getPayload().getInt("numberCorridor"));
+		assertEquals("866", response.getPayload().getString("name"));
 
 		// FIND CORRIDOR BY ID
 
@@ -173,8 +173,8 @@ public class CorridorRESTControllerTest {
 				.httpGetJsonObject("http://localhost:8090/terGENREST/api/corridors/" + idCorridor);
 
 		assertEquals(200, responseObject.getResponseCode());
-		assertTrue(responseObject.getPayload().containsKey("numberCorridor"));
-		assertEquals(8, response.getPayload().getInt("numberCorridor"));
+		assertTrue(responseObject.getPayload().containsKey("name"));
+		assertEquals("866", response.getPayload().getString("name"));
 
 		// FIND CORRIDOR WITHOUT ID
 		RequestsHelper.ResponseJsonObject responseCorridorWithoutId = RequestsHelper

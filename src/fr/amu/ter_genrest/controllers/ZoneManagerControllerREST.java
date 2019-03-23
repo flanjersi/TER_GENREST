@@ -116,8 +116,8 @@ public class ZoneManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "Zone with id: " + idZone + "not found")).build();
 		}
 
-		if (corridor.getNumberCorridor() == 0) {
-			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'NumberCorrdidor' is missing")).build();
+		if (corridor.getName() == null) {
+			return Response.status(400).entity(Utils.makeErrorMessage(400, " 'name' is missing")).build();
 		}
 
 		zoneToFind.addCorridor(corridor);

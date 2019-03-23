@@ -57,7 +57,7 @@ public class PayloadDataRequestREST {
 	}
 
 	public static JsonObject jsonPayloadRequestCorridor(){
-		return Json.createObjectBuilder().add("numberCorridor", 6).build();
+		return Json.createObjectBuilder().add("name", "666").build();
 	}
 
 	public static JsonObject jsonPayloadRequestZone(){

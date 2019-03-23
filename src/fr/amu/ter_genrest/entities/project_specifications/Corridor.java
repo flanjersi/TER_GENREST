@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * 
@@ -41,8 +42,9 @@ public class Corridor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
-	@Column(name = "numberCorridor", nullable = false)
-	private int numberCorridor;
+	@Column(name = "name", nullable = false)
+	@Size(min = 2, max = 200)
+	private String name;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, orphanRemoval = true)
 	private Set<Sensor> sensors = new HashSet<Sensor>();
@@ -53,8 +55,8 @@ public class Corridor implements Serializable {
 	public Corridor() {
 	}
 	
-	public Corridor(int numberCorridor) {
-		this.numberCorridor = numberCorridor;
+	public Corridor(String name) {
+		this.name = name;
 	}
 	
 	public void addSensor(Sensor s) {
@@ -85,12 +87,12 @@ public class Corridor implements Serializable {
 		return id;
 	}
 
-	public int getNumberCorridor() {
-		return numberCorridor;
+	public String getName() {
+		return name;
 	}
 
-	public void setNumberCorridor(int numberCorridor) {
-		this.numberCorridor = numberCorridor;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Set<Actuator> getActuators() {
@@ -103,7 +105,7 @@ public class Corridor implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Corridor [id=" + id + ", numberCorridor=" + numberCorridor + ", sensors=" + sensors + ", actuators="
+		return "Corridor [id=" + id + ", numberCorridor=" + name + ", sensors=" + sensors + ", actuators="
 				+ actuators + "]";
 	}
 
@@ -111,8 +113,10 @@ public class Corridor implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((actuators == null) ? 0 : actuators.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + numberCorridor;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((sensors == null) ? 0 : sensors.hashCode());
 		return result;
 	}
 
@@ -125,13 +129,28 @@ public class Corridor implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Corridor other = (Corridor) obj;
+		if (actuators == null) {
+			if (other.actuators != null)
+				return false;
+		} else if (!actuators.equals(other.actuators))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (numberCorridor != other.numberCorridor)
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (sensors == null) {
+			if (other.sensors != null)
+				return false;
+		} else if (!sensors.equals(other.sensors))
 			return false;
 		return true;
-	}	
+	}
+
+	
 }

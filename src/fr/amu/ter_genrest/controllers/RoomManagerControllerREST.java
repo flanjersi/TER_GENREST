@@ -108,8 +108,6 @@ public class RoomManagerControllerREST {
 		if (sensor.getUnitData() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor unitdata is missing")).build();
 		}
-		//TODO Test if name already exist
-
 		
 
 		roomTofind.addSensor(sensor);
@@ -147,7 +145,6 @@ public class RoomManagerControllerREST {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Latitude' property is missing")).build();
 		}
 
-		//TODO Test if name already exist
 
 		roomTofind.addActuator(actuator);
 
