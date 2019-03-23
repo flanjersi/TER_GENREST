@@ -113,38 +113,37 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Storey" + floor.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", floor.getFloorNumber());
+		jsonbuilder.add("rdfs:label", floor.getFloorNumber());
 
 		jsonbuilder.add("bot:hasSpace", createJsonArrayCorridors(floor.getCorridors()));
 
-		jsonbuilder.add("bot:hasZone", createJsonArrayMotherRooms(floor.getZones()));
+		jsonbuilder.add("bot:hasZone", createJsonArrayZones(floor.getZones()));
 
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayMotherRooms(Set<Zone> motherRooms) {
+	private JsonArray createJsonArrayZones(Set<Zone> zones) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		for(Zone motherRoom : motherRooms) {
-			jsonArrayBuilder.add(createJsonObjectMotherRoom(motherRoom));
+		for(Zone motherRoom : zones) {
+			jsonArrayBuilder.add(createJsonObjectZone(motherRoom));
 		}
 
 		return jsonArrayBuilder.build();
 	}
 
-	private JsonObject createJsonObjectMotherRoom(Zone motherRoom) {
+	private JsonObject createJsonObjectZone(Zone zone) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Zone");
 
-		jsonbuilder.add("@id", "Zone" + motherRoom.getId());
+		jsonbuilder.add("@id", "Zone" + zone.getId());
 
-		jsonbuilder.add("rdfs:label", motherRoom.getType() + ' ' + motherRoom.getName());
+		jsonbuilder.add("rdfs:label", zone.getType() + ' ' + zone.getName());
 
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
-				createJsonArrayCorridors(motherRoom.getCorridors()),
-				createJsonArrayRooms(motherRoom.getRooms())
+				createJsonArrayCorridors(zone.getCorridors()),
+				createJsonArrayRooms(zone.getRooms())
 				)
 				);
 
@@ -196,11 +195,8 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Corridor" + corridor.getId());
 
-		jsonbuilder.add("rdfs:label", "Corridor");
+		jsonbuilder.add("rdfs:label", corridor.getName());
 
-
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", corridor.getName());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(corridor.getSensors()),
