@@ -40,11 +40,11 @@ public class ProjectGeneratorImpl implements ProjectGenerator{
 		
 		try {
 			String generatedDirectoryPath = directoryManager.createDirectory(
-					directoryManager.generateProjectDestFolderName(project)
+					directoryManager.generateProjectDestFolderName(project, language, configuration, operatingSystem)
 				).getAbsolutePath();   
 			
-			String fileJsonLDName = directoryManager.generateFileNameDataJsonLD(project);
-			String descriptionAPIFileName = directoryManager.generateFileNameDescriptionAPI(project);
+			String fileJsonLDName = directoryManager.generateFileNameDataJsonLD(project, language, configuration, operatingSystem);
+			String descriptionAPIFileName = directoryManager.generateFileNameDescriptionAPI(project, language, configuration, operatingSystem);
 			
 			generationJsonLD.generateJsonLDDataFile(new File(fileJsonLDName), project);
 			

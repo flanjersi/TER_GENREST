@@ -58,9 +58,11 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 
 		jsonContextObjectBuilder.add("sch", "http://schema.org/");
+		jsonContextObjectBuilder.add("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		jsonContextObjectBuilder.add("bot", "https://w3id.org/bot#");
-		jsonContextObjectBuilder.add("sosa", "http://www.w3.org/ns/sosa/");
+		jsonContextObjectBuilder.add("ssn", "http://www.w3.org/ns/ssn/");
 		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
+		jsonContextObjectBuilder.add("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#");
 
 
 		return jsonContextObjectBuilder.build();
@@ -84,7 +86,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Building" + building.getId());
 
-		jsonbuilder.add("sch:name", building.getType());
+		jsonbuilder.add("rdfs:label", building.getType());
 
 		jsonbuilder.add("sch:address", createJsonObjectAddress(building.getAddress()));
 
@@ -141,7 +143,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
 
-		jsonbuilder.add("sch:name", motherRoom.getType());
+		jsonbuilder.add("rdfs:label", motherRoom.getType());
 
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
 				createJsonArrayCorridors(motherRoom.getCorridors()),
@@ -172,7 +174,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		//TODO ONTOLOGY
 		jsonbuilder.add("number", room.getNumberRoom());
 
-		jsonbuilder.add("sch:name", room.getType());
+		jsonbuilder.add("rdfs:label", room.getType());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(room.getSensors()),
@@ -200,7 +202,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Corridor" + corridor.getId());
 
-		jsonbuilder.add("sch:name", "Corridor");
+		jsonbuilder.add("rdfs:label", "Corridor");
 
 
 		//TODO ONTOLOGY
@@ -240,20 +242,17 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonValue createJsonObjectActuator(Actuator actuator) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		jsonbuilder.add("@type", "sosa:Actuator");
+		jsonbuilder.add("@type", "ssn:Actuator");
 
-		jsonbuilder.add("@id", "Actuator" + actuator.getId());
+		jsonbuilder.add("@id", actuator.getName());
 
-		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
-				.add("sch:latitude", actuator.getLatitude())
-				.add("sch:longitude", actuator.getLatitude()).build());
+		jsonbuilder.add("geo:Point", Json.createObjectBuilder()
+				.add("geo:lat", actuator.getLatitude())
+				.add("geo:long", actuator.getLatitude()).build());
+
+		jsonbuilder.add("rdfs:label", actuator.getModel());
 
 
-		jsonbuilder.add("sch:brand", actuator.getBrand());
-
-		jsonbuilder.add("sch:model", actuator.getModel());
-
-		jsonbuilder.add("sch:gtin" + actuator.getReference().length(), actuator.getReference());
 
 		return jsonbuilder.build();
 	}
@@ -270,25 +269,18 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonObject createJsonObjectSensor(Sensor sensor) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		jsonbuilder.add("@type", "sosa:Sensor");
+		jsonbuilder.add("@type", "ssn:Sensor");
 
-		jsonbuilder.add("@id", "Sensor" + sensor.getId());
+		jsonbuilder.add("@id", sensor.getName());
 
-		jsonbuilder.add("sch:GeoCoordinates", Json.createObjectBuilder()
-				.add("sch:latitude", sensor.getLatitude())
-				.add("sch:longitude", sensor.getLatitude()).build());
-
-
-		//TODO A ajouter type
-		//jsonbuilder.add("qu:QuantityKind", sensor.getType());
-
-		jsonbuilder.add("sch:brand", sensor.getBrand());
-
-		jsonbuilder.add("sch:model", sensor.getModel());
-
-		jsonbuilder.add("sch:gtin" + sensor.getReference().length(), sensor.getReference());
+		jsonbuilder.add("geo:Point", Json.createObjectBuilder()
+				.add("geo:lat", sensor.getLatitude())
+				.add("geo:long", sensor.getLatitude()).build()
+		);
 
 
+		jsonbuilder.add("rdfs:label", sensor.getModel());
+		jsonbuilder.add("qu:QuantityKind", sensor.getQuantityKind());
 		jsonbuilder.add("qu:Unit", sensor.getUnitData());
 
 		return jsonbuilder.build();

@@ -92,7 +92,7 @@ public class SensorManagerTest {
 	@Test
 	public void testCRUDRoom() {    	
 		//Add
-		Sensor sensor = new Sensor(1, 1, "model", "brand", "reference", "state", "unitData");
+		Sensor sensor = new Sensor("sensor", 1, 1, "model", "unitData", "temperature");
 		room.addSensor(sensor);
 
 		room = roomManager.updateRoom(room);
@@ -107,7 +107,7 @@ public class SensorManagerTest {
 		assertTrue(sensorAdded.equals(sensor));
 
 		//Update
-		sensorAdded.setBrand("brandUpdate");
+		sensorAdded.setModel("modelUpdate");
 
 		sensorManager.updateSensor(sensorAdded);
 
@@ -132,7 +132,7 @@ public class SensorManagerTest {
 	@Test
 	public void testCRUDCorridor() {    	
 		//Add
-		Sensor sensor = new Sensor(1, 1, "model", "brand", "reference", "state", "unitData");
+		Sensor sensor = new Sensor("sensor", 1, 1, "model", "unitData", "temperature");
 		corridor.addSensor(sensor);
 
 		corridor = corridorManager.updateCorridor(corridor);
@@ -147,7 +147,7 @@ public class SensorManagerTest {
 		assertTrue(sensorAdded.equals(sensor));
 
 		//Update
-		sensorAdded.setBrand("brandUpdate");
+		sensorAdded.setModel("modelUpdate");
 
 		sensorManager.updateSensor(sensorAdded);
 

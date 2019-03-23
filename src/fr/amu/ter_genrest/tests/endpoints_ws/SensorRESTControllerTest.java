@@ -65,12 +65,12 @@ public class SensorRESTControllerTest {
 	public void testCRUDCorridors() throws IOException { 
 		//ADD
 
-		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
+		JsonObject payload =  Json.createObjectBuilder()
+				.add("latitude", 13L)
 				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
 
@@ -83,21 +83,20 @@ public class SensorRESTControllerTest {
 		assertFalse(response.getPayload().containsKey("latitude"));
 		assertFalse(response.getPayload().containsKey("longitude"));
 		assertFalse(response.getPayload().containsKey("model"));
-		assertFalse(response.getPayload().containsKey("brand"));
-		assertFalse(response.getPayload().containsKey("reference"));
-		assertFalse(response.getPayload().containsKey("state"));
+		assertFalse(response.getPayload().containsKey("name"));
+		assertFalse(response.getPayload().containsKey("quantityKind"));
 		assertFalse(response.getPayload().containsKey("unitData"));
 
 		long idSensor = response.getPayload().getJsonNumber("id").longValue();	
 
 		//UPDATE
 
-		payload =  Json.createObjectBuilder().add("latitude", 14L)
-				.add("longitude", 15L)
+		payload =  Json.createObjectBuilder()
+				.add("latitude", 14L)
+				.add("longitude", 13L)
 				.add("model", "modelU")
-				.add("brand", "brandU")
-				.add("reference", "refU")
-				.add("state", "OFFU")
+				.add("name", "sensorU")
+				.add("quantityKind", "temperatureU")
 				.add("unitData", "CelsiusU")
 				.build();
 
@@ -109,18 +108,16 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
 		assertTrue(response.getPayload().containsKey("model"));
-		assertTrue(response.getPayload().containsKey("brand"));
-		assertTrue(response.getPayload().containsKey("reference"));
-		assertTrue(response.getPayload().containsKey("state"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("quantityKind"));
 		assertTrue(response.getPayload().containsKey("unitData"));
 
 		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
-		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
+		assertEquals(13L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
-		assertEquals("brandU", response.getPayload().getString("brand"));
-		assertEquals("refU", response.getPayload().getString("reference"));
-		assertEquals("OFFU", response.getPayload().getString("state"));
+		assertEquals("sensorU", response.getPayload().getString("name"));
+		assertEquals("temperatureU", response.getPayload().getString("quantityKind"));
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
 
 		//FIND
@@ -132,18 +129,16 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
 		assertTrue(response.getPayload().containsKey("model"));
-		assertTrue(response.getPayload().containsKey("brand"));
-		assertTrue(response.getPayload().containsKey("reference"));
-		assertTrue(response.getPayload().containsKey("state"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("quantityKind"));
 		assertTrue(response.getPayload().containsKey("unitData"));
 
 		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
-		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
+		assertEquals(13L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
-		assertEquals("brandU", response.getPayload().getString("brand"));
-		assertEquals("refU", response.getPayload().getString("reference"));
-		assertEquals("OFFU", response.getPayload().getString("state"));
+		assertEquals("sensorU", response.getPayload().getString("name"));
+		assertEquals("temperatureU", response.getPayload().getString("quantityKind"));
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
 
 		//DELETE
@@ -159,12 +154,12 @@ public class SensorRESTControllerTest {
 	public void testCRUDRoom() throws IOException {
 		//ADD
 
-		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
+		JsonObject payload =  Json.createObjectBuilder()
+				.add("latitude", 13L)
 				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
 
@@ -177,21 +172,21 @@ public class SensorRESTControllerTest {
 		assertFalse(response.getPayload().containsKey("latitude"));
 		assertFalse(response.getPayload().containsKey("longitude"));
 		assertFalse(response.getPayload().containsKey("model"));
-		assertFalse(response.getPayload().containsKey("brand"));
-		assertFalse(response.getPayload().containsKey("reference"));
-		assertFalse(response.getPayload().containsKey("state"));
+		assertFalse(response.getPayload().containsKey("name"));
+		assertFalse(response.getPayload().containsKey("quantityKind"));
 		assertFalse(response.getPayload().containsKey("unitData"));
 
 		long idSensor = response.getPayload().getJsonNumber("id").longValue();	
 
 		//UPDATE
 
-		payload =  Json.createObjectBuilder().add("latitude", 14L)
-				.add("longitude", 15L)
+
+		payload =  Json.createObjectBuilder()
+				.add("latitude", 14L)
+				.add("longitude", 13L)
 				.add("model", "modelU")
-				.add("brand", "brandU")
-				.add("reference", "refU")
-				.add("state", "OFFU")
+				.add("name", "sensorU")
+				.add("quantityKind", "temperatureU")
 				.add("unitData", "CelsiusU")
 				.build();
 
@@ -203,18 +198,17 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
 		assertTrue(response.getPayload().containsKey("model"));
-		assertTrue(response.getPayload().containsKey("brand"));
-		assertTrue(response.getPayload().containsKey("reference"));
-		assertTrue(response.getPayload().containsKey("state"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("quantityKind"));
 		assertTrue(response.getPayload().containsKey("unitData"));
+
 
 		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
-		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
+		assertEquals(13L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
-		assertEquals("brandU", response.getPayload().getString("brand"));
-		assertEquals("refU", response.getPayload().getString("reference"));
-		assertEquals("OFFU", response.getPayload().getString("state"));
+		assertEquals("sensorU", response.getPayload().getString("name"));
+		assertEquals("temperatureU", response.getPayload().getString("quantityKind"));
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
 
 		//FIND
@@ -227,19 +221,18 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
 		assertTrue(response.getPayload().containsKey("model"));
-		assertTrue(response.getPayload().containsKey("brand"));
-		assertTrue(response.getPayload().containsKey("reference"));
-		assertTrue(response.getPayload().containsKey("state"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("quantityKind"));
 		assertTrue(response.getPayload().containsKey("unitData"));
 
 		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(14L, response.getPayload().getJsonNumber("latitude").longValue());
-		assertEquals(15L, response.getPayload().getJsonNumber("longitude").longValue());
+		assertEquals(13L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("modelU", response.getPayload().getString("model"));
-		assertEquals("brandU", response.getPayload().getString("brand"));
-		assertEquals("refU", response.getPayload().getString("reference"));
-		assertEquals("OFFU", response.getPayload().getString("state"));
+		assertEquals("sensorU", response.getPayload().getString("name"));
+		assertEquals("temperatureU", response.getPayload().getString("quantityKind"));
 		assertEquals("CelsiusU", response.getPayload().getString("unitData"));
+
 
 		//DELETE
 
@@ -303,15 +296,15 @@ public class SensorRESTControllerTest {
 
 	@Test
 	public void updateSensorWithNothing() throws IOException {	
-		JsonObject payload =  Json.createObjectBuilder().add("latitude", 13L)
+		JsonObject payload =  Json.createObjectBuilder()
+				.add("latitude", 13L)
 				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
-
+		
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
 		long idSensor = response.getPayload().getJsonNumber("id").longValue();	
@@ -328,19 +321,19 @@ public class SensorRESTControllerTest {
 		assertTrue(response.getPayload().containsKey("latitude"));
 		assertTrue(response.getPayload().containsKey("longitude"));
 		assertTrue(response.getPayload().containsKey("model"));
-		assertTrue(response.getPayload().containsKey("brand"));
-		assertTrue(response.getPayload().containsKey("reference"));
-		assertTrue(response.getPayload().containsKey("state"));
+		assertTrue(response.getPayload().containsKey("name"));
+		assertTrue(response.getPayload().containsKey("quantityKind"));
 		assertTrue(response.getPayload().containsKey("unitData"));
 
 		assertEquals(idSensor, response.getPayload().getJsonNumber("id").longValue());
 		assertEquals(13L, response.getPayload().getJsonNumber("latitude").longValue());
 		assertEquals(12L, response.getPayload().getJsonNumber("longitude").longValue());
 		assertEquals("model", response.getPayload().getString("model"));
-		assertEquals("brand", response.getPayload().getString("brand"));
-		assertEquals("ref", response.getPayload().getString("reference"));
-		assertEquals("OFF", response.getPayload().getString("state"));
+		assertEquals("sensor", response.getPayload().getString("name"));
+		assertEquals("temperature", response.getPayload().getString("quantityKind"));
 		assertEquals("Celsius", response.getPayload().getString("unitData"));
+
+
 	}
 
 
@@ -350,11 +343,11 @@ public class SensorRESTControllerTest {
 		JsonObject payload =  Json.createObjectBuilder()
 				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 		
@@ -366,11 +359,11 @@ public class SensorRESTControllerTest {
 		JsonObject payload =  Json.createObjectBuilder()
 				.add("latitude", 13L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
@@ -380,13 +373,13 @@ public class SensorRESTControllerTest {
 	@Test
 	public void createSensorNullModelInRoom() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("longitude", 12L)
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
@@ -394,15 +387,15 @@ public class SensorRESTControllerTest {
 	}
 
 	@Test
-	public void createSensorNullBrandInRoom() throws IOException {
+	public void createSensorNullNameInRoom() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
@@ -410,47 +403,32 @@ public class SensorRESTControllerTest {
 	}
 
 	@Test
-	public void createSensorNullReferenceInRoom() throws IOException {
+	public void createSensorNullQuantityKindInRoom() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("state", "OFF")
+				.add("name", "sensor")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
 		assertEquals(400, response.getResponseCode());
 	}
 
-	@Test
-	public void createSensorNullStateInRoom() throws IOException {
-		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
-				.add("latitude", 13L)
-				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("unitData", "Celsius")
-				.build();
-
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
-
-		assertEquals(400, response.getResponseCode());
-	}
 
 	@Test
 	public void createSensorNullUnitDataInRoom() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/rooms/" + idRoom + "/sensors", payload);
 
@@ -464,12 +442,11 @@ public class SensorRESTControllerTest {
 		JsonObject payload =  Json.createObjectBuilder()
 				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
-
+		
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 
 		assertEquals(400, response.getResponseCode());
@@ -480,11 +457,11 @@ public class SensorRESTControllerTest {
 		JsonObject payload =  Json.createObjectBuilder()
 				.add("latitude", 13L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 
@@ -494,13 +471,13 @@ public class SensorRESTControllerTest {
 	@Test
 	public void createSensorNullModelInCorridor() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("longitude", 12L)
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idRoom + "/sensors", payload);
 
@@ -508,15 +485,15 @@ public class SensorRESTControllerTest {
 	}
 
 	@Test
-	public void createSensorNullBrandInCorridor() throws IOException {
+	public void createSensorNullNameInCorridor() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("quantityKind", "temperature")
 				.add("unitData", "Celsius")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 
@@ -524,31 +501,15 @@ public class SensorRESTControllerTest {
 	}
 
 	@Test
-	public void createSensorNullReferenceInCorridor() throws IOException {
+	public void createSensorNullQuantityKindInCorridor() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("state", "OFF")
+				.add("name", "sensor")
 				.add("unitData", "Celsius")
 				.build();
-
-		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
-
-		assertEquals(400, response.getResponseCode());
-	}
-
-	@Test
-	public void createSensorNullStateInCorridor() throws IOException {
-		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
-				.add("latitude", 13L)
-				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("unitData", "Celsius")
-				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 
@@ -558,13 +519,13 @@ public class SensorRESTControllerTest {
 	@Test
 	public void createSensorNullUnitDataInCorridor() throws IOException {
 		JsonObject payload =  Json.createObjectBuilder()
-				.add("longitude", 12L)
 				.add("latitude", 13L)
+				.add("longitude", 12L)
 				.add("model", "model")
-				.add("brand", "brand")
-				.add("reference", "ref")
-				.add("state", "OFF")
+				.add("name", "sensor")
+				.add("quantityKind", "temperature")
 				.build();
+		
 
 		ResponseJsonObject response = RequestsHelper.httpPUT("http://localhost:8090/terGENREST/api/corridors/" + idCorridor + "/sensors", payload);
 

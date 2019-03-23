@@ -36,6 +36,10 @@ public class Sensor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name = "name", nullable = false)
+	@Size(min = 1, max = 200)
+	private String name;
+	
 	@Column(name = "latitude", nullable = false)
 	private double latitude;
 
@@ -46,32 +50,23 @@ public class Sensor implements Serializable {
 	@Size(min = 1, max = 200)
 	private String model;
 
-	@Column(name = "brand", nullable = false)
+	@Column(name = "quantityKind", nullable = false)
 	@Size(min = 1, max = 200)
-	private String brand;
-
-	@Column(name = "reference", nullable = false)
-	@Size(min = 1, max = 200)
-	private String reference;
-
-	@Column(name = "state", nullable = false)
-	@Size(min = 1, max = 200)
-	private String state;
+	private String quantityKind;
 
 	@Column(name = "unitData", nullable = false)
 	@Size(min = 1, max = 200)
 	private String unitData;
 
-	public Sensor(double latitude, double longitude, String model, String brand, String reference, String state,
-			String unitData) {
+	
+	public Sensor(String name, double latitude, double longitude, String model, String unitData, String quantityKind) {
 		super();
+		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.model = model;
-		this.brand = brand;
-		this.reference = reference;
-		this.state = state;
 		this.unitData = unitData;
+		this.quantityKind = quantityKind;
 	}
 
 	public Sensor() {
@@ -79,10 +74,6 @@ public class Sensor implements Serializable {
 	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public double getLatitude() {
@@ -109,30 +100,7 @@ public class Sensor implements Serializable {
 		this.model = model;
 	}
 
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
+	
 	public String getUnitData() {
 		return unitData;
 	}
@@ -140,19 +108,36 @@ public class Sensor implements Serializable {
 	public void setUnitData(String unitData) {
 		this.unitData = unitData;
 	}
+	
+	
+	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getQuantityKind() {
+		return quantityKind;
+	}
+
+	public void setQuantityKind(String quantityKind) {
+		this.quantityKind = quantityKind;
+	}
 
 	@Override
 	public String toString() {
 		return "Sensor [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", model=" + model
-				+ ", brand=" + brand + ", reference=" + reference + ", state=" + state + ", unitData=" + unitData
-				+ "]";
+				+ ", quantityKind=" + quantityKind + ", unitData=" + unitData + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(latitude);
@@ -160,8 +145,7 @@ public class Sensor implements Serializable {
 		temp = Double.doubleToLongBits(longitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((quantityKind == null) ? 0 : quantityKind.hashCode());
 		result = prime * result + ((unitData == null) ? 0 : unitData.hashCode());
 		return result;
 	}
@@ -175,11 +159,6 @@ public class Sensor implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Sensor other = (Sensor) obj;
-		if (brand == null) {
-			if (other.brand != null)
-				return false;
-		} else if (!brand.equals(other.brand))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -194,15 +173,10 @@ public class Sensor implements Serializable {
 				return false;
 		} else if (!model.equals(other.model))
 			return false;
-		if (reference == null) {
-			if (other.reference != null)
+		if (quantityKind == null) {
+			if (other.quantityKind != null)
 				return false;
-		} else if (!reference.equals(other.reference))
-			return false;
-		if (state == null) {
-			if (other.state != null)
-				return false;
-		} else if (!state.equals(other.state))
+		} else if (!quantityKind.equals(other.quantityKind))
 			return false;
 		if (unitData == null) {
 			if (other.unitData != null)
@@ -211,4 +185,6 @@ public class Sensor implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 }

@@ -53,8 +53,8 @@ public class ActuatorManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, "No actuator with id : " + id)).build();
 		}
 
-		if (actuator.getBrand() != null) {
-			actuatortoFind.setBrand(actuator.getBrand());
+		if (actuator.getName() != null) {
+			actuatortoFind.setName(actuator.getName());
 		}
 
 		if (actuator.getLatitude() != 0) {
@@ -65,21 +65,15 @@ public class ActuatorManagerControllerREST {
 			actuatortoFind.setLongitude(actuator.getLongitude());
 		}
 
-		if (actuator.getReference() != null) {
-			actuatortoFind.setReference(actuator.getReference());
-		}
-
 		if (actuator.getModel() != null) {
 			actuatortoFind.setModel(actuator.getModel());
 		}
-		if (actuator.getState() != null) {
-			actuatortoFind.setState(actuator.getState());
-		}
+		
+		//TODO Test if name already exist
 
 		actuatortoFind = actuatorManager.updateActuator(actuatortoFind);
 
 		return Response.ok().entity(actuatortoFind).build();
-
 	}
 
 }

@@ -65,27 +65,6 @@ public class FloorManagerControllerREST {
 	@Path("/{idFloor:[0-9]+}")
 	public Response updateFloor(@PathParam("idFloor") Long idFloor, Floor floor) {
 		
-		Building buildingFinded = buildingManager.findBuildingByFloorId(idFloor);
-		
-		if(buildingFinded ==  null) {
-			return Response
-					.status(404)
-					.entity(Utils.makeErrorMessage(400, "buildingFinded "+idFloor+" not exist"))
-					.build();
-		}
-		
-		Optional<Floor> floorsearch = buildingFinded.getFloors()
-				.stream()
-				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
-				.findFirst();
-		
-		if(floorsearch.isPresent()) {
-			return Response
-					.status(400)
-					.entity(Utils.makeErrorMessage(400, "floorNumber" + floor.getFloorNumber() + " already exist"))
-					.build();
-		}
-		
 		Floor floorFinded = floorManager.findById(idFloor);
 		
 		if(floorFinded == null) {
@@ -94,7 +73,21 @@ public class FloorManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "Floor with id '" + idFloor + "' no exist"))
 					.build();
 		}
-	
+		
+		Building buildingFinded = buildingManager.findBuildingByFloorId(idFloor);
+		
+		Optional<Floor> floorsearch = buildingFinded.getFloors()
+				.stream()
+				.filter(floorad -> floorad.getFloorNumber() == floor.getFloorNumber())
+				.findFirst();
+		
+		if(floorsearch.isPresent()) {
+			return Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, "floorNumber" + floor.getFloorNumber() + " already exist"))
+					.build();
+		}
+		
 		if(floor.getFloorNumber() != 0) {
 			floorFinded.setFloorNumber(floor.getFloorNumber());
 		}
@@ -148,7 +141,7 @@ public class FloorManagerControllerREST {
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorAdded.get().getId()).build();
 
-		return Response.ok().entity(jsonResponse).build();
+		return Response.status(201).entity(jsonResponse).build();
 	}
 	
 	@PUT
