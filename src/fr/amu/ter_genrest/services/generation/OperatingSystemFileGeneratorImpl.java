@@ -35,7 +35,7 @@ public class OperatingSystemFileGeneratorImpl implements OperatingSystemFileGene
 		try {
 			String operatingSystemFolder = directoryManager.templateFolder(language, configuration) 
 					+ File.separator + "operatingsSystem" + File.separator + operatingSystem.getNameFolder();
-			String generatedDirectoryPath = directoryManager.generateProjectDestFolderName(project);
+			String generatedDirectoryPath = directoryManager.generateProjectDestFolderName(project, language, configuration, operatingSystem);
 
 
 			File scriptsFolder = new File(operatingSystemFolder + File.separator + "scripts");
