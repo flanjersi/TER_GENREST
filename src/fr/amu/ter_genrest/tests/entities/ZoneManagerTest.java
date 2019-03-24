@@ -3,6 +3,9 @@ package fr.amu.ter_genrest.tests.entities;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -15,16 +18,16 @@ import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.user.User;
 import fr.amu.ter_genrest.services.project.ProjectManager;
 import fr.amu.ter_genrest.services.project_specifications.BuildingManager;
 import fr.amu.ter_genrest.services.project_specifications.FloorManager;
-import fr.amu.ter_genrest.services.project_specifications.MotherRoomManager;
+import fr.amu.ter_genrest.services.project_specifications.ZoneManager;
 import fr.amu.ter_genrest.services.user.UserManager;
 
 @Transactional
-public class MotherRoomManagerTest {
+public class ZoneManagerTest {
 
 	@EJB
 	private BuildingManager buildingManager;
@@ -33,7 +36,7 @@ public class MotherRoomManagerTest {
 	private FloorManager floorManager;
 	
 	@EJB
-	private MotherRoomManager MotherRoomManager;
+	private ZoneManager MotherRoomManager;
 	
 	@EJB
 	private ProjectManager projectManager;
@@ -49,7 +52,7 @@ public class MotherRoomManagerTest {
 	
 	private Floor floor; 
 	
-	private MotherRoom motherRoom;
+	private Zone motherRoom;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -57,7 +60,9 @@ public class MotherRoomManagerTest {
 
 		user = new User("firstName", "lastName", "email0@email.com", "password");
 
-		project = new Project("firstProject");
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		 project = new Project("firstProject", "domotic", creationDate, changeDate);
 		
 		user.addProject(project);
 
@@ -71,7 +76,7 @@ public class MotherRoomManagerTest {
 		
 		building.addFloor(floor);
 		
-		motherRoom = new MotherRoom("Appartment", 2);
+		motherRoom = new Zone("Appartment", "2");
 		
 		floor.addMotherRoom(motherRoom);
 		
@@ -90,20 +95,20 @@ public class MotherRoomManagerTest {
 		//Add
 		floorManager.updateFloor(floor);
 		Floor floorUpdated = floorManager.findById(floor.getId());
-		assertTrue(floorUpdated.getMotherRooms().size() == 1);	
+		assertTrue(floorUpdated.getZones().size() == 1);	
 		
 		//Update
 		motherRoom.setType("studio");
 		buildingManager.updateBuilding(building);		
 		Floor floorFinded = floorManager.findById(floor.getId());
-		MotherRoom motherRoomU = floorFinded.getMotherRooms().stream().findFirst().get();
+		Zone motherRoomU = floorFinded.getZones().stream().findFirst().get();
 		assertEquals("studio", motherRoomU.getType());
 		
 
 		//Delete
 		floorFinded.removeMotherRoom(motherRoom);
 		floorManager.updateFloor(floorFinded);
-		assertEquals(0,floorFinded.getMotherRooms().size());
+		assertEquals(0,floorFinded.getZones().size());
 
 	}
 }

@@ -21,6 +21,7 @@ import javax.ejb.Stateless;
 
 import fr.amu.ter_genrest.entities.environment_technical.Configuration;
 import fr.amu.ter_genrest.entities.environment_technical.Language;
+import fr.amu.ter_genrest.entities.environment_technical.OperatingSystem;
 import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.user.User;
 
@@ -28,21 +29,37 @@ import fr.amu.ter_genrest.entities.user.User;
 @Stateless
 public class DirectoryManager {
 
-	public String generateFileNameDataJsonLD(Project project) throws UnsupportedEncodingException {
-		return generateProjectDestFolderName(project) + File.separator + "data.jsonld";
+	public String generateFileNameDataJsonLD(Project project, 
+			Language language,
+			Configuration configuration, 
+			OperatingSystem operatingSystem) throws UnsupportedEncodingException {
+		return generateProjectDestFolderName(project, language, configuration, operatingSystem) 
+				+ File.separator + "data.jsonld";
 	}
 	
-	public String generateFileNameDescriptionAPI(Project project) throws UnsupportedEncodingException {
-		return generateProjectDestFolderName(project) + File.separator + "descriptionAPI.json";
+	public String generateFileNameDescriptionAPI(Project project, 
+			Language language,
+			Configuration configuration, 
+			OperatingSystem operatingSystem) throws UnsupportedEncodingException {
+		return generateProjectDestFolderName(project, language, configuration, operatingSystem) 
+				+ File.separator + "descriptionAPI.json";
 	}
 	
 	
-	public String generateProjectDestFolderName(Project project) throws UnsupportedEncodingException {
-		return getWebContentPathFolder() + File.separator + "ProjectsMade" + File.separator + generateNameProject(project);
+	public String generateProjectDestFolderName(Project project, 
+			Language language,
+			Configuration configuration, 
+			OperatingSystem operatingSystem) throws UnsupportedEncodingException {
+		return getWebContentPathFolder() + File.separator + "ProjectsMade" 
+			+ File.separator + generateNameProject(project, language, configuration, operatingSystem);
 	}
 	
-	public String generateNameProject(Project project) {
-		return "GENREST APP " + project.getId() + " - " + project.getProjectName();
+	public String generateNameProject(Project project, Language language, Configuration configuration, OperatingSystem operatingSystem) {
+		return "GENREST APP " + project.getId() 
+			+ " - " + language.getName() 
+			+ " - " + configuration.getName() 
+			+ " - " + operatingSystem.getName() 
+			+ " - " + project.getProjectName();
 	}
 	
 	public String fusekiFolder() throws UnsupportedEncodingException {

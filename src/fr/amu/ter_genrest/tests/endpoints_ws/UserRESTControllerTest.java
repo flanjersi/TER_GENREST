@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -298,7 +300,10 @@ public class UserRESTControllerTest {
 		assertEquals(200, response.getResponseCode());
 
 		// add Project		
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
+		LocalDateTime creationDate = LocalDateTime.of(2018, 1, 25, 13, 37, 0);
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", creationDate.toString())
 				.build();
 
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
@@ -316,7 +321,12 @@ public class UserRESTControllerTest {
 	public void testCreateProjectWithAFalseIdOfUser() throws IOException {
 
 		// add Project		
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project12")
+
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
 				.build();		 
 		RequestsHelper.ResponseJsonObject  response = RequestsHelper.httpPUT(URL_ROOT_USER + 99999 + "/projects/", jsonPayloadRequest2);		
 		assertEquals(404, response.getResponseCode());
@@ -330,8 +340,13 @@ public class UserRESTControllerTest {
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
 		assertEquals(200, response.getResponseCode());
 		long id = response.getPayload().getJsonNumber("id").longValue();
-		// add Project		
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("", "Project")
+		
+		// add Project	
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("", "Project").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
 		assertEquals(400, response.getResponseCode());
@@ -342,18 +357,67 @@ public class UserRESTControllerTest {
 	
 
 	@Test
+	public void testCreateProjectWithNullDomain() throws IOException {	
+		//ADD USER
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+		assertEquals(200, response.getResponseCode());
+		long id = response.getPayload().getJsonNumber("id").longValue();
+		
+		// add Project	
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("", "Project")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
+		assertEquals(400, response.getResponseCode());
+		//Delete user and Project
+		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
+
+	}
+	
+	@Test
+	public void testCreateProjectWithNullCreationDate() throws IOException {	
+		//ADD USER
+		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
+		assertEquals(200, response.getResponseCode());
+		long id = response.getPayload().getJsonNumber("id").longValue();
+		
+		// add Project	
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("", "Project")
+				.add("changeDate", changeDate.toString())
+				.build();
+		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
+		assertEquals(400, response.getResponseCode());
+		//Delete user and Project
+		response = RequestsHelper.httpDELETE(URL_ROOT_USER + "/" + id);
+
+	}
+	
+	
+	@Test
 	public void testCreateTwoProjectsWithTheSameNameForSameUser() throws IOException {	
 		//ADD USER
 		RequestsHelper.ResponseJsonObject response = RequestsHelper.httpPUT(URL_ROOT_USER, PayloadDataRequestREST.jsonPayloadRequestUser());
 		assertEquals(200, response.getResponseCode());
 		long id = response.getPayload().getJsonNumber("id").longValue();
-		// fist Project		
-		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "Project")
+		
+		// first Project		
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		JsonObject jsonPayloadRequest = Json.createObjectBuilder().add("projectName", "Project").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest);
 		assertEquals(201, response.getResponseCode());
 		// second project
-		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project")
+		JsonObject jsonPayloadRequest2 = Json.createObjectBuilder().add("projectName", "Project").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
 				.build();
 		response = RequestsHelper.httpPUT(URL_ROOT_USER + id + "/projects/", jsonPayloadRequest2);
 		assertEquals(403, response.getResponseCode());

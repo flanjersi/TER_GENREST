@@ -3,6 +3,9 @@ package fr.amu.ter_genrest.tests.entities;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -16,7 +19,7 @@ import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 import fr.amu.ter_genrest.entities.user.User;
@@ -51,7 +54,10 @@ public class SensorManagerTest {
 
 		user = new User("firstName", "lastName", "email0@email.com", "password");
 
-		Project project = new Project("firstProject");
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		Project project = new Project("firstProject", "domotic", creationDate, changeDate);
+		
 		user.addProject(project);
 
 
@@ -63,11 +69,11 @@ public class SensorManagerTest {
 		Floor floor = new Floor(1);
 		building.addFloor(floor);
 
-		MotherRoom motherRoom = new MotherRoom("Appartement", 1);
+		Zone motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
-		room = new Room(1, "bed room");
-		corridor = new Corridor(1);
+		room = new Room("1", "bed room");
+		corridor = new Corridor("1");
 
 		motherRoom.addRoom(room);
 		motherRoom.addCorridor(corridor);

@@ -12,7 +12,7 @@ import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.user.User;
 
 /**
- * @author youcef
+ * @author youcef and Mohamed
  *
  */
 

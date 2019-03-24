@@ -10,7 +10,7 @@ import fr.amu.ter_genrest.tests.endpoints_ws.CorridorRESTControllerTest;
 import fr.amu.ter_genrest.tests.endpoints_ws.EndPointRootTest;
 import fr.amu.ter_genrest.tests.endpoints_ws.FloorManagerControllerRESTTest;
 import fr.amu.ter_genrest.tests.endpoints_ws.LanguageRESTControllerTest;
-import fr.amu.ter_genrest.tests.endpoints_ws.MotherRoomControllerRESTtest;
+import fr.amu.ter_genrest.tests.endpoints_ws.ZoneControllerRESTtest;
 import fr.amu.ter_genrest.tests.endpoints_ws.OperatingSystemRESTControllerTest;
 import fr.amu.ter_genrest.tests.endpoints_ws.ProjectManagerControllerRESTTest;
 import fr.amu.ter_genrest.tests.endpoints_ws.RoomRESTControllerTest;
@@ -25,7 +25,7 @@ import fr.amu.ter_genrest.tests.endpoints_ws.UserRESTControllerTest;
 	BuildingRESTControllerTest.class,
 	FloorManagerControllerRESTTest.class,
 	CorridorRESTControllerTest.class,
-	MotherRoomControllerRESTtest.class,
+	ZoneControllerRESTtest.class,
 	RoomRESTControllerTest.class,
 	SensorRESTControllerTest.class,
 	ActuatorRESTControllerTEST.class,

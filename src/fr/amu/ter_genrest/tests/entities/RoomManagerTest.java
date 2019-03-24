@@ -2,6 +2,9 @@ package fr.amu.ter_genrest.tests.entities;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.transaction.Transactional;
@@ -14,10 +17,10 @@ import fr.amu.ter_genrest.entities.project.Project;
 import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.user.User;
-import fr.amu.ter_genrest.services.project_specifications.MotherRoomManager;
+import fr.amu.ter_genrest.services.project_specifications.ZoneManager;
 import fr.amu.ter_genrest.services.project_specifications.RoomManager;
 import fr.amu.ter_genrest.services.user.UserManager;
 
@@ -25,7 +28,7 @@ import fr.amu.ter_genrest.services.user.UserManager;
 public class RoomManagerTest {
 
 	@EJB
-	private MotherRoomManager motherRoomManager;
+	private ZoneManager motherRoomManager;
 
 	@EJB
 	private RoomManager roomManager;
@@ -33,7 +36,7 @@ public class RoomManagerTest {
 	@EJB
 	private UserManager userManager;
 
-	private MotherRoom motherRoom;
+	private Zone motherRoom;
 	private Room room1, room2, room3;
 	private Floor floor = new Floor(1);
 	private User user;
@@ -43,7 +46,10 @@ public class RoomManagerTest {
 		EJBContainer.createEJBContainer().getContext().bind("inject", this);
 		user = new User("firstName", "lastName", "email0@email.com", "password");
 
-		Project project = new Project("firstProject");
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		Project project = new Project("firstProject", "domotic", creationDate, changeDate);
+		
 		user.addProject(project);
 
 		Address address = new Address("147 rue Aubagne", "Marseille", "France");
@@ -52,12 +58,12 @@ public class RoomManagerTest {
 		project.addBuilding(building);
 		building.addFloor(floor);
 
-		motherRoom = new MotherRoom("Appartement", 1);
+		motherRoom = new Zone("Appartement", "1");
 		floor.addMotherRoom(motherRoom);
 
-		room1 = new Room(1, "Chambre");
-		room2 = new Room(2, "Toilettes");
-		room3 = new Room(3, "Douche");
+		room1 = new Room("1", "Chambre");
+		room2 = new Room("2", "Toilettes");
+		room3 = new Room("3", "Douche");
 		motherRoom.addRoom(room1);
 		motherRoom.addRoom(room2);
 		motherRoom.addRoom(room3);
@@ -75,7 +81,7 @@ public class RoomManagerTest {
 	@Test
 	public void testFindRoom() {
 
-		MotherRoom motherWaiting = motherRoomManager.updateMotherRoom(motherRoom);
+		Zone motherWaiting = motherRoomManager.updateZone(motherRoom);
 
 		assertEquals(3, motherWaiting.getRooms().size());
 	}

@@ -69,8 +69,8 @@ public class CorridorManagerControllerREST {
 					.build();
 		}
 
-		if( corridor.getNumberCorridor() != 0 ) {
-			findedCorridor.setNumberCorridor(corridor.getNumberCorridor());
+		if( corridor.getName() != null ) {
+			findedCorridor.setName(corridor.getName());
 		}
 
 		corridorManager.updateCorridor(findedCorridor);

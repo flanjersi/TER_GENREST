@@ -1,6 +1,9 @@
 package fr.amu.ter_genrest.tests.utils;
 
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -16,7 +19,13 @@ public class PayloadDataRequestREST {
 	}
 
 	public static JsonObject jsonPayloadRequestProject(){
-		return  Json.createObjectBuilder().add("projectName", "firstProject").build();
+		LocalDateTime creationDate = LocalDateTime.of(2018, Month.DECEMBER, 25, 13, 37, 0);
+		LocalDateTime changeDate = LocalDateTime.of(2018, Month.DECEMBER, 26, 13, 37, 0);
+		
+		return  Json.createObjectBuilder().add("projectName", "firstProject").add("domaine", "domotique")
+				.add("creationDate", creationDate.toString())
+				.add("changeDate", changeDate.toString())
+				.build();
 	}
 
 	public static JsonObject jsonPayloadRequestLanguage(){
@@ -48,18 +57,18 @@ public class PayloadDataRequestREST {
 	}
 
 	public static JsonObject jsonPayloadRequestCorridor(){
-		return Json.createObjectBuilder().add("numberCorridor", 6).build();
+		return Json.createObjectBuilder().add("name", "666").build();
 	}
 
-	public static JsonObject jsonPayloadRequestMotherRoom(){
-		return Json.createObjectBuilder().add("numberMotherRoom", 9)
+	public static JsonObject jsonPayloadRequestZone(){
+		return Json.createObjectBuilder().add("name", "9")
 				.add("type", "kitchen")
 				.build();
 	}
 
 	public static JsonObject jsonPayloadRequestRoom(){
 		return Json.createObjectBuilder().add("type", "house")
-				.add("numberRoom", 4)
+				.add("name", "4")
 				.build();
 	}
 

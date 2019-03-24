@@ -53,7 +53,7 @@ public class WebServiceGeneratorImpl implements WebServiceGenerator {
 
 			initTemplate(templateFolder);					
 			
-			String generatedDirectoryPath = new File(directoryManager.generateProjectDestFolderName(project)).getAbsolutePath();
+			String generatedDirectoryPath = new File(directoryManager.generateProjectDestFolderName(project, language, configuration, operatingSystem)).getAbsolutePath();
 			
 			// TODO configuration.getPort() instead EXPRESS_PORT
 			writeFile(generatedDirectoryPath, buildDataRoutes(project), buildDataServer(EXPRESS_PORT));	

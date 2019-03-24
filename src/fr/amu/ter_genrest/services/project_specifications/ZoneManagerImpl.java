@@ -7,27 +7,27 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 
 @Stateless
-public class MotherRoomManagerImpl implements MotherRoomManager {
+public class ZoneManagerImpl implements ZoneManager {
 
 	@PersistenceContext(unitName = "database")
     private EntityManager em;
 	
 	@Override
-	public MotherRoom updateMotherRoom(MotherRoom motherRoom) {
+	public Zone updateZone(Zone motherRoom) {
 		return em.merge(motherRoom);
 	}
 
 	@Override
-	public MotherRoom findById(Long id) {
-		return em.find(MotherRoom.class, id);
+	public Zone findById(Long id) {
+		return em.find(Zone.class, id);
 	}
 
 	@Override
-	public List<MotherRoom> findAllMotherRoom() {
-		TypedQuery<MotherRoom> q = em.createNamedQuery("MotherRoom.findAllMotherRoom", MotherRoom.class);
+	public List<Zone> findAllZone() {
+		TypedQuery<Zone> q = em.createNamedQuery("Zone.findAllZone", Zone.class);
 		return q.getResultList();
 	}
 }

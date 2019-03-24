@@ -23,7 +23,7 @@ import fr.amu.ter_genrest.entities.project_specifications.Address;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.entities.project_specifications.Room;
 import fr.amu.ter_genrest.entities.project_specifications.Sensor;
 
@@ -63,7 +63,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		jsonContextObjectBuilder.add("ssn", "http://www.w3.org/ns/ssn/");
 		jsonContextObjectBuilder.add("qu", "http://purl.org/NET/ssnx/qu/qu#");
 		jsonContextObjectBuilder.add("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#");
-
+		jsonContextObjectBuilder.add("dog", "http://elite.polito.it/ontologies/dogont.owl#");
 
 		return jsonContextObjectBuilder.build();
 	}
@@ -113,41 +113,37 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Storey" + floor.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", floor.getFloorNumber());
+		jsonbuilder.add("rdfs:label", floor.getFloorNumber());
 
 		jsonbuilder.add("bot:hasSpace", createJsonArrayCorridors(floor.getCorridors()));
 
-		jsonbuilder.add("bot:hasZone", createJsonArrayMotherRooms(floor.getMotherRooms()));
+		jsonbuilder.add("bot:hasZone", createJsonArrayZones(floor.getZones()));
 
 		return jsonbuilder.build();
 	}
 
-	private JsonArray createJsonArrayMotherRooms(Set<MotherRoom> motherRooms) {
+	private JsonArray createJsonArrayZones(Set<Zone> zones) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		for(MotherRoom motherRoom : motherRooms) {
-			jsonArrayBuilder.add(createJsonObjectMotherRoom(motherRoom));
+		for(Zone motherRoom : zones) {
+			jsonArrayBuilder.add(createJsonObjectZone(motherRoom));
 		}
 
 		return jsonArrayBuilder.build();
 	}
 
-	private JsonObject createJsonObjectMotherRoom(MotherRoom motherRoom) {
+	private JsonObject createJsonObjectZone(Zone zone) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Zone");
 
-		jsonbuilder.add("@id", "Zone" + motherRoom.getId());
+		jsonbuilder.add("@id", "Zone" + zone.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", motherRoom.getNumberMotherRoom());
-
-		jsonbuilder.add("rdfs:label", motherRoom.getType());
+		jsonbuilder.add("rdfs:label", zone.getType() + ' ' + zone.getName());
 
 		jsonbuilder.add("bot:hasSpace", mergeJsonArray(
-				createJsonArrayCorridors(motherRoom.getCorridors()),
-				createJsonArrayRooms(motherRoom.getRooms())
+				createJsonArrayCorridors(zone.getCorridors()),
+				createJsonArrayRooms(zone.getRooms())
 				)
 				);
 
@@ -168,13 +164,12 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
 		jsonbuilder.add("@type", "bot:Space");
+		jsonbuilder.add("@type", "dog:Room");
 
+		
 		jsonbuilder.add("@id", "Room" + room.getId());
 
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", room.getNumberRoom());
-
-		jsonbuilder.add("rdfs:label", room.getType());
+		jsonbuilder.add("rdfs:label", room.getType() + " " + room.getName());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(room.getSensors()),
@@ -202,11 +197,8 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", "Corridor" + corridor.getId());
 
-		jsonbuilder.add("rdfs:label", "Corridor");
+		jsonbuilder.add("rdfs:label", corridor.getName());
 
-
-		//TODO ONTOLOGY
-		jsonbuilder.add("number", corridor.getNumberCorridor());
 
 		jsonbuilder.add("bot:hasElement", mergeJsonArray(
 				createJsonArraySensors(corridor.getSensors()),

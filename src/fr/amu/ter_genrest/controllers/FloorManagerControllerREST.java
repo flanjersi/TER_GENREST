@@ -22,7 +22,7 @@ import fr.amu.ter_genrest.controllers.utils.Utils;
 import fr.amu.ter_genrest.entities.project_specifications.Building;
 import fr.amu.ter_genrest.entities.project_specifications.Corridor;
 import fr.amu.ter_genrest.entities.project_specifications.Floor;
-import fr.amu.ter_genrest.entities.project_specifications.MotherRoom;
+import fr.amu.ter_genrest.entities.project_specifications.Zone;
 import fr.amu.ter_genrest.services.project_specifications.BuildingManager;
 import fr.amu.ter_genrest.services.project_specifications.FloorManager;
 
@@ -110,22 +110,22 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		if(corridor.getNumberCorridor() == 0) {
+		if(corridor.getName() == null) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'NumberCorridor' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "'name' property is missing"))
 					.build();
 		}
 		
 		Optional<Corridor> corridorSearch = floor.getCorridors()
 				.stream()
-				.filter(floorad -> floorad.getNumberCorridor() == corridor.getNumberCorridor())
+				.filter(floorad -> floorad.getName().equals(corridor.getName()))
 				.findFirst();
 		
 		if(corridorSearch.isPresent()) {
 			return Response
-					.status(400)
-					.entity(Utils.makeErrorMessage(400, "corridorNumber '" + corridor.getNumberCorridor() + "' already exist"))
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, "corridorNumber '" + corridor.getName() + "' already exist"))
 					.build();
 		}
 		
@@ -136,7 +136,7 @@ public class FloorManagerControllerREST {
 		
 		Optional<Corridor> corridorAdded = floor.getCorridors()
 				.stream()
-				.filter(floorCorridor -> (floorCorridor.getNumberCorridor()==(corridor.getNumberCorridor())))
+				.filter(floorCorridor -> (floorCorridor.getName().equals(corridor.getName())))
 				.findFirst();
 
 		JsonObject jsonResponse = Json.createObjectBuilder().add("id", corridorAdded.get().getId()).build();
@@ -145,8 +145,8 @@ public class FloorManagerControllerREST {
 	}
 	
 	@PUT
-	@Path("/{idFloor:[0-9]+}/motherRooms")
-	public Response createMotherRoom(@PathParam("idFloor") Long idFloor, MotherRoom motherRoom) {
+	@Path("/{idFloor:[0-9]+}/zones")
+	public Response createZone(@PathParam("idFloor") Long idFloor, Zone zone) {
 		Floor floor = floorManager.findById(idFloor );
 		
 		if(floor == null) {
@@ -156,37 +156,37 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 		
-		if(motherRoom.getNumberMotherRoom() == 0) {
+		if(zone.getName() == null) {
 			return  Response
 					.status(400)
-					.entity(Utils.makeErrorMessage(400, "'NumberMotherRoom' property is missing"))
+					.entity(Utils.makeErrorMessage(400, "'name' property is missing"))
 					.build();
 		}
 		
 		
-		if(motherRoom.getType() == null) {
+		if(zone.getType() == null) {
 			return  Response
 					.status(400)
 					.entity(Utils.makeErrorMessage(400, "'type' property is missing"))
 					.build();
 		}
 		
-		Optional<MotherRoom> motherRoomSearch = floor.getMotherRooms()
+		Optional<Zone> zoneSearch = floor.getZones()
 				.stream()
-				.filter(motherRoomAdd -> motherRoomAdd.getNumberMotherRoom() == motherRoom.getNumberMotherRoom())
+				.filter(zoneAdd -> zoneAdd.getName().equals(zone.getName()))
 				.findFirst();
 		
-		if(motherRoomSearch.isPresent()) {
+		if(zoneSearch.isPresent()) {
 			return Response
 					.status(403)
-					.entity(Utils.makeErrorMessage(400, "NumberMotherRoom '" + motherRoom.getNumberMotherRoom() + "' already exist"))
+					.entity(Utils.makeErrorMessage(400, "Name '" + zone.getName() + "' already exist"))
 					.build();
 		}		
 		
-		floor.addMotherRoom(motherRoom);
+		floor.addMotherRoom(zone);
 		floorManager.updateFloor(floor);
 		floor = floorManager.findById(floor.getId());	
-		Optional<MotherRoom> motherRoomAdded = floor.getMotherRooms()
+		Optional<Zone> motherRoomAdded = floor.getZones()
 				.stream()
 				.max((mr1, mr2) -> Long.compare(mr1.getId(), mr2.getId()));
 
@@ -223,8 +223,8 @@ public class FloorManagerControllerREST {
 	}
 	
 	@DELETE
-	@Path("/{idFloor:[0-9]+}/motherRooms/{id:[0-9]+}")
-	public Response deleteMotherRoom(@PathParam("idFloor") Long idFloor, @PathParam("id") Long idMotherRoom) {
+	@Path("/{idFloor:[0-9]+}/zones/{id:[0-9]+}")
+	public Response deleteZone(@PathParam("idFloor") Long idFloor, @PathParam("id") Long idZone) {
 		Floor floor = floorManager.findById(idFloor );
 
 		if(floor == null) {
@@ -234,17 +234,17 @@ public class FloorManagerControllerREST {
 					.build();
 		}
 
-		Optional<MotherRoom> motherRoomRemoved = floor.getMotherRooms()
-				.stream().filter(c -> c.getId().equals(idMotherRoom)).findFirst();
+		Optional<Zone> zoneRemoved = floor.getZones()
+				.stream().filter(c -> c.getId().equals(idZone)).findFirst();
 
-		if(!motherRoomRemoved.isPresent()) {
+		if(!zoneRemoved.isPresent()) {
 			return Response
 					.status(404)
-					.entity(Utils.makeErrorMessage(404, "motherRoom with id '" + idMotherRoom + "' not found"))
+					.entity(Utils.makeErrorMessage(404, "zone with id '" + idZone + "' not found"))
 					.build();
 		}
 
-		floor.removeMotherRoom(motherRoomRemoved.get());
+		floor.removeMotherRoom(zoneRemoved.get());
 		floorManager.updateFloor(floor);
 
 		return Response.ok().build();

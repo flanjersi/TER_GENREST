@@ -63,8 +63,8 @@ public class RoomManagerControllerREST {
 			return Response.status(404).entity(Utils.makeErrorMessage(404, " Room with" + id + "not found")).build();
 		}
 
-		if (room.getNumberRoom() != 0) {
-			roomTofind.setNumberRoom(room.getNumberRoom());
+		if (room.getName() != null) {
+			roomTofind.setName(room.getName());
 		}
 
 		if (room.getType() != null) {
@@ -108,8 +108,6 @@ public class RoomManagerControllerREST {
 		if (sensor.getUnitData() == null) {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "Sensor unitdata is missing")).build();
 		}
-		//TODO Test if name already exist
-
 		
 
 		roomTofind.addSensor(sensor);
@@ -147,7 +145,6 @@ public class RoomManagerControllerREST {
 			return Response.status(400).entity(Utils.makeErrorMessage(400, "'Latitude' property is missing")).build();
 		}
 
-		//TODO Test if name already exist
 
 		roomTofind.addActuator(actuator);
 
