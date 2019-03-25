@@ -238,12 +238,27 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", actuator.getName());
 
-		jsonbuilder.add("geo:Point", Json.createObjectBuilder()
-				.add("geo:lat", actuator.getLatitude())
-				.add("geo:long", actuator.getLatitude()).build());
+		
+		
+		jsonbuilder.add("geo:hasLocation", createLocation("Location" + actuator.getName(), actuator.getLatitude(), actuator.getLongitude()));
 
 		jsonbuilder.add("rdfs:label", actuator.getModel());
 
+
+
+		return jsonbuilder.build();
+	}
+	
+	private JsonValue createLocation(String id, double latitude, double longitude) {
+		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
+
+		jsonbuilder.add("@type", "geo:Point");
+
+		jsonbuilder.add("@id", id);
+
+		
+		jsonbuilder.add("geo:lat", latitude);
+		jsonbuilder.add("geo:long", longitude);
 
 
 		return jsonbuilder.build();
@@ -265,11 +280,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 
 		jsonbuilder.add("@id", sensor.getName());
 
-		jsonbuilder.add("geo:Point", Json.createObjectBuilder()
-				.add("geo:lat", sensor.getLatitude())
-				.add("geo:long", sensor.getLatitude()).build()
-		);
-
+		jsonbuilder.add("geo:hasLocation", createLocation("Location" + sensor.getName(), sensor.getLatitude(), sensor.getLongitude()));
 
 		jsonbuilder.add("rdfs:label", sensor.getModel());
 		jsonbuilder.add("qu:QuantityKind", sensor.getQuantityKind());
