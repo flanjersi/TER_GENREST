@@ -80,8 +80,6 @@ module.exports = class RequestSPARQLHelpers {
 
     static getCorridorsOfFloor(floorId){
         return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
             "PREFIX bot: <https://w3id.org/bot#>" +
             "CONSTRUCT { " +
             "  ?space ?p ?o." +
@@ -96,8 +94,6 @@ module.exports = class RequestSPARQLHelpers {
     static getCorridorsOfZone(zoneId){
         return "PREFIX bot: <https://w3id.org/bot#>" +
             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
             "CONSTRUCT { " +
             "  ?o ?p ?s." +
             "}" +
@@ -109,10 +105,7 @@ module.exports = class RequestSPARQLHelpers {
     }
 
     static getCorridor(corridorId){
-        return "PREFIX bot: <https://w3id.org/bot#>" +
-            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
+        return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
             "CONSTRUCT { " +
             "  <http://localhost:3030/genrest/Corridor" + corridorId + "> ?p ?o." +
             "}" +
@@ -131,8 +124,7 @@ module.exports = class RequestSPARQLHelpers {
 
     static getZonesOfFloor(floorId){
         return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
+            "PREFIX bot: <https://w3id.org/bot#>" +
             "CONSTRUCT { " +
             "?zone ?p ?s." +
             "}" +
@@ -143,10 +135,8 @@ module.exports = class RequestSPARQLHelpers {
     }
 
     static getZone(zoneId){
-        return "PREFIX bot: <https://w3id.org/bot#>" +
-            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+        return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
             "CONSTRUCT { " +
             "  <http://localhost:3030/genrest/Zone" + zoneId + "> ?p ?o." +
             "}" +
@@ -166,8 +156,6 @@ module.exports = class RequestSPARQLHelpers {
     static getRoomsOfZone(zoneId){
         return "PREFIX bot: <https://w3id.org/bot#>" +
             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            "PREFIX sch: <http://schema.org/>" +
             "CONSTRUCT { " +
             "  ?o ?p ?s" +
             "}" +

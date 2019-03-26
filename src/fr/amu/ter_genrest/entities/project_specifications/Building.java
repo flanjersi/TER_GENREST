@@ -53,8 +53,8 @@ public class Building implements Serializable {
 	private Address address;
 	
 	@Basic(optional = false) 
-	@Column(nullable = false,length=20) 
-	@Size(min = 1, max = 20) 
+	@Column(nullable = false,length=200) 
+	@Size(min = 1, max = 200) 
 	private String type; 
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE, CascadeType.MERGE,CascadeType.PERSIST }, orphanRemoval=true)

@@ -1,11 +1,15 @@
 const FusekiHTTP = require('./libs/fusekiHTTP.js');
-
+const descriptionAPI = require('./descriptionAPI.json');
 var express = require('express');
 var routes = require('./routes.js');
 var app = express();
 
 // Load up the routes
 app.use('/api', routes);
+
+app.get('', (req, resp) => {
+	resp.send(descriptionAPI);
+});
 
 function sleep(ms){
 	return new Promise(resolve=>{
