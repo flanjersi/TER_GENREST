@@ -163,9 +163,7 @@ public class GenerationJsonLDImpl implements GenerationJsonLD{
 	private JsonObject createJsonObjectRoom(Room room) {
 		JsonObjectBuilder jsonbuilder = Json.createObjectBuilder();
 
-		jsonbuilder.add("@type", "bot:Space");
-		jsonbuilder.add("@type", "dog:Room");
-
+		jsonbuilder.add("@type", Json.createArrayBuilder().add("bot:Space").add("dog:Room").build());
 		
 		jsonbuilder.add("@id", "Room" + room.getId());
 
