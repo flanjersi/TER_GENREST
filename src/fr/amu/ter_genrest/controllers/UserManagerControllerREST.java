@@ -211,6 +211,18 @@ public class UserManagerControllerREST {
 					.entity(Utils.makeErrorMessage(404, "User with id '" + id + "' not exist"))
 					.build();
 		}
+		
+		Long projectExiste = user.getProjects()
+				.stream()
+				.filter(projectUser -> projectUser.getProjectName().equals(project.getProjectName()))
+				.count();
+
+		if(projectExiste != 0) {
+			return  Response
+					.status(403)
+					.entity(Utils.makeErrorMessage(403, "'Project already use, please change the project name"))
+					.build();
+		}
 
 		if(project.getProjectName() == null) {
 			return  Response
