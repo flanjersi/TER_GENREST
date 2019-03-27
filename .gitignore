@@ -2,7 +2,7 @@
 build/
 bin/
 target/
-libs/
+/libs/
 GENREST_DB/
 node_modules/
 jaxws/jaxws-client/src/main/
