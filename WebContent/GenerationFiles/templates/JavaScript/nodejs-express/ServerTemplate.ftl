@@ -1,4 +1,6 @@
 const FusekiHTTP = require('./libs/fusekiHTTP.js');
+const RequestsSPARQLHelper = require('./libs/requestsSPARQLHelper.js');
+
 const descriptionAPI = require('./descriptionAPI.json');
 var express = require('express');
 var routes = require('./routes.js');

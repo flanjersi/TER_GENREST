@@ -117,4 +117,18 @@ module.exports = class FusekiHTTP {
             }
         })
     }
+    
+    update(dataset, updateQuerySparql) {
+        return fetch(url.resolve(this.options.url, dataset + '/update?update=' + encodeURIComponent(updateQuerySparql)), {
+            method: 'post',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function (res) {
+            if (res.status !== 200) {
+                return Promise.reject()
+            }
+            else {
+                return Promise.resolve()
+            }
+        })
+    }
 }

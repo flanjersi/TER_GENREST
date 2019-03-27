@@ -6,6 +6,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+  	"mqtt": "^2.18.8",
     "express": "^4.16.4",
     "form-urlencoded": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",

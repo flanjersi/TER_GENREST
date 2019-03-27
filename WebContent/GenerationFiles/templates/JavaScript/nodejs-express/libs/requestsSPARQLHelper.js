@@ -194,15 +194,16 @@ module.exports = class RequestSPARQLHelpers {
             "PREFIX sch: <http://schema.org/>" +
             "PREFIX ssn: <http://www.w3.org/ns/ssn/>" +
             "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
+            "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
             "CONSTRUCT { " +
             "  ?sensor ?p ?o." +
             "  ?geo ?geop ?geoo." +
             "}" +
             "WHERE {" +
             "  <http://localhost:3030/genrest/Corridor" + corridorId + "> bot:hasElement ?sensor." +
-            "  ?sensor a sosa:Sensor." +
+            "  ?sensor a ssn:Sensor." +
             "  ?sensor ?p ?o;" +
-            "          sch:GeoCoordinates ?geo." +
+            "          geo:hasLocation ?geo." +
             "  ?geo ?geop ?geoo." +
             "}";
     }
@@ -215,52 +216,56 @@ module.exports = class RequestSPARQLHelpers {
             "PREFIX sch: <http://schema.org/>" +
             "PREFIX ssn: <http://www.w3.org/ns/ssn/>" +
             "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
+            "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
             "CONSTRUCT { " +
             "  ?sensor ?p ?o." +
             "  ?geo ?geop ?geoo." +
             "}" +
             "WHERE {" +
             "  <http://localhost:3030/genrest/Room" + roomId + "> bot:hasElement ?sensor." +
-            "  ?sensor a sosa:Sensor." +
+            "  ?sensor a ssn:Sensor." +
             "  ?sensor ?p ?o;" +
-            "          sch:GeoCoordinates ?geo." +
+            "          geo:hasLocation ?geo." +
             "  ?geo ?geop ?geoo." +
             "}";
     }
 
-    static getSensor(sensorId){
+    static getSensor(sensorName){
         return "PREFIX sch: <http://schema.org/>" +
+        	"PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
             "CONSTRUCT { " +
-            "  <http://localhost:3030/genrest/Sensor" + sensorId + "> ?p ?o." +
+            "  <http://localhost:3030/genrest/" + sensorName + "> ?p ?o." +
             "  ?geo ?geop ?geoo." +
             "}" +
             "WHERE {" +
-            "  <http://localhost:3030/genrest/Sensor" + sensorId + "> ?p ?o;" +
-            "          sch:GeoCoordinates ?geo." +
+            "  <http://localhost:3030/genrest/" + sensorName + "> ?p ?o;" +
+            "          geo:hasLocation ?geo." +
             "  ?geo ?geop ?geoo." +
             "}"
     }
 
-    static getSensorObservation(sensorId){
+    static getSensorObservations(sensorName){
         return "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
             "CONSTRUCT {" +
             "  ?observation ?p ?o." +
             "}" +
             "WHERE {" +
-            "  <http://localhost:3030/genrest/Sensor" + sensorId + "> sosa:madeObservation ?observation." +
+            "  <http://localhost:3030/genrest/" + sensorName + "> sosa:madeObservation ?observation." +
             "  ?observation ?p ?o." +
             "}"
     }
 
-    static putSensorData(sensorId, idObservation, time, data){
+    static putSensorData(sensorName, idObservation, datetime, value){
+    	
+    	
         return "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
             "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>" +
             "INSERT { " +
-            "<http://localhost:3030/genrest/Sensor" + sensorId + "> sosa:madeObservation <http://localhost:3030/genrest/Observation" + idObservation + ">." +
+            "<http://localhost:3030/genrest/" + sensorName + "> sosa:madeObservation <http://localhost:3030/genrest/Observation" + idObservation + ">." +
             "  <http://localhost:3030/genrest/Observation" + idObservation + "> a sosa:Observation;" +
-            " 	 sosa:madeBySensor <http://localhost:3030/genrest/Sensor" + sensorId + ">;" +
-            "    sosa:resultTime \"" + time + "\"^^xsd:dateTime;" +
-            "  sosa:hasSimpleResult \"" + data + "\"." +
+            " 	 sosa:madeBySensor <http://localhost:3030/genrest/" + sensorName + ">;" +
+            "    sosa:resultTime \"" + datetime + "\"^^xsd:dateTime;" +
+            "  sosa:hasSimpleResult \"" + value + "\"." +
             "}" +
             "WHERE{}";
     }
@@ -300,51 +305,53 @@ module.exports = class RequestSPARQLHelpers {
             "PREFIX sch: <http://schema.org/>" +
             "PREFIX ssn: <http://www.w3.org/ns/ssn/>" +
             "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
+            "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
             "CONSTRUCT { " +
             "  ?actuator ?p ?o." +
             "  ?geo ?geop ?geoo." +
             "}" +
             "WHERE {" +
             "  <http://localhost:3030/genrest/Room" + roomId + "> bot:hasElement ?actuator." +
-            "  ?actuator a sosa:Actuator." +
+            "  ?actuator a ssn:Actuator." +
             "  ?actuator ?p ?o;" +
-            "          sch:GeoCoordinates ?geo." +
+            "          geo:hasLocation ?geo." +
             "  ?geo ?geop ?geoo." +
             "}";
     }
 
-    static getActuator(actuatorId){
+    static getActuator(actuatorName){
         return "PREFIX sch: <http://schema.org/>" +
+        	"PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
             "CONSTRUCT { " +
-            "  <http://localhost:3030/genrest/Actuator" + actuatorId + "> ?p ?o." +
+            "  <http://localhost:3030/genrest/" + actuatorName + "> ?p ?o." +
             "  ?geo ?geop ?geoo." +
             "}" +
             "WHERE {" +
-            "  <http://localhost:3030/genrest/Actuator" + actuatorId + "> ?p ?o;" +
-            "          sch:GeoCoordinates ?geo." +
+            "  <http://localhost:3030/genrest/" + actuatorName + "> ?p ?o;" +
+            "          geo:hasLocation ?geo." +
             "  ?geo ?geop ?geoo." +
             "}"
     }
 
-    static getActuatorActuations(actuatorId){
+    static getActuatorActuations(actuatorName){
         return "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
             "CONSTRUCT {" +
             "  ?observation ?p ?o." +
             "}" +
             "WHERE {" +
-            "  <http://localhost:3030/genrest/Actuator" + actuatorId + "> sosa:madeActuation ?actuation." +
+            "  <http://localhost:3030/genrest/" + actuatorName + "> sosa:madeActuation ?actuation." +
             "  ?actuation ?p ?o." +
             "}"
     }
 
-    static putActuatorData(actuatorId, actuationId, time, value){
+    static putActuatorData(actuatorName, idActuation, datetime, value){
         return "PREFIX sosa: <http://www.w3.org/ns/sosa/>" +
             "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>" +
             "INSERT { " +
-            "<http://localhost:3030/genrest/Actuator" + actuatorId + "> sosa:madeActuation <http://localhost:3030/genrest/Actuation" + actuationId + ">." +
-            "  <http://localhost:3030/genrest/Actuation" + actuationId + "> a sosa:Actuation;" +
-            "	 sosa:actuationMadeBy <http://localhost:3030/genrest/Actuator" + actuatorId + ">;" +
-            "    sosa:resultTime \"" + time + "\"^^xsd:dateTime;" +
+            "<http://localhost:3030/genrest/" + actuatorName + "> sosa:madeActuation <http://localhost:3030/genrest/Actuation" + idActuation + ">." +
+            "  <http://localhost:3030/genrest/Actuation" + idActuation + "> a sosa:Actuation;" +
+            "	 sosa:actuationMadeBy <http://localhost:3030/genrest/" + actuatorName + ">;" +
+            "    sosa:resultTime \"" + datetime + "\"^^xsd:dateTime;" +
             "  sosa:hasSimpleResult \"" + value + "\"." +
             "}" +
             "WHERE{}";

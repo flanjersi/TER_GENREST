@@ -150,22 +150,29 @@ router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corrido
 
 
 <#list sensorsCorridorFloor as sensorCorridorFloor>
-router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor(${sensorCorridorFloor.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor("${sensorCorridorFloor.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
 });
 
 
-var descriptionSensor${sensorCorridorFloor.id}OfCorridor${corridorFloor.id} = descriptionSensorsOfCorridor${corridorFloor.id}.filter(elt =>
+var descriptionSensor${sensorCorridorFloor.name}OfCorridor${corridorFloor.id} = descriptionSensorsOfCorridor${corridorFloor.id}.filter(elt =>
 	elt.paths.filter(path => 
-		path.value === '/api/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.id}'
+		path.value === '/api/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.name}'
 	).length == 1
 )[0];
 
-router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.id}', (req, resp) => {
-	resp.send(descriptionSensor${sensorCorridorFloor.id}OfCorridor${corridorFloor.id});
+router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.name}', (req, resp) => {
+	resp.send(descriptionSensor${sensorCorridorFloor.name}OfCorridor${corridorFloor.id});
+});
+
+router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/sensors/${sensorCorridorFloor.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensorObservations("${sensorCorridorFloor.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
 });
 
 </#list>
@@ -190,22 +197,30 @@ router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corrido
 });
 
 <#list actuatorsCorridorFloor as actuatorCorridorFloor>
-router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator(${actuatorCorridorFloor.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator("${actuatorCorridorFloor.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
 
 });
 
-var descriptionActuator${actuatorCorridorFloor.id}OfCorridor${corridorFloor.id} = descriptionActuatorsOfCorridor${corridorFloor.id}.filter(elt =>
+var descriptionActuator${actuatorCorridorFloor.name}OfCorridor${corridorFloor.id} = descriptionActuatorsOfCorridor${corridorFloor.id}.filter(elt =>
 	elt.paths.filter(path => 
-		path.value === '/api/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.id}'
+		path.value === '/api/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.name}'
 	).length == 1
 )[0];
 
-router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.id}', (req, resp) => {
-	resp.send(descriptionActuator${actuatorCorridorFloor.id}OfCorridor${corridorFloor.id});
+router.options('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.name}', (req, resp) => {
+	resp.send(descriptionActuator${actuatorCorridorFloor.name}OfCorridor${corridorFloor.id});
+});
+
+router.get('/buildings/${building.id}/floors/${floor.id}/corridors/${corridorFloor.id}/actuators/${actuatorCorridorFloor.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuatorActuations("${actuatorCorridorFloor.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
+
 });
 
 </#list>
@@ -307,21 +322,29 @@ router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/ro
 
 <#list sensors as sensor>
 
-router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor(${sensor.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor("${sensor.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
 });
 
-var descriptionSensor${sensor.id}OfRoom${room.id} = descriptionSensorsOfRoom${room.id}.filter(elt => 
+var descriptionSensor${sensor.name}OfRoom${room.id} = descriptionSensorsOfRoom${room.id}.filter(elt => 
 	elt.paths.filter(path => 
-		path.value === '/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.id}'
+		path.value === '/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.name}'
 	).length == 1
 )[0];
 
-router.options('/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.id}', (req, resp) => {
-	resp.send(descriptionSensor${sensor.id}OfRoom${room.id});
+router.options('/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.name}', (req, resp) => {
+	resp.send(descriptionSensor${sensor.name}OfRoom${room.id});
+});
+
+
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/sensors/${sensor.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensorObservations("${sensor.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
 });
 
 </#list>
@@ -349,21 +372,28 @@ router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/ro
 });
 
 <#list actuators as actuator>
-router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator(${actuator.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator("${actuator.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
 });
 
-var descriptionActuator${actuator.id}OfRoom${room.id} = descriptionActuatorsOfRoom${room.id}.filter(elt => 
+var descriptionActuator${actuator.name}OfRoom${room.id} = descriptionActuatorsOfRoom${room.id}.filter(elt => 
 	elt.paths.filter(path => 
-		path.value === '/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.id}'
+		path.value === '/api/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.name}'
 	).length == 1
 )[0];
 
-router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.id}', (req, resp) => {
-	resp.send(descriptionActuator${actuator.id}OfRoom${room.id});
+router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.name}', (req, resp) => {
+	resp.send(descriptionActuator${actuator.name}OfRoom${room.id});
+});
+
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/rooms/${room.id}/actuators/${actuator.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuatorActuations("${actuator.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
 });
 
 </#list>
@@ -419,7 +449,7 @@ router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corrid
 		});
 });
 
-var descriptionSensorsOfCorridor${corridorZone.id} = descriptionCorridor${corridorszone.id}OfZone${zone.id}['sensors'];
+var descriptionSensorsOfCorridor${corridorZone.id} = descriptionCorridor${corridorZone.id}OfZone${zone.id}['sensors'];
 
 router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/sensors/', (req, resp) => {
 	resp.send(descriptionSensorsOfCorridor${corridorZone.id});
@@ -427,8 +457,8 @@ router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/co
 
 
 <#list sensorsCorridorsZone as sensorCorridorsZone>
-router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/sensors/${sensorCorridorsZone.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor(${sensorCorridorsZone.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/sensors/${sensorCorridorsZone.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensor("${sensorCorridorsZone.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
@@ -442,6 +472,13 @@ var descriptionSensor${sensorCorridorsZone.id}OfCorridor${corridorZone.id} = des
 
 router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/sensors/${sensorCorridorsZone.id}', (req, resp) => {
 	resp.send(descriptionSensor${sensorCorridorsZone.id}OfCorridor${corridorZone.id});
+});
+
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/sensors/${sensorCorridorsZone.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getSensorObservations("${sensorCorridorsZone.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
 });
 
 </#list>
@@ -467,8 +504,8 @@ router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/co
 
 
 <#list actuatorsCorridorZone as actuatorCorridorsZone>
-router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/actuators/${actuatorCorridorsZone.id}', (req, resp) => {
-	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator(${actuatorCorridorsZone.id}))
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/actuators/${actuatorCorridorsZone.name}', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuator("${actuatorCorridorsZone.name}"))
 		.then(function(res){
 			resp.send(res);
 		});
@@ -480,8 +517,15 @@ var descriptionActuator${actuatorCorridorsZone.id}OfCorridor${corridorZone.id} =
 	).length == 1
 )[0];
 
-router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/actuators/${actuatorCorridorsZone.id}', (req, resp) => {
+router.options('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/actuators/${actuatorCorridorsZone.name}', (req, resp) => {
 	resp.send(descriptionActuator${actuatorCorridorsZone.id}OfCorridor${corridorZone.id});
+});
+
+router.get('/buildings/${building.id}/floors/${floor.id}/zones/${zone.id}/corridors/${corridorZone.id}/actuators/${actuatorCorridorsZone.name}/datas', (req, resp) => {
+	fusekiHTTP.query('genrest', RequestsSPARQLHelper.getActuatorActuations("${actuatorCorridorsZone.name}"))
+		.then(function(res){
+			resp.send(res);
+		});
 });
 
 </#list>

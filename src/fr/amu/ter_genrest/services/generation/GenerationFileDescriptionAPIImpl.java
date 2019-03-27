@@ -376,7 +376,7 @@ public class GenerationFileDescriptionAPIImpl implements GenerationFileDescripti
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Actuator actuator : actuators) {
-			jsonArrayBuilder.add(createJsonObjectActuator(pathActuators + "/" + actuator.getId(), actuator));
+			jsonArrayBuilder.add(createJsonObjectActuator(pathActuators + "/" + actuator.getName(), actuator));
 		}
 
 		return jsonArrayBuilder.build();	
@@ -425,7 +425,7 @@ public class GenerationFileDescriptionAPIImpl implements GenerationFileDescripti
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
 		for(Sensor sensor : sensors) {
-			jsonArrayBuilder.add(createJsonObjectSensor(pathSensors + "/" + sensor.getId(), sensor));
+			jsonArrayBuilder.add(createJsonObjectSensor(pathSensors + "/" + sensor.getName(), sensor));
 		}
 
 		return jsonArrayBuilder.build();	}
